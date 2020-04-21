@@ -26,13 +26,13 @@ mongoose
     .then(() => console.log('MongoDB Connected...'))
     .catch(err => console.log(err));
 
-// Passport middleware
-app.use(passport.initialize());
-// Passport config
-require("./config/passport")(passport);
+// // Passport middleware
+// app.use(passport.initialize());
+// // Passport config
+// require("./config/passport")(passport);
 
 // Use Routes
-app.use('/api/users', users);
+app.use('./api/users', users);
 
 // PORT (Starting Server)
 const port = process.env.PORT || 5000;

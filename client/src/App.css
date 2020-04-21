@@ -1,0 +1,22 @@
+.navbar {
+  position: relative;
+  background-color: green;
+}
+
+.brand {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px !important;
+  display: block;
+  color: white;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.form-control {
+  font-size: 12px;
+  border: solid 1px white;
+  border-radius: 20px;
+}
