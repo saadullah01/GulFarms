@@ -11,11 +11,11 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    NavbarText,
     Form,
     FormGroup,
     Label,
-    Input
+    Input,
+    Container
 } from 'reactstrap';
 
 class AppNavbar extends Component{
@@ -34,37 +34,39 @@ class AppNavbar extends Component{
         return (
             <div>
                 <Navbar className="navbar" expand="md">
-                    <NavbarBrand className="brand" href="/">GUL FARMS</NavbarBrand>
-                    <NavbarToggler color="white" onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="mr-auto" navbar>
-                            <NavItem>
-                                <NavLink className="nav-link" href="/">Farms</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className="nav-link" href="/">Alerts</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className="nav-link" href="/">Finance</NavLink>
-                            </NavItem>
-                        </Nav>
-                        <Form inline nav>
-                            <FormGroup>
-                                <Label for="search"></Label>
-                                <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
-                            </FormGroup>
-                        </Form>
-                        <UncontrolledDropdown>
-                            <DropdownToggle nav>
-                                Edit Info
-                            </DropdownToggle>
-                            <DropdownMenu>
-                                <DropdownItem>Change Password</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem>Manage Users</DropdownItem>
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
-                    </Collapse>
+                    <Container>
+                        <NavbarBrand className="brand" href="/">GUL FARMS</NavbarBrand>
+                        <NavbarToggler color="white" onClick={this.toggle} />
+                        <Collapse isOpen={this.state.isOpen} navbar>
+                            <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                    <NavLink className="nav-link" href="/">Farms</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" href="/">Alerts</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink className="nav-link" href="/">Finance</NavLink>
+                                </NavItem>
+                            </Nav>
+                            <Form inline nav>
+                                <FormGroup>
+                                    <Label for="search"></Label>
+                                    <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
+                                </FormGroup>
+                            </Form>
+                            <UncontrolledDropdown className="edit-info">
+                                <DropdownToggle nav>
+                                    Edit Info
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem>Change Password</DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem>Manage Users</DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                        </Collapse>
+                    </Container>
                 </Navbar>
             </div>
         );

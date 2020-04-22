@@ -1,3 +1,97 @@
+.home-page {
+  height: 100vh;
+  background: url(./images/gulfarms.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: -999;
+}
+
+.main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+}
+
+.reg-form {
+  width: 40%;
+  margin: 0 auto;
+}
+
+.input-field {
+  height: 50px;
+  margin: 0 auto;
+}
+
+.password-container {
+  position: relative;
+}
+
+.pop-up {
+  width: 100%;
+  display:inline-block;
+  visibility:hidden;
+  /* position:absolute;
+  top: 0px;
+  right: 0px; */
+  color:white;
+}
+input[type="password"]:hover ~ .pop-up{visibility:visible}
+
+.text-heading {
+  font-size: 300%;
+}
+
+.text, .text-heading {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  margin: 0 auto;
+}
+
+.signup-btn {
+  margin: 0 auto;
+  width: 60%;
+  border-radius: 20px;
+  background-color: green;
+  border: solid 1px green;
+  font-size: 130%;
+}
+
+.btn-handler {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.brand-name {
+  text-align: center;
+  font-size: 700%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  margin-bottom: 3%;
+}
+
+.link {
+  color: white;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.login-btn {
+  margin: 0 auto;
+  width: 40%;
+  border-radius: 20px;
+  background-color: green;
+  border: solid 1px green;
+  font-size: 130%;
+  margin-top: 10px;
+}
+
 .navbar {
   position: relative;
   background-color: green;
@@ -19,4 +113,82 @@
   font-size: 12px;
   border: solid 1px white;
   border-radius: 20px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .brand-name {
+    font-size: 300%;
+  }
+  .reg-form {
+    width: 100%;
+  }
+  #firstName {
+    margin-bottom: 15px;
+  }
+  .signup-btn {
+    width: 100%;
+  }
+  .login-btn {
+    width: 100%;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .brand-name {
+    font-size: 400%;
+  }
+  .reg-form {
+    width: 80%;
+  }
+  #firstName {
+    margin-bottom: 15px;
+  }
+  .signup-btn {
+    width: 80%;
+  }
+  .login-btn {
+    width: 80%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .brand-name {
+    font-size: 500%;
+  }
+  .reg-form {
+    width: 50%;
+  }
+  #firstName {
+    margin-bottom: 0px;
+  }
+  .signup-btn {
+    width: 30%;
+  }
+  .login-btn {
+    width: 40%;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .brand-name {
+    font-size: 600%;
+  }
+  .reg-form {
+    width: 40%;
+  }
+  #firstName {
+    margin-bottom: 0px;
+  }
+  .signup-btn {
+    width: 30%;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }
