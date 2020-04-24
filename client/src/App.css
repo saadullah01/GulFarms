@@ -107,6 +107,8 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 
 .nav-link {
   color: white !important;
+  margin: 0 20px 0 0;
+  font-size: 18px;
 }
 
 .form-control {
@@ -115,8 +117,36 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   border-radius: 20px;
 }
 
+/* Tab */
+.tab {
+  display: block;
+  height: 150px;
+  width: 200px;
+  background-color: green;
+  color: white;
+  border: solid 1px green;
+  border-radius: 20px;
+  position: relative;
+  margin: 10px;
+  transition: transform .2s ease-in-out;
+  overflow: hidden;
+}
+
+.tab:hover {
+  transform: scale(1.05);
+}
+
+.tab-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) {  
   .brand-name {
     font-size: 300%;
   }

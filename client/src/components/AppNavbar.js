@@ -36,11 +36,11 @@ class AppNavbar extends Component{
                 <Navbar className="navbar" expand="md">
                     <Container>
                         <NavbarBrand className="brand" href="/">GUL FARMS</NavbarBrand>
-                        <NavbarToggler color="white" onClick={this.toggle} />
+                        <NavbarToggler onClick={this.toggle}></NavbarToggler>
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="mr-auto" navbar>
                                 <NavItem>
-                                    <NavLink className="nav-link" href="/">Farms</NavLink>
+                                    <NavLink className="nav-link" href="/farms">Farms</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink className="nav-link" href="/">Alerts</NavLink>
