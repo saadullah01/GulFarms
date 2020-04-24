@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require("passport");
 
@@ -12,19 +12,19 @@ const app = express();
 // Bodyparser Middleware
 app.use(bodyParser.json());
 
-///////// DB Setup //////////s/
-// To Avoid Deprecation Warnings
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
-// DB Config
-const db = require('./config/keys').mongoURI;
-// Connect to Mongo
-mongoose
-    .connect(db)
-    .then(() => console.log('MongoDB Connected...'))
-    .catch(err => console.log(err));
+// ///////// DB Setup //////////s/
+// // To Avoid Deprecation Warnings
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true);
+// mongoose.set('useUnifiedTopology', true);
+// // DB Config
+// const db = require('./config/keys').mongoURI;
+// // Connect to Mongo
+// mongoose
+//     .connect(db)
+//     .then(() => console.log('MongoDB Connected...'))
+//     .catch(err => console.log(err));
 
 // // Passport middleware
 // app.use(passport.initialize());
