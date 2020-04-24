@@ -39,23 +39,23 @@ class ResetPassword extends Component {
                             <Input 
                                 className="input-field"
                                 type="password" 
-                                placeholder="Enter your password" 
+                                placeholder="Enter new password" 
                                 onChange={this.onChange}
                                 value={this.state.password} 
                                 error={errors.password} 
                                 id="password"
-                            />
+                                />
                         </FormGroup>
                         <FormGroup>
                             <Input 
                                 className="input-field"
                                 type="password" 
-                                placeholder="Re-enter your password" 
+                                placeholder="Confirm new password" 
                                 onChange={this.onChange}
                                 value={this.state.rePassword} 
                                 error={errors.rePassword} 
                                 id="rePassword"
-                            />
+                                />
                             <div className="pop-up">
                                 Password must be greater than 8 characters long and
                                 must contain atleast 1 digit and 1 special character
