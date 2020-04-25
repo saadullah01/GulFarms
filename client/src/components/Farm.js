@@ -1,39 +1,35 @@
 import React, { Component } from 'react';
 import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    Container
 } from 'reactstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+
+import Tab from './sub_components/Tab';
+
 class Farm extends Component{
-    // Can Add Constructor
-    state = {
-        isOpen: false
+    constructor (props) {
+        super(props);
+        this.state = {
+            farms: [
+                {'id': 1, 'name': "Farm 1"},
+                {'id': 2, 'name': "Farm 2"}
+            ]
+        }
     }
-
-    toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
-
     render() {
+        const url = "/home/farm/";
+        const farms = this.state.farms.map((farm) => 
+            <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
+        );
         return (
-            <div>
-                Existing Farms
+            <div className="next-layer mt-4">
+                <div className="main-container row">
+                    { farms }
+                    <div className="small">
+                        <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
+                    </div>
+                </div>
             </div>
         );
     }

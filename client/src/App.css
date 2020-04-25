@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 .home-page {
   height: 100vh;
   background: url(./images/gulfarms.jpg) no-repeat center center fixed; 
@@ -6,6 +11,11 @@
   -o-background-size: cover;
   background-size: cover;
   z-index: -999;
+}
+
+.main-container {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .main {
@@ -97,18 +107,35 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   background-color: green;
 }
 
+.nav-link {
+  color: white !important;
+  font-size: 18px;
+}
+
+.nav-link:hover {
+  background-color: grey;
+  border-radius: 10px;
+}
+
+.search {
+  color: white;
+  margin: 0 10px 0 0;
+  font-size: 22px;
+}
+
 .brand {
   position: absolute;
   left: 50%;
   margin-left: -50px !important;
   display: block;
   color: white;
+  font-size: 25px;
+  font-weight: bolder;
 }
 
-.nav-link {
-  color: white !important;
-  margin: 0 20px 0 0;
-  font-size: 18px;
+.toggle {
+  color: white;
+  font-size: 22px;
 }
 
 .form-control {
@@ -118,13 +145,9 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 }
 
 /* Tab */
-.tab {
+.small, .large {
   display: block;
-  height: 150px;
-  width: 200px;
-  background-color: green;
   color: white;
-  border: solid 1px green;
   border-radius: 20px;
   position: relative;
   margin: 10px;
@@ -132,7 +155,21 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   overflow: hidden;
 }
 
-.tab:hover {
+.small {
+  height: 125px;
+  width: 150px;
+  background-color: #0D7134;
+  border: solid 1px #0D7134;
+}
+
+.large {
+  height: 150px;
+  width: 200px;
+  background-color: green;
+  border: solid 1px green;
+}
+
+.small:hover, .large:hover {
   transform: scale(1.05);
 }
 
@@ -145,8 +182,28 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.tab-add {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 50px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Farm */
+.next-layer {
+  background-color: lightgrey;
+  height: 100%;
+}
+
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {  
+@media only screen and (max-width: 600px) { 
+  /* Tab */
+  .tab {
+    height: 100px;
+    width: 45%;
+  } 
   .brand-name {
     font-size: 300%;
   }
@@ -204,6 +261,18 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
+  .nav-link {
+    color: white !important;
+    margin: 0 20px 0 20px;
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  .separator {
+    width: 1.5px;
+    background-color: white;
+  }
+
   .brand-name {
     font-size: 600%;
   }
