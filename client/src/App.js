@@ -13,15 +13,19 @@ import ResetPassword from './components/auth/ResetPassword';
 import Farm from './components/Farm';
 import Landing from './components/Landing';
 
-function NavDisplay (props) {
+const NavDisplay= (props) => {
   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-  if (link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') {
-    return null;
-  } else {
-    return <AppNavbar />;
-  }
+  return(( !(link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') &&  <AppNavbar />))
 }
-
+// SAAD !!!! I thought this looked more pretty you can decide which ever you like ALSO IN BOTH CASES WARNINGS ATI DO
+// function NavDisplay (props) {
+//   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
+//   if (link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') {
+//     return null;
+//   } else {
+//     return <AppNavbar />;
+//   }
+// }
 // just adding to see if git works
 class App extends Component{
   render() {
