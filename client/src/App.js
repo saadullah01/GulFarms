@@ -12,10 +12,6 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import Farm from './components/Farm';
 import Landing from './components/Landing';
-<<<<<<< HEAD
-import Tab from './components/Tab';
-
-=======
 
 function NavDisplay (props) {
   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -27,7 +23,6 @@ function NavDisplay (props) {
 }
 
 // just adding to see if git works
->>>>>>> d78094b294063f17c2e0434a5d432ee1deb63595
 class App extends Component{
   render() {
     return (
