@@ -22,6 +22,7 @@ function NavDisplay (props) {
   }
 }
 
+// just adding to see if git works
 class App extends Component{
   render() {
     return (
