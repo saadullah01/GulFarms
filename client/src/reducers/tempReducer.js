@@ -1,4 +1,4 @@
-const tempReducer = (state,action)=>{
+const tempReducer = (state={start:1},action)=>{
     switch(action.type){
         case '1':
             return {
