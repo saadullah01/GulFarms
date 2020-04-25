@@ -8,15 +8,19 @@ class Tab extends Component {
         super(props);
         this.state = {
             name: props.name,
-            link: props.link
+            link: props.link,
+            type: props.type
         }
     }
     goTo = () => {
         window.location = this.state.link;
+        var tab = document.getElementById(this.state.name);
+        tab.style.backgroundColor = "white";
+        tab.style.color = "green";
     }
     render() {
         return (
-            <div className="tab col-xs-6 col-md-2" onClick={this.goTo}>
+            <div id={ this.state.name } className={ this.state.type } onClick={this.goTo}>
                 <p className="tab-text">{this.state.name}</p>
             </div>
         );
