@@ -3,11 +3,16 @@ import axios from "axios"
 
 const initialState = {
     islogged:false,
-    sessionid
+    sessionid:"",
 }
-const farmReducer = (state=initialState,action)=>{
+// export const login =(username,password)=>{
+//     dispatch =>{
+//     }
+// }
+
+const userReducer = (state=initialState,action)=>{
     switch(action.type){
-        case '1':
+        case 'LOGIN':
             return {
                 ...state,
                 one:1
@@ -17,4 +22,4 @@ const farmReducer = (state=initialState,action)=>{
     }
 }
 
-export default farmReducer
+export default userReducer

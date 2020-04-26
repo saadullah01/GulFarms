@@ -1,13 +1,15 @@
 import redux, { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import tempReducer from "./tempReducer"
 import farmReducer from "./farmReducer"
+import userReducer from "./userReducer"
 import thunk from "redux-thunk"
 
 
 
 const rootReducer = combineReducers({
     tempReducer,
-    farmReducer
+    farmReducer,
+    userReducer
 })
 
 const composeEnhancers =
