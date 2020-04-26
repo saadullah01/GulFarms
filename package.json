@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/saadullah01/GulFarms/issues"
   },
-  "homepage": "https://github.com/saadullah01/GulFarms#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
