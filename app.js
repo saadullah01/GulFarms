@@ -1,5 +1,6 @@
 const express = require('express');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
+// const bodyParser = require('body-parser');
 // const passport = require("passport");
 
 // Routes
@@ -26,13 +27,13 @@ app.use(express.urlencoded()); //to support url encoded bodies
 //     .then(() => console.log('MongoDB Connected...'))
 //     .catch(err => console.log(err));
 
-// // Passport middleware
+// Passport middleware
 // app.use(passport.initialize());
-// // Passport config
+// Passport config
 // require("./config/passport")(passport);
 
 // Use Routes
-app.use('./api/users', users);
+app.use('/api/users', users);
 
 // PORT (Starting Server)
 const port = process.env.PORT || 5000;
