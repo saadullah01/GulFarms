@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { 
+  BrowserRouter as Router, 
+  Route,
+  Switch
+} from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -10,13 +14,14 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
-import Farm from './components/Farm';
+import FarmsList from './components/FarmsList';
 import Landing from './components/Landing';
+import CreateFarm from './components/CreateFarm';
 
-const NavDisplay= (props) => {
-  const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-  return(( !(link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') &&  <AppNavbar />))
-}
+// const NavDisplay= (props) => {
+//   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
+//   return(( !(link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') &&  <AppNavbar />))
+// }
 // SAAD !!!! I thought this looked more pretty you can decide which ever you like ALSO IN BOTH CASES WARNINGS ATI DO
 // function NavDisplay (props) {
 //   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -32,15 +37,19 @@ class App extends Component{
     return (
       <Router>
         <div className="App">
-          <NavDisplay link={ window.location.href } />
-          <Route exact path="/register" component={ Register } />
-          <Route exact path="/login" component={ Login } />
-          <Route exact path="/forgot-password" component={ ForgotPassword } />
-          <Route exact path="/reset-password" component={ ResetPassword } />
-          <Route exact path="/(home|home/farms|home/alerts|home/finances)" component={ Landing } />
-          <Route exact path="/home/farms" component={ Farm } />
-        </div>
-      </Router>
+          <Route path="/register" component={ Register } />
+          <Route path="/login" component={ Login } />
+          <Route path="/reset-password" component={ ResetPassword } />
+          <Route path="/forgot-password" component={ ForgotPassword } />
+          <Route path="/" component={ AppNavbar } />
+          <Route path="/home" component={ Landing } />
+          <Switch>
+            <Route path="/home/farms" component={ FarmsList } />
+            <Route path="/alerts" />
+            <Route path="/finances" />
+          </Switch>
+        </div>  
+      </Router>   
     );
   }
 }

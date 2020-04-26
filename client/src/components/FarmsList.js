@@ -6,19 +6,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Tab from './sub_components/Tab';
+import CreateFarm from './CreateFarm';
 
-class Farm extends Component{
+class FarmsList extends Component{
     constructor (props) {
         super(props);
         this.state = {
             farms: [
                 {'id': 1, 'name': "Farm 1"},
                 {'id': 2, 'name': "Farm 2"}
-            ]
+            ],
+            form: ''
         }
     }
+    addNew = () => {
+        this.setState(this.state.form = <CreateFarm/>)
+    }
     render() {
-        const url = "/home/farm/";
+        const url = "farms/";
         const farms = this.state.farms.map((farm) => 
             <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
         );
@@ -26,18 +31,17 @@ class Farm extends Component{
             <div className="next-layer mt-4">
                 <div className="main-container row">
                     { farms }
-                    <div className="small">
+                    <div onClick={ this.addNew } className="small">
                         <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
                     </div>
+                    { this.state.form }
                 </div>
             </div>
         );
     }
 }
 
-export default Farm;
-
-
+export default FarmsList;
 
 ///DONT DELETE THIS
 

@@ -1,3 +1,49 @@
+.h3{
+  text-align: center;
+  color: chartreuse;
+  align-self: start;
+
+
+}
+.modal-Header{
+  align-content: center;
+  text-align: center;
+  width: 50%;
+  height: auto;
+}
+.text-label{
+  text-align:right;
+  vertical-align: middle;
+  color: chartreuse;
+  font: bold;
+  font-size: large;
+  margin-left: 20px;
+}
+.text-label-black{
+  text-align:right;
+  vertical-align: middle;
+  color: black;
+  font: bold;
+  font-size: large;
+  margin-left: 20px;
+}
+.input-field-add {
+  height: auto;
+  width: auto;
+  margin: 0 auto;
+  border-top-width: thick;
+}
+
+.plus-btn {
+  margin: 0 auto;
+  width: 10%;
+  border-radius: 10px;
+  background-color: green;
+  border: solid 1px green;
+  font-size: 150%;
+  margin-top: 10px;
+}
+
 html, body {
   height: 100%;
   margin: 0;
