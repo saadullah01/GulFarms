@@ -17,6 +17,10 @@ import ResetPassword from './components/auth/ResetPassword';
 import FarmsList from './components/FarmsList';
 import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
+import { Navbar } from 'reactstrap';
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 // const NavDisplay= (props) => {
 //   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -37,11 +41,11 @@ class App extends Component{
     return (
       <Router>
         <div className="App">
+          <AppNavbar />
           <Route path="/register" component={ Register } />
           <Route path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route path="/forgot-password" component={ ForgotPassword } />
-          <Route path="/" component={ AppNavbar } />
           <Route path="/home" component={ Landing } />
           <Switch>
             <Route path="/home/farms" component={ FarmsList } />

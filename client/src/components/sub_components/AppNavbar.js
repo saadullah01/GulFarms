@@ -57,8 +57,9 @@ class AppNavbar extends Component{
         });
     }
     render() {
-        return (
-            <div>
+        const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ?null: (
+            <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">
                         <NavbarBrand className="brand" href="/home">GUL FARMS</NavbarBrand>
