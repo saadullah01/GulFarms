@@ -6,6 +6,8 @@ import {
     Input
 } from 'reactstrap';
 
+const server = "http://localhost:5000";
+
 class Register extends Component{
     // Can Add Constructor
     state = {
@@ -106,7 +108,7 @@ class Register extends Component{
                             />
                         </FormGroup>
                         <div className="btn-handler">
-                            <Button className="signup-btn">Sign Up</Button>
+                            <Button className="signup-btn" type="submit">Sign Up</Button>
                         </div>
                     </Form>
                 </div>    

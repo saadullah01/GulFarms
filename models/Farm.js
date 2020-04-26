@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const baseModels = require('BaseModels');
+const baseModels = require('./BaseModels');
 const Schema = mongoose.Schema;
 
 // Create Schema
