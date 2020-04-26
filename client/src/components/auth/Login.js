@@ -21,12 +21,12 @@ class Login extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    componentWillReceiveProps(nextProps) {
-
-        if (nextProps.loggedIn) {
+    componentDidUpdate() {
+        if (this.props.loggedIn) {
             this.props.history.push("/home");
         }
     }
+   
     onSubmit = e => {
         e.preventDefault();
         const userData = {

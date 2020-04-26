@@ -17,6 +17,7 @@ import {
     Input
 } from 'reactstrap';
 
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -57,8 +58,7 @@ class AppNavbar extends Component{
         });
     }
     render() {
-        const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ?null: (
+        return !this.props.auth ? null: (
             <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">
@@ -92,4 +92,10 @@ class AppNavbar extends Component{
     }
 }
 
-export default AppNavbar;
+const mapStateToProps = state => ({
+    auth: state.authReducer.islogged,
+});
+export default connect(
+    mapStateToProps,
+    { }
+)(AppNavbar);

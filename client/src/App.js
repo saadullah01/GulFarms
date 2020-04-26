@@ -17,10 +17,38 @@ import ResetPassword from './components/auth/ResetPassword';
 import FarmsList from './components/FarmsList';
 import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
-import { Navbar } from 'reactstrap';
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
+
+
+
+class App extends Component{
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <AppNavbar />
+          <Route exact path="/register" component={ Register } />
+          <Route exact path="/login" component={ Login } />
+          <Route exact path="/reset-password" component={ ResetPassword } />
+          <Route exact path="/forgot-password" component={ ForgotPassword } />
+          <Route exact path="/home" component={ Landing } />
+          <Switch>
+            <Route exact path="/home/farms" component={ FarmsList } />
+            <Route exact path="/alerts" />
+            <Route exact path="/finances" />
+          </Switch>
+        </div>  
+      </Router>   
+    );
+  }
+}
+
+export default App;
+
+
+
 
 // const NavDisplay= (props) => {
 //   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -36,26 +64,3 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 //   }
 // }
 // just adding to see if git works
-class App extends Component{
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <AppNavbar />
-          <Route path="/register" component={ Register } />
-          <Route path="/login" component={ Login } />
-          <Route path="/reset-password" component={ ResetPassword } />
-          <Route path="/forgot-password" component={ ForgotPassword } />
-          <Route path="/home" component={ Landing } />
-          <Switch>
-            <Route path="/home/farms" component={ FarmsList } />
-            <Route path="/alerts" />
-            <Route path="/finances" />
-          </Switch>
-        </div>  
-      </Router>   
-    );
-  }
-}
-
-export default App;
