@@ -27,7 +27,7 @@ function NavLinks (props) {
         return (
             <Nav className="mr-auto" navbar>
                 <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/farms">Farms</NavLink>
+                    <NavLink className="nav-link" href="/home/farms">Farms</NavLink>
                 </NavItem>
                 <span className="separator"></span>
                 <NavItem className="nav-link-container">
@@ -58,7 +58,9 @@ class AppNavbar extends Component{
         });
     }
     render() {
-        return !this.props.auth ? null: (
+        console.log(this.props.auth)
+        const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ?null: (
             <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">
