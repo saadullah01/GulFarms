@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../../actions/authActions";
 import classnames from "classnames";
-import { 
-    Button, 
-    Form, 
-    FormGroup, 
+import {
+    Button,
+    Form,
+    FormGroup,
     Input
 } from 'reactstrap';
 
-class Register extends Component{
+class Register extends Component {
     // Can Add Constructor
     state = {
         firstName: "",
@@ -19,7 +19,7 @@ class Register extends Component{
         email: "",
         password: "",
         rePassword: "",
-        errors: {}        
+        errors: {}
     }
 
     onChange = e => {
@@ -27,11 +27,11 @@ class Register extends Component{
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
+            this.setState({
+                errors: nextProps.errors
+            });
         }
-      }
+    }
     onSubmit = e => {
         e.preventDefault();
         const newUser = {
@@ -42,8 +42,8 @@ class Register extends Component{
             rePassword: this.state.rePassword
         }
         console.log(newUser);
-        this.props.registerUser(newUser, this.props.history); 
-  
+        this.props.registerUser(newUser, this.props.history);
+
     }
 
     render() {
@@ -58,71 +58,91 @@ class Register extends Component{
                         <FormGroup>
                             <div className="row">
                                 <div className="col-md-6 col-xs-12">
-                                    <Input 
+                                    <Input
                                         className="input-field"
-                                        type="text" 
-                                        placeholder="First Name" 
-                                        onChange={this.onChange} 
-                                        value={this.state.firstName} 
-                                        error={errors.firstName} 
+                                        type="text"
+                                        placeholder="First Name"
+                                        onChange={this.onChange}
+                                        value={this.state.firstName}
+                                        error={errors.firstName}
                                         id="firstName"
+                                        className={classnames("", {
+                                            invalid: errors.name
+                                        })}
                                     />
                                 </div>
                                 <div className="col-md-6 col-xs-12">
-                                    <Input 
+                                    <Input
                                         className="input-field"
-                                        type="text"  
-                                        placeholder="Last Name" 
-                                        onChange={this.onChange} 
-                                        value={this.state.lastName} 
-                                        error={errors.lastName} 
+                                        type="text"
+                                        placeholder="Last Name"
+                                        onChange={this.onChange}
+                                        value={this.state.lastName}
+                                        error={errors.lastName}
                                         id="lastName"
+                                        className={classnames("", {
+                                            invalid: errors.name
+                                        })}
                                     />
                                 </div>
+                                <span className="red-text">{errors.name}</span>
                             </div>
                         </FormGroup>
                         <FormGroup>
-                            <Input 
+                            <Input
                                 className="input-field"
-                                type="email" 
+                                type="email"
                                 placeholder="Enter your email address"
                                 onChange={this.onChange}
-                                value={this.state.email} 
-                                error={errors.email} 
+                                value={this.state.email}
+                                error={errors.email}
                                 id="email"
+                                className={classnames("", {
+                                    invalid: errors.email
+                                })}
                             />
+                            <span className="red-text">{errors.email}</span>
                         </FormGroup>
                         <FormGroup className="password-container">
-                            <Input 
+                            <Input
                                 className="input-field"
-                                type="password" 
-                                placeholder="Enter your password" 
+                                type="password"
+                                placeholder="Enter your password"
                                 onChange={this.onChange}
-                                value={this.state.password} 
-                                error={errors.password} 
+                                value={this.state.password}
+                                error={errors.password}
                                 id="password"
+                                className={classnames("", {
+                                    invalid: errors.password
+                                })}
+
                             />
+                            <span className="red-text">{errors.password}</span>
                             {/* <div className="pop-up">
                                 Password must be greater than 8 characters long and
                                 must contain atleast 1 digit and 1 special character
                             </div> */}
                         </FormGroup>
                         <FormGroup>
-                            <Input 
+                            <Input
                                 className="input-field"
-                                type="password" 
-                                placeholder="Re-enter your password" 
+                                type="password"
+                                placeholder="Re-enter your password"
                                 onChange={this.onChange}
-                                value={this.state.rePassword} 
-                                error={errors.rePassword} 
+                                value={this.state.rePassword}
+                                error={errors.rePassword}
                                 id="rePassword"
+                                className={classnames("", {
+                                    invalid: errors.repassword
+                                })}
                             />
+                            <span className="red-text">{errors.password}</span>
                         </FormGroup>
                         <div className="btn-handler">
                             <Button className="signup-btn">Sign Up</Button>
                         </div>
                     </Form>
-                </div>    
+                </div>
             </div>
         )
     }
@@ -130,8 +150,8 @@ class Register extends Component{
 const mapStateToProps = state => ({
     auth: state.authReducer.islogged,
     errors: state.errorReducer.errors
-  });
+});
 export default connect(
     mapStateToProps,
     { registerUser }
-  )(withRouter(Register));
+)(withRouter(Register));
