@@ -9,3 +9,5 @@
 -Changed body-parser.json() to express.json() in server's app.js
 -Changed form button type in client/..../Register.js to submit
 -Fixed route for /api/users
+
+redux working registration half done jojo needs to do stuff
