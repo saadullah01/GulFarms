@@ -6,6 +6,8 @@ import {
     Input
 } from 'reactstrap';
 
+const server = "http://localhost:5000";
+
 class Register extends Component{
     // Can Add Constructor
     state = {

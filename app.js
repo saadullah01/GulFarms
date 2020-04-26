@@ -1,16 +1,17 @@
 const express = require('express');
-// const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+// const bodyParser = require('body-parser');
 // const passport = require("passport");
 const path =require('path');
 // Routes
-const users = require('./routers/api/users');
+const users = require('./routes/api/users');
 
 // Initialize express
 const app = express();
 
-// Bodyparser Middleware
-app.use(bodyParser.json());
+//Middleware
+app.use(express.json()); //to support JSON encoded bodies
+app.use(express.urlencoded()); //to support url encoded bodies
 
 // ///////// DB Setup //////////s/
 // // To Avoid Deprecation Warnings
@@ -26,13 +27,13 @@ app.use(bodyParser.json());
 //     .then(() => console.log('MongoDB Connected...'))
 //     .catch(err => console.log(err));
 
-// // Passport middleware
+// Passport middleware
 // app.use(passport.initialize());
-// // Passport config
+// Passport config
 // require("./config/passport")(passport);
 
 // Use Routes
-// app.use('./api/users', users);
+app.use('/api/users', users);
 
 //in production
 
