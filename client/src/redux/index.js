@@ -1,15 +1,17 @@
 import redux, { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import tempReducer from "./tempReducer"
 import farmReducer from "./farmReducer"
-import userReducer from "./userReducer"
+import authReducer from "./authReducer"
 import thunk from "redux-thunk"
+import errorReducer from "./errorReducer"
 
 
 
 const rootReducer = combineReducers({
     tempReducer,
     farmReducer,
-    userReducer
+    authReducer,
+    errorReducer,
 })
 
 const composeEnhancers =
@@ -24,6 +26,7 @@ const enhancer = composeEnhancers(
 )
 const store = createStore(
     rootReducer,
+    {},
     enhancer
 )
 

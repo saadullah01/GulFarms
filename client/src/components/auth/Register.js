@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
+import classnames from "classnames";
 import { 
     Button, 
     Form, 
     FormGroup, 
     Input
 } from 'reactstrap';
-
-const server = "http://localhost:5000";
 
 class Register extends Component{
     // Can Add Constructor
@@ -22,7 +25,13 @@ class Register extends Component{
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+      }
     onSubmit = e => {
         e.preventDefault();
         const newUser = {
@@ -33,6 +42,8 @@ class Register extends Component{
             rePassword: this.state.rePassword
         }
         console.log(newUser);
+        this.props.registerUser(newUser, this.props.history); 
+  
     }
 
     render() {
@@ -116,5 +127,11 @@ class Register extends Component{
         )
     }
 }
-
-export default Register;
+const mapStateToProps = state => ({
+    auth: state.authReducer.islogged,
+    errors: state.errorReducer.errors
+  });
+export default connect(
+    mapStateToProps,
+    { registerUser }
+  )(withRouter(Register));

@@ -51,6 +51,7 @@ router.post("/register", (req, res) => {
     
     // Check validation
     if (!isValid) {
+        console.log("error is ",errors)
         return res.status(400).json(errors);
     }
 
@@ -73,7 +74,7 @@ router.post("/register", (req, res) => {
                     newUser.password = hash;
                     newUser
                     .save()
-                    .then(user => res.json(user))
+                    .then(user => res.status(200).json(user))
                     .catch(err => console.log(err));
                 });
             });
