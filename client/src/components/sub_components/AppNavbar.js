@@ -22,7 +22,7 @@ import { faCog, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
 
 function NavLinks (props) {
     const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-    if (link !== "home" && link !== "farms" && link !== "alerts" && link !== "finances") {
+    if (link && link !== "home" && link !== "farms" && link !== "alerts" && link !== "finances") {
         return (
             <Nav className="mr-auto" navbar>
                 <NavItem className="nav-link-container">
