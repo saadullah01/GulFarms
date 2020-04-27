@@ -17,6 +17,7 @@ import {
     Input,
     Button
 } from 'reactstrap';
+import logo from '../../images/logo.png';
 
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
