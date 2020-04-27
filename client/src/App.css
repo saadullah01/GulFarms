@@ -33,7 +33,6 @@
   margin: 0 auto;
   border-top-width: thick;
 }
-
 .plus-btn {
   margin: 0 auto;
   width: 10%;
@@ -235,6 +234,15 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   transform: translate(-50%, -50%);
   font-size: 50px;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Errors */
+.errors {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  background-color: lightcoral;
+  color: white;
 }
 
 /* Farm */
