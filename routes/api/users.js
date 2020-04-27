@@ -141,7 +141,7 @@ router.post("/login", (req, res) => {
 });
 
 // @route POST api/users/forgot-password
-// @desc user can get request a reset-password link
+// @desc user can request a reset-password link
 // @access Public
 router.post("/forgot-password", (req, res) => {
     const {errors, isValid} = validateFieldInput.email(req.body);
