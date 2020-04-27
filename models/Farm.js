@@ -7,23 +7,23 @@ const FarmSchema = new Schema({
     name: {type: String, required: true},
     location: {type: String, required: true},
     description: {type: String},
-    animalPresets: [AnimalPreset],
-    alerts: {} //========================================= ADD ALERTS
+    animalPresets: [{type: Schema.Types.ObjectId, ref: 'animalPreset'}],
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}]
 })
 
 const AnimalSchema = new Schema({
+    preset: [{type: Schema.Types.ObjectId, ref: 'animalPreset', required: true}],
     alive: {type: Boolean},
-    preset: [AnimalPreset],
-    selfAttributes: [Attribute],
-    selfProducts: [Product],
+    selfAttributes: [{type: Schema.Types.ObjectId, ref: 'attribute'}],
+    selfProducts: [{type: Schema.Types.ObjectId, ref: 'product'}],
     comment: {type: String},
     productsRecord: [{type: String}]
 });
 
 const BarnSchema = new Schema({
     id: {type: String, required: true},
-    animals: [{type: Schema.Types.ObjectId, ref: 'AnimalSchema'}],
-    alerts: {} //========================================= ADD ALERTS
+    animals: [{type: Schema.Types.ObjectId, ref: 'animal'}],
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}]
 });
 
 
@@ -34,5 +34,6 @@ const Barn = mongoose.model('barn', BarnSchema);
 module.exports = {
     Farm: Farm,
     Animal: Animal,
-    Barn: Barn
+    Barn: Barn,
+    BaseModels: baseModels
 }
