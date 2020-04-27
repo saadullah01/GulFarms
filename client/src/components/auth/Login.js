@@ -10,6 +10,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
+import logo from '../../images/logo.png';
 
 class Login extends Component {
     state = {
@@ -48,18 +49,17 @@ class Login extends Component {
         return (
             <div className="home-page">
                 <div className="container main">
-                    <p className="brand-name">GUL FARMS</p>
+                    <p className="brand-name"><img src={ logo } alt={ "Logo" } /></p>
                     <Form className="reg-form" noValidate onSubmit={this.onSubmit}>
                         <FormGroup>
                             <Input
-                                className="input-field"
                                 type="email"
                                 placeholder="Enter your email address"
                                 onChange={this.onChange}
                                 value={this.state.email}
                                 error={errors.email}
                                 id="email"
-                                className={classnames("", {
+                                className={classnames("input-field", {
                                     invalid: errors.email || errors.emailnotfound
                                 })}
                             />
@@ -70,14 +70,13 @@ class Login extends Component {
                         </span>
                         <FormGroup className="password-container">
                             <Input
-                                className="input-field"
                                 type="password"
                                 placeholder="Enter your password"
                                 onChange={this.onChange}
                                 value={this.state.password}
                                 error={errors.password}
                                 id="password"
-                                className={classnames("", {
+                                className={classnames("input-field", {
                                     invalid: errors.password || errors.passwordincorrect
                                 })}
                             />
