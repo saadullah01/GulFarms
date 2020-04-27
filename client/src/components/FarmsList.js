@@ -19,11 +19,11 @@ class FarmsList extends Component{
             form: ''
         }
     }
-    addNew = () => {
-        this.setState(this.state.form = <CreateFarm/>)
+    goTo() {
+        window.location = "/home/farms/create-farm";
     }
     render() {
-        const url = "/farms/";
+        const url = "/home/farms/";
         const farms = this.state.farms.map((farm) => 
             <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
         );
@@ -31,10 +31,9 @@ class FarmsList extends Component{
             <div className="next-layer mt-4">
                 <div className="main-container row">
                     { farms }
-                    <div onClick={ this.addNew } className="small">
+                    <div onClick={ this.goTo } className="tab-small">
                         <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
                     </div>
-                    { this.state.form }
                 </div>
             </div>
         );

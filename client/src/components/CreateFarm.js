@@ -13,6 +13,7 @@ import {
     Row,
     Col
 } from 'reactstrap';
+import AddAlert from './AddAlerts';
 
 class CreateFarm extends Component{
     
@@ -25,19 +26,17 @@ class CreateFarm extends Component{
         alerts: [],
         errors : {}
     }
-    
-    
-
     toggle= () => {
         this.setState(prevState => ({
             modal: !prevState.modal
         }))
+        if (this.state.modal) {
+            window.location = "/home/farms";
+        }
     }
-
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-
     onSubmit = e => {
         e.preventDefault();
         const newUser = {
@@ -48,148 +47,103 @@ class CreateFarm extends Component{
         }
         console.log(newUser);
     }
-
     render() {
-        var modal = false
         const { errors } = this.state;
         return (
-                <Modal size ="lg" isOpen= {this.state.modal}  className = "modal-dialog" align="centre" toggle= {this.toggle} >
+            <Modal size ="lg" isOpen= {this.state.modal}  className = "modal-dialog" align="centre" toggle= {this.toggle} >
                 <center>
-                <ModalHeader toggle = {this.toggle} >
-                   
-                    <Row>
-                    
-                    <Col/>
-                    <Col xs="13">
-                    <h3 className="h3" >
-                        Create New Farm
-                    </h3>
-                    </Col>
-                    
-                    
-                    </Row>
-                    
-                </ModalHeader></center>
+                    <ModalHeader toggle = {this.toggle} >    
+                        <Row>
+                            <Col/>
+                            <Col xs="13">
+                                <h3 className="h3" >
+                                    Create New Farm
+                                </h3>
+                            </Col>
+                        </Row>
+                    </ModalHeader>
+                </center>
                 <ModalBody>
-                <Container>
-                <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
-                    
-                    <FormGroup>
-                        <Row>
-                            <Col width= "auto" lg="5">
-                                <Row>
-                                    <Col text-align="centre">   
-                                    <Label for="fname" className= "text-label">Name: </Label>
-                                    </Col>
-                                    <Col>
-                                    <Input 
-                                    className="input-field-add"
-                                    type="text" 
-                                    placeholder="Enter name of farm" 
-                                    onChange={this.onChange} 
-                                    value={this.state.farmName} 
-                                    error={errors.farmName} 
-                                    />
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Label for="Add_alert" className= "text-label">Add Alerts: </Label>
-                            </Col>
-                        </Row>
-                        
-                    </FormGroup>
-                    <FormGroup>
-                        <Row>
-                            <Col width= "auto" lg="5">
-                                <Row>
-                                    <Col>   
-                                    <Label for="flocation" className= "text-label">Location: </Label>
-                                    </Col>
-                                    <Col>
-                                    <Input 
-                                        className="input-field-add"
-                                        type="text" 
-                                        placeholder="Enter location of farm" 
-                                        onChange={this.onChange} 
-                                        value={this.state.Location} 
-                                        error={errors.Location} 
-                                        id="farmlocation"
-                                    />
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row>
-                                    <Col>
-                                    <Input 
-                                        className="input-field-add"
-                                        type="text" 
-                                        placeholder="Enter alert description" 
-                                        onChange={this.onChange} 
-                                        value= {this.alert_1} 
-                                        error={errors.a1} 
-                                        id="alertdescription"
-                                    />
-                                    </Col>
-                                    <Col>
-                                    <Input 
-                                        className="input-field-add"
-                                        type="text" 
-                                        placeholder="Enter alert duration" 
-                                        onChange={this.onChange} 
-                                        value={this.alert_2} 
-                                        error={errors.a2} 
-                                        id="alertduration"
-                                    />
-                                    </Col>
-                                    <Col>
-
-                                    </Col>
-                                </Row>
-                                
-                            </Col>
-                        </Row>
-                        </FormGroup>
-                        <FormGroup>
-                        <Row>
-                            <Col width= "auto" lg="5">
-                                <Row>
-                                    <Col text-align="centre">   
-                                    <Label for="Description" className= "text-label">Description: </Label>
-                                    </Col>
-                                    <Col>
-                                    <Input 
-                                            className="input-field-add"
-                                            type="text" 
-                                            placeholder="Enter description" 
-                                            onChange={this.onChange} 
-                                            value={this.state.Description} 
-                                            error={errors.Description} 
-                                            id="farmdescription"
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col>
-                            <Button className="plus-btn" id="new_alert_row">+</Button>
-                            </Col>
-                        </Row>
-                        
-                    </FormGroup>
-                <FormGroup>
-                    <Row>
-
-                    </Row>
-                </FormGroup>
-                </Form>
-                </Container>
+                    <Container>
+                        <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
+                                        <Row>
+                                            <Row>
+                                                <Col>   
+                                                    <Label for="fname" className= "text-label">Name: </Label>
+                                                </Col>
+                                                <Col md="6" xs="12">
+                                                    <Input 
+                                                    className="input-field-a"
+                                                    type="text" 
+                                                    id = "farmName"
+                                                    placeholder="Enter name of farm" 
+                                                    onChange={this.onChange} 
+                                                    value={this.state.farmName} 
+                                                    error={errors.farmName} 
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Row>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Row>
+                                            <Row>
+                                                <Col md="5" xs="12">   
+                                                    <Label for="flocation" className= "text-label">Location: </Label>
+                                                </Col>
+                                                <Col md="6" xs="12">
+                                                    <Input 
+                                                        className="input-field-a"
+                                                        type="text" 
+                                                        id="farmlocation"
+                                                        placeholder="Enter location" 
+                                                        onChange={this.onChange} 
+                                                        value={this.state.Location} 
+                                                        error={errors.Location} 
+                                                        id="farmlocation"
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Row>
+                                    </FormGroup>
+                                    <Row></Row>
+                                    <FormGroup>
+                                        <Row>
+                                            <Row>
+                                                <Col md="5" xs="12">   
+                                                <Label for="Description" className= "text-label">Description: </Label>
+                                                </Col>
+                                                <Col md="6" xs="12">
+                                                <Input 
+                                                    className="input-field-a"
+                                                    type="text"  
+                                                    placeholder="Enter description" 
+                                                    onChange={this.onChange} 
+                                                    value={this.state.Description} 
+                                                    error={errors.Description} 
+                                                    id="Description"
+                                                /> 
+                                                </Col>
+                                            </Row>
+                                        </Row>
+                                    </FormGroup>
+                                    <Row></Row>
+                                </Col>
+                                <Col>
+                                    <AddAlert Name="Alerts"></AddAlert>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Container>
                 </ModalBody>
                 <ModalFooter>
                     <Button className="login-btn" onClick= {this.toggle}>Save</Button>
                 </ModalFooter>
-                </Modal>
-        )
+            </Modal>
+        );
     }
 }
 export default CreateFarm;
