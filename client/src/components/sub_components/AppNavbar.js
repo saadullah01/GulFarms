@@ -60,7 +60,7 @@ class AppNavbar extends Component{
     render() {
         const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
         console.log(link)
-        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ?null: (
+        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ? null: (
             <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">
@@ -93,7 +93,6 @@ class AppNavbar extends Component{
         );
     }
 }
-
 // const mapStateToProps = state => ({
 //     auth: state.authReducer.islogged,
 // });

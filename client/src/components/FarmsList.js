@@ -23,7 +23,7 @@ class FarmsList extends Component{
         this.setState(this.state.form = <CreateFarm/>)
     }
     render() {
-        const url = "farms/";
+        const url = "/farms/";
         const farms = this.state.farms.map((farm) => 
             <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
         );

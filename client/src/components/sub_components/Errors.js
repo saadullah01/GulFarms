@@ -1,10 +1,4 @@
 import React, { Component } from "react";
-import {
-    Button,
-    Form,
-    FormGroup,
-    Input
-} from 'reactstrap';
 
 class Errors extends Component {
     constructor (props) {
