@@ -14,7 +14,8 @@ import {
     Form,
     FormGroup,
     Label,
-    Input
+    Input,
+    Button
 } from 'reactstrap';
 
 import { connect } from "react-redux";
@@ -69,17 +70,14 @@ class AppNavbar extends Component{
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <NavLinks link={window.location.href} />
                             <Nav className="ml-auto">
-                                {/* <NavItem> */}
-                                    <Form inline nav>
-                                        <FormGroup>
-                                            <Label className="search"><FontAwesomeIcon icon={ faSearch } /></Label>
-                                            <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
-                                        </FormGroup>
-                                    </Form>
-                                {/* </NavItem> */}
-                                {/* <NavItem> */}
+                                <Form inline nav>
+                                    <FormGroup>
+                                        <Button><FontAwesomeIcon icon={ faSearch } size="lg" /></Button>
+                                        <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
+                                    </FormGroup>
+                                </Form>
                                 <UncontrolledDropdown className="edit-info">
-                                    <DropdownToggle nav>
+                                    <DropdownToggle>
                                         <FontAwesomeIcon icon={ faCog } size="lg" />
                                     </DropdownToggle>
                                     <DropdownMenu>
@@ -88,7 +86,6 @@ class AppNavbar extends Component{
                                         <DropdownItem>Manage Users</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                {/* </NavItem> */}
                             </Nav>
                         </Collapse>
                     </div>

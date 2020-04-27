@@ -39,8 +39,7 @@ class App extends Component{
             <Route exact path="/home/alerts" />
             <Route exact path="/home/finances" />
           </Switch>
-          <Route path="/home/farms/create-farm" component={ CreateFarm } />
-          <Route path="/home/farms/:farmID" component={ Farm } />
+          <Route exact path="/home/farms/create-farm" component={ CreateFarm } />
         </div>  
       </Router>   
     );

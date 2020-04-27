@@ -190,6 +190,17 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   text-align: center;
 }
 
+.btn-secondary {
+  color: #fff;
+  background-color: #6c757d00;
+  border-color: #6c757d00;
+}
+
+.btn-secondary:hover {
+  background-color: #6c757d00;
+  border-color: #6c757d00;
+}
+
 .brand-name {
   text-align: center;
   font-size: 700%;
@@ -321,9 +332,26 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) { 
   /* Tab */
+  .navbar-brand {
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin-right: 0%;
+    margin-left: -65px !important;
+  }
+  .form-group {
+    width: 100%;
+    display: inherit;
+    margin-top: 1rem;
+  }
+  .nav-link {
+    margin-left: 3%;
+  }
+  .form-inline {
+    width: 100%;
+  }
   .tab-small {
     height: 100px;
-    width: 40%;
+    width: 45%;
   }
   .tab-large {
     width: 100%;
@@ -342,6 +370,9 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
     width: 100%;
   }
   .login-btn {
+    width: 100%;
+  }
+  .main-container {
     width: 100%;
   }
 }
