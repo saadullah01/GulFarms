@@ -16,4 +16,10 @@ const store = createStore(
     {},
     enhancer
 )
+
+store.subscribe(() => {
+    console.log(store.getState())
+})
+
+
 export default store

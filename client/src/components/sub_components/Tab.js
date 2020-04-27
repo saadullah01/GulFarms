@@ -20,7 +20,7 @@ class Tab extends Component {
     }
     render() {
         return (
-            <div id={ this.state.name } className={ this.state.type } onClick={this.goTo}>
+            <div id={ this.state.name } className={ "tab-".concat(this.state.type) } onClick={this.goTo}>
                 <p className="tab-text">{this.state.name}</p>
             </div>
         );
