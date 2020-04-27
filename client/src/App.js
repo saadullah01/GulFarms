@@ -23,8 +23,6 @@ import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
-
-
 class App extends Component{
   render() {
     return (
@@ -35,12 +33,13 @@ class App extends Component{
           <Route exact path="/login" component={ Login } />
           <Route exact path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
-          <Route path="/home" component={ Landing } />
+          <Route exact path="/(home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>
-            <Route exact path="/home/farms" component={ FarmsList } />
-            <Route exact path="/alerts" />
-            <Route exact path="/finances" />
+            <Route exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
+            <Route exact path="/home/alerts" />
+            <Route exact path="/home/finances" />
           </Switch>
+          <Route path="/home/farms/create-farm" component={ CreateFarm } />
           <Route path="/home/farms/:farmID" component={ Farm } />
         </div>  
       </Router>   

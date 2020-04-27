@@ -12,30 +12,18 @@ class Farm extends Component{
     constructor (props) {
         super(props);
         this.state = {
-            farms: [
-                {'id': 1, 'name': "Farm 1"},
-                {'id': 2, 'name': "Farm 2"}
-            ],
-            form: ''
+            id: null,
+            name: "",
+            location: ""
         }
     }
     addNew = () => {
         this.setState(this.state.form = <CreateFarm/>)
     }
     render() {
-        const url = "farms/";
-        const farms = this.state.farms.map((farm) => 
-            <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
-        );
         return (
-            <div className="next-layer mt-4">
-                <div className="main-container row">
-                    { farms }
-                    <div onClick={ this.addNew } className="small">
-                        <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
-                    </div>
-                    { this.state.form }
-                </div>
+            <div className="main-container">
+                Farm 1
             </div>
         );
     }

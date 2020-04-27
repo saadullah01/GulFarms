@@ -31,11 +31,11 @@ function NavLinks (props) {
                 </NavItem>
                 <span className="separator"></span>
                 <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/alerts">Alerts</NavLink>
+                    <NavLink className="nav-link" href="/home/alerts">Alerts</NavLink>
                 </NavItem>
                 <span className="separator"></span>
                 <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/finance">Finance</NavLink>
+                    <NavLink className="nav-link" href="/home/finance">Finance</NavLink>
                 </NavItem>
             </Nav>
         );
@@ -69,12 +69,15 @@ class AppNavbar extends Component{
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <NavLinks link={window.location.href} />
                             <Nav className="ml-auto">
-                                <Form inline nav>
-                                    <FormGroup>
-                                        <Label className="search"><FontAwesomeIcon icon={ faSearch } /></Label>
-                                        <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
-                                    </FormGroup>
-                                </Form>
+                                {/* <NavItem> */}
+                                    <Form inline nav>
+                                        <FormGroup>
+                                            <Label className="search"><FontAwesomeIcon icon={ faSearch } /></Label>
+                                            <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
+                                        </FormGroup>
+                                    </Form>
+                                {/* </NavItem> */}
+                                {/* <NavItem> */}
                                 <UncontrolledDropdown className="edit-info">
                                     <DropdownToggle nav>
                                         <FontAwesomeIcon icon={ faCog } size="lg" />
@@ -85,6 +88,7 @@ class AppNavbar extends Component{
                                         <DropdownItem>Manage Users</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
+                                {/* </NavItem> */}
                             </Nav>
                         </Collapse>
                     </div>
