@@ -219,13 +219,22 @@ router.post("/reset-password/:token", (req, res) => {
         email = token.email;
         token.remove();
 
+        // Hash password before saving in database
+        let newPass = ""
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                if (err) throw err;
+                newPass = hash;
+            });
+        });
+
         //Find user and update password
-        User.findOneAndUpdate({ email }, {password: req.body.password}, {new: true}, (err, user, _) => {
+        User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
             // Check if user exists
             if (!user) {
                 return res.status(404).json({ email: "Email " + email + " not found" });
             }
-            if(user.password != req.body.password)
+            if(user.password != newPass)
             {
                 return res.status(400).json({message: "Password reset failed", success: false});
             }
