@@ -71,12 +71,12 @@ class AppNavbar extends Component{
                             <Nav className="ml-auto">
                                 <Form inline nav>
                                     <FormGroup>
-                                        <Button><FontAwesomeIcon icon={ faSearch } size="lg" /></Button>
+                                        <Button className="nav-button"><FontAwesomeIcon icon={ faSearch } size="lg" /></Button>
                                         <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
                                     </FormGroup>
                                 </Form>
                                 <UncontrolledDropdown className="edit-info">
-                                    <DropdownToggle>
+                                    <DropdownToggle className="nav-button">
                                         <FontAwesomeIcon icon={ faCog } size="lg" />
                                     </DropdownToggle>
                                     <DropdownMenu>
