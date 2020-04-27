@@ -179,10 +179,10 @@ router.post("/reset-password", (req, res) => {
     // Find user by email
     const email = "jojo@jojo.com" //get email by matching reset-password links
 
-    User.findOneAndUpdate({ email: email }, {password: req.body.password}, {new: true}, user => {
+    User.findOneAndUpdate({ email }, {password: req.body.password}, {new: true}, (err, user, _) => {
         // Check if user exists
         if (!user) {
-            return res.status(404).json({ email: "Email not found" });
+            return res.status(404).json({ email: "Email " + email + " not found" });
         }
         if(user.password != req.body.password)
         {

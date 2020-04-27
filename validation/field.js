@@ -38,6 +38,11 @@ const validatePasswordInput = (data) => {
     if (!Validator.equals(data.password, data.rePassword)) {
         errors.rePassword = "Passwords must match";
     }
+
+    return {
+        errors,
+        isValid: isEmpty(errors)
+    };
 }
 
 module.exports = {
