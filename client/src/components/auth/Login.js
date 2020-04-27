@@ -26,7 +26,12 @@ class Login extends Component {
             this.props.history.push("/home");
         }
     }
-   
+    // componentWillReceiveProps(nextProps) {
+
+    //     if (nextProps.loggedIn) {
+    //         this.props.history.push("/home");
+    //     }
+    // }
     onSubmit = e => {
         e.preventDefault();
         const userData = {
