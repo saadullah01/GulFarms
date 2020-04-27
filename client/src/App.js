@@ -28,7 +28,7 @@ class App extends Component{
     return (
       <Router>
         <div className="App">
-          <AppNavbar />
+          <Route path="/" component={ AppNavbar } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route exact path="/reset-password" component={ ResetPassword } />
