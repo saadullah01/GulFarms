@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { 
-    Button, 
-    Form, 
-    FormGroup, 
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import axios from "axios"
+import {
+    Button,
+    Form,
+    FormGroup,
     Input
 } from 'reactstrap';
-import axios from "axios"
 import logo from '../../images/logo.png';
 
 class ResetPassword extends Component {
@@ -14,7 +16,12 @@ class ResetPassword extends Component {
         rePassword: "",
         errors: {}        
     }
-
+    componentDidMount=()=>{
+        if(this.props.auth)
+        {
+            this.props.history.push("/home");
+        }
+    }
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
@@ -87,5 +94,10 @@ class ResetPassword extends Component {
         )
     }
 }
-
-export default ResetPassword;
+const mapStateToProps = state => ({
+    auth: state.authReducer.islogged
+});
+export default connect(
+    mapStateToProps,
+    {  }
+)(withRouter(ResetPassword));

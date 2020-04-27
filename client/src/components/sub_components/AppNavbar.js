@@ -17,7 +17,8 @@ import {
     Input,
     Button
 } from 'reactstrap';
-import logo from '../../images/logo.png';
+
+import { logoutUser } from "../../actions/authActions";
 
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -84,6 +85,8 @@ class AppNavbar extends Component{
                                         <DropdownItem>Change Password</DropdownItem>
                                         <DropdownItem divider />
                                         <DropdownItem>Manage Users</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem onClick={this.props.logoutUser}>Log Out</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </Nav>
@@ -94,11 +97,4 @@ class AppNavbar extends Component{
         );
     }
 }
-// const mapStateToProps = state => ({
-//     auth: state.authReducer.islogged,
-// });
-// export default connect(
-//     mapStateToProps,
-//     { }
-// )(AppNavbar);
-export default AppNavbar;
+export default connect(null,{ logoutUser })(AppNavbar);

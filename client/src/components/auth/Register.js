@@ -33,6 +33,12 @@ class Register extends Component {
             });
         }
     }
+    componentDidMount=()=>{
+        if(this.props.auth)
+        {
+            this.props.history.push("/home");
+        }
+    }
     onSubmit = e => {
         e.preventDefault();
         const newUser = {

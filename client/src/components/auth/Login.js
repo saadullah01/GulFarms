@@ -22,17 +22,17 @@ class Login extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    componentDidUpdate() {
+    componentDidUpdate=()=> {
         if (this.props.loggedIn) {
             this.props.history.push("/home");
         }
     }
-    // componentWillReceiveProps(nextProps) {
-
-    //     if (nextProps.loggedIn) {
-    //         this.props.history.push("/home");
-    //     }
-    // }
+    componentDidMount=()=>{
+        if(this.props.loggedIn)
+        {
+            this.props.history.push("/home");
+        }
+    }
     onSubmit = e => {
         e.preventDefault();
         const userData = {

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 import axios from "axios"
 import {
     Button,
@@ -18,7 +20,12 @@ class ForgotPassword extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-
+    componentDidMount=()=>{
+        if(this.props.auth)
+        {
+            this.props.history.push("/home");
+        }
+    }
     onSubmit = e => {
         e.preventDefault();
         const userData = {
@@ -73,5 +80,10 @@ class ForgotPassword extends Component {
         )
     }
 }
-
-export default ForgotPassword;
+const mapStateToProps = state => ({
+    auth: state.authReducer.islogged
+});
+export default connect(
+    mapStateToProps,
+    {  }
+)(withRouter(ForgotPassword));
