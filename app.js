@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // const bodyParser = require('body-parser');
 // const passport = require("passport");
 const path =require('path');
+
 // Routes
 const users = require('./routes/api/users');
 
@@ -11,25 +12,25 @@ const app = express();
 
 //Middleware
 app.use(express.json()); //to support JSON encoded bodies
-app.use(express.urlencoded()); //to support url encoded bodies
+// app.use(express.urlencoded()); //to support url encoded bodies
 
-// ///////// DB Setup //////////s/
-// // To Avoid Deprecation Warnings
-// mongoose.set('useNewUrlParser', true);
-// mongoose.set('useFindAndModify', false);
-// mongoose.set('useCreateIndex', true);
-// mongoose.set('useUnifiedTopology', true);
-// // DB Config
-// const db = require('./config/keys').mongoURI;
-// // Connect to Mongo
-// mongoose
-//     .connect(db)
-//     .then(() => console.log('MongoDB Connected...'))
-//     .catch(err => console.log(err));
+//======== DB Setup =======
+// To Avoid Deprecation Warnings
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+// DB Config
+const db = require('./config/keys').mongoURI;
+// Connect to Mongo
+mongoose
+    .connect(db)
+    .then(() => console.log('MongoDB Connected...'))
+    .catch(err => console.log("Error connecting to database:", err));
 
-// Passport middleware
+// // Passport middleware
 // app.use(passport.initialize());
-// Passport config
+// // Passport config
 // require("./config/passport")(passport);
 
 // Use Routes

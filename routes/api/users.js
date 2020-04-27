@@ -61,8 +61,8 @@ router.post("/register", (req, res) => {
             return res.status(400).json({ email: "Email already exists" });
         } else {
             const newUser = new User({
-                fname: req.body.fname,
-                lname: req.body.lname,
+                fname: req.body.firstName,
+                lname: req.body.lastName,
                 email: req.body.email,
                 password: req.body.password
             });
@@ -88,7 +88,8 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
     // Form validation
     const { errors, isValid } = validateLoginInput(req.body);
-
+    console.log("New login req for email:", req.body.email);
+    
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
