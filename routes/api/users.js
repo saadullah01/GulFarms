@@ -168,25 +168,29 @@ router.post("/forgot-password", (req, res) => {
             }
             token.generateResetToken();
             token.save().then(token => {
-                const apiKey = ResetToken.findOne({property: {$ne: null}}).then( key => key.sendGridAPI) //Temporary until development completes
-                sgMail.setApiKey(apiKey);
-                // send email
-                let link = "http://" + req.headers.host + "/api/users/reset-password/" + token.resetPasswordToken;
-                const mailOptions = {
-                    to: token.email,
-                    from: keys.sendgridEMAIL,
-                    subject: "Reset Password Request",
-                    text: `Assalam O Alaikum ${user.firstName} \n 
-                    Please click on the following link ${link} to reset your password. \n\n 
-                    If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-                };
-
-                sgMail.send(mailOptions, (error, result) => {
-                    if (error) return res.status(400).json({error, message: error.message});
-
-                    return res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.', success: true});
+                //Temporary until development completes
+                ResetToken.findOne({email: "API"}).then( key => {
+                    const apiKey = key.resetPasswordToken; 
+                    
+                    sgMail.setApiKey(apiKey);
+                    // send email
+                    let link = "http://" + req.headers.host + "/api/users/reset-password/" + token.resetPasswordToken;
+                    const mailOptions = {
+                        to: token.email,
+                        from: keys.sendgridEMAIL,
+                        subject: "Reset Password Request",
+                        text: `Assalam O Alaikum ${user.firstName} \n 
+                        Please click on the following link ${link} to reset your password. \n\n 
+                        If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+                    };
+                    
+                    sgMail.send(mailOptions, (error, result) => {
+                        if (error) return res.status(400).json({error, message: error.message});
+                        
+                        return res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.', success: true});
+                    });
+                    
                 });
-
             }).catch(err => res.status(400).json({err, message: 'Failed to email reset token.', success: false}));
         
         });//.catch(err => res.status(400).json({error: err, message: 'Failed to send reset token.', success: false})); 
