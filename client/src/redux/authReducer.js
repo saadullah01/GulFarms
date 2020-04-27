@@ -19,23 +19,27 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_CURRENT_USER:
+            console.log("1",state)
             return {
                 ...state,
                 islogged: !isEmpty(action.payload),
                 user: action.payload
             };
         case USER_LOADING:
+            console.log("2",state)
             return {
                 ...state,
                 loading: true
             };
         case SET_LOGGED:
+            console.log("3",state)
             return {
                 ...state,
                 islogged: action.payload
             };
         default:
-            return state;
+            console.log("4",state)
+            return {...state};
     }
 }
 
