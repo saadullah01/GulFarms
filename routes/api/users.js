@@ -7,6 +7,7 @@ const keys = require("../../config/keys");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
+const validateEmailInput = require("../../validation/email");
 
 // User Model
 const User = require('../../models/User');
@@ -102,7 +103,7 @@ router.post("/login", (req, res) => {
     User.findOne({ email }).then(user => {
         // Check if user exists
         if (!user) {
-            return res.status(404).json({ emailnotfound: "Email not found" });
+            return res.status(404).json({ email: "Email not found" });
         }
         // Check password
         bcrypt.compare(password, user.password).then(isMatch => {
@@ -130,10 +131,33 @@ router.post("/login", (req, res) => {
             } else {
                 return res
                     .status(400)
-                    .json({ passwordincorrect: "Password incorrect" });
+                    .json({ password: "Password incorrect" });
             }
         });
     });
 });
+
+router.post("/reset-password", (req, res) => {
+    const {errors, isValid} = validateEmailInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    // Find user by email
+    User.findOne({ email }).then(user => {
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ email: "Email not found" });
+        }
+        
+        //Send a password-reset link to user's email address
+        //
+        //
+        
+        return res.status(200).json({success: true});
+    });
+})
 
 module.exports = router;
