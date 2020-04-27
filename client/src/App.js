@@ -15,10 +15,8 @@ import Login from './components/auth/Login';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 import FarmsList from './components/FarmsList';
-import Farm from "./components/Farm"
 import Farm from "./components/Farm";
 import Landing from './components/Landing';
-import Farm from './components/Farm';
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
