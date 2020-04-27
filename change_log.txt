@@ -22,3 +22,4 @@
 -Added field validations
 -Added forgot-password route
 -Added reset-password route
+-Added email functionality to password recovery
