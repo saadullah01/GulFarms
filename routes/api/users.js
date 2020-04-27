@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(keys.sendgridAPI);
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -169,6 +168,8 @@ router.post("/forgot-password", (req, res) => {
             }
             token.generateResetToken();
             token.save().then(token => {
+                const apiKey = ResetToken.findOne({property: {$ne: null}}).then( key => key.sendGridAPI) //Temporary until development completes
+                sgMail.setApiKey(apiKey);
                 // send email
                 let link = "http://" + req.headers.host + "/api/users/reset-password/" + token.resetPasswordToken;
                 const mailOptions = {
