@@ -1,0 +1,25 @@
+#==================== CHANGE LOG ================================================
+#   This log contains description of each commit.
+#
+#   Please add an entry in the form of <log#> <username> followed by description
+#   of changes you've made. End your log with an empty line.
+#================================================================================
+1.0  m-jojo-s
+-Created change_log.txt
+-Changed body-parser.json() to express.json() in server's app.js
+-Changed form button type in client/..../Register.js to submit
+-Fixed route for /api/users
+
+1.1 arham 
+-redux working registration half done jojo needs to do stuff
+
+1.2 m-jojo-s
+-MongoDB connected.
+-Fixed registeration
+
+1.3 m-jojo-s
+-Corrected password min length according to SRS.
+-Added field validations
+-Added forgot-password route
+-Added reset-password route
+-Added email functionality to password recovery

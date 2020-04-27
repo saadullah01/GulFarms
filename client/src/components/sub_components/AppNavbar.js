@@ -17,16 +17,17 @@ import {
     Input
 } from 'reactstrap';
 
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
 
 function NavLinks (props) {
     const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-    if (link && link !== "home" && link !== "farms" && link !== "alerts" && link !== "finances") {
+    if (link && link !== "home" && link !== "farms" && link !== "alerts" && link !== "finance") {
         return (
             <Nav className="mr-auto" navbar>
                 <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/farms">Farms</NavLink>
+                    <NavLink className="nav-link" href="/home/farms">Farms</NavLink>
                 </NavItem>
                 <span className="separator"></span>
                 <NavItem className="nav-link-container">
@@ -57,8 +58,10 @@ class AppNavbar extends Component{
         });
     }
     render() {
-        return (
-            <div>
+        const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+        console.log(link)
+        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ?null: (
+            <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">
                         <NavbarBrand className="brand" href="/home">GUL FARMS</NavbarBrand>
@@ -91,4 +94,11 @@ class AppNavbar extends Component{
     }
 }
 
+// const mapStateToProps = state => ({
+//     auth: state.authReducer.islogged,
+// });
+// export default connect(
+//     mapStateToProps,
+//     { }
+// )(AppNavbar);
 export default AppNavbar;
