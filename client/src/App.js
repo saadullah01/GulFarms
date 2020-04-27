@@ -46,12 +46,12 @@ const  App =()=>{
     return (
       <Router>
         <div className="App">
-          <Route path="/" component={ AppNavbar } />
+          <PrivateRoute path="/" component={ AppNavbar } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
-          <PrivateRoute exact path="/(home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
+          <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
             <PrivateRoute exact path="/home/alerts" />
