@@ -58,9 +58,8 @@ class AppNavbar extends Component{
         });
     }
     render() {
-        const link = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-        console.log(link)
-        return link === "register" || link === "login" || link === "reset-password" || link === "forgot-password" ? null: (
+        const check = (word)=>(window.location.href.indexOf(word) > -1)
+        return  check("register") ||  check("login") || check("reset-password")||  check("forgot-password") ? null: (
             <div >
                 <Navbar className="navbar" expand="md">
                     <div className="main-container">

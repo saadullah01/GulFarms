@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from "axios"
-import {Redirect} from "react-router-dom"
 import {
     Button,
     Form,
@@ -27,7 +26,7 @@ class ForgotPassword extends Component {
         axios
             .post("/api/users/forgot-password",userData)
             .then(res => 
-                window.location="/login"
+                window.location.href="/login"
             )
             .catch(err => {
 
