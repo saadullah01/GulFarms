@@ -33,7 +33,7 @@ class App extends Component{
           <Route exact path="/login" component={ Login } />
           <Route exact path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
-          <Route exact path="/home" component={ Landing } />
+          <Route path="/home" component={ Landing } />
           <Switch>
             <Route exact path="/home/farms" component={ FarmsList } />
             <Route exact path="/alerts" />
