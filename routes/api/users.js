@@ -7,7 +7,7 @@ const keys = require("../../config/keys");
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
-const validateEmailInput = require("../../validation/email");
+const validateFieldInput = require("../../validation/field");
 
 // User Model
 const User = require('../../models/User');
@@ -137,13 +137,18 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.post("/reset-password", (req, res) => {
-    const {errors, isValid} = validateEmailInput(req.body);
+// @route POST api/users/forgot-password
+// @desc user can get request a reset-password link
+// @access Public
+router.post("/forgot-password", (req, res) => {
+    const {errors, isValid} = validateFieldInput.email(req.body);
 
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
+    
+    const email = req.body.email;
 
     // Find user by email
     User.findOne({ email }).then(user => {
@@ -152,12 +157,40 @@ router.post("/reset-password", (req, res) => {
             return res.status(404).json({ email: "Email not found" });
         }
         
-        //Send a password-reset link to user's email address
+        //Send a reset-password link to user's email address
         //
         //
         
         return res.status(200).json({success: true});
     });
+})
+
+// @route POST api/users/reset-password
+// @desc User can change password for an account
+// @access Public - reset link only
+router.post("/reset-password", (req, res) => {
+    const {errors, isValid} = validateFieldInput.password(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    // Find user by email
+    const email = "jojo@jojo.com" //get email by matching reset-password links
+
+    User.findOneAndUpdate({ email: email }, {password: req.body.password}, {new: true}, user => {
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ email: "Email not found" });
+        }
+        if(user.password != req.body.password)
+        {
+            return res.status(400).json({password: "Password reset failed"})
+        }
+        return res.status(200).json({success: true});
+    });
+
 })
 
 module.exports = router;

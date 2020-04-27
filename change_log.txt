@@ -19,5 +19,6 @@
 
 1.3 m-jojo-s
 -Corrected password min length according to SRS.
--Added email validation
+-Added field validations
+-Added forgot-password route
 -Added reset-password route
