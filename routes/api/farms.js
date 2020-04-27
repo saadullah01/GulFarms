@@ -4,7 +4,7 @@ const router = express.Router();
 // User Model
 const Farm = require('../../models/Farm')
 
-// @route POST api/users/register
+// @route POST api/farms/
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
