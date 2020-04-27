@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { 
-    Button, 
-    Form, 
-    FormGroup, 
+import axios from "axios"
+import {Redirect} from "react-router-dom"
+import {
+    Button,
+    Form,
+    FormGroup,
     Input
 } from 'reactstrap';
 
 class ForgotPassword extends Component {
     state = {
         email: "",
-        errors: {}        
+        errors: {}
     }
 
     onChange = e => {
@@ -22,6 +24,19 @@ class ForgotPassword extends Component {
             email: this.state.email
         }
         console.log(userData);
+        axios
+            .post("/api/users/forgot-password",userData)
+            .then(res => 
+                window.location="/login"
+            )
+            .catch(err => {
+
+                console.log(err.response)
+                this.setState({
+                    email: "",
+                    errors: err.response.data
+                })
+            })
     }
 
     render() {
@@ -36,21 +51,22 @@ class ForgotPassword extends Component {
                     <p className="text mb-3">and a password-reset link will be emailed to you.</p>
                     <Form className="reg-form" noValidate onSubmit={this.onSubmit}>
                         <FormGroup>
-                            <Input 
+                            <Input
                                 className="input-field"
-                                type="email" 
+                                type="email"
                                 placeholder="Enter your email address"
                                 onChange={this.onChange}
-                                value={this.state.email} 
-                                error={errors.email} 
+                                value={this.state.email}
+                                error={errors.email}
                                 id="email"
                             />
                         </FormGroup>
+                        <span>{errors.email}</span>
                         <div className="btn-handler">
                             <Button className="login-btn">Submit</Button>
                         </div>
                     </Form>
-                </div>    
+                </div>
             </div>
         )
     }
