@@ -174,7 +174,7 @@ router.post("/forgot-password", (req, res) => {
                     
                     sgMail.setApiKey(apiKey);
                     // send email
-                    let link = "http://" + req.headers.host + "/api/users/reset-password/" + token.resetPasswordToken;
+                    let link = "http://localhost:3000/reset-password/" + token.resetPasswordToken;
                     const mailOptions = {
                         to: token.email,
                         from: keys.sendgridEMAIL,
@@ -220,25 +220,24 @@ router.post("/reset-password/:token", (req, res) => {
         token.remove();
 
         // Hash password before saving in database
-        let newPass = ""
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(req.body.password, salt, (err, hash) => {
                 if (err) throw err;
-                newPass = hash;
+                const newPass = hash;
+                
+                //Find user and update password
+                User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
+                    // Check if user exists
+                    if (!user) {
+                        return res.status(404).json({ email: "Email " + email + " not found" });
+                    }
+                    if(user.password != newPass)
+                    {
+                        return res.status(400).json({message: "Password reset failed", success: false});
+                    }
+                    return res.status(200).json({message: "Password has been changed", success: true});
+                });
             });
-        });
-
-        //Find user and update password
-        User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
-            // Check if user exists
-            if (!user) {
-                return res.status(404).json({ email: "Email " + email + " not found" });
-            }
-            if(user.password != newPass)
-            {
-                return res.status(400).json({message: "Password reset failed", success: false});
-            }
-            return res.status(200).json({message: "Password has been changed", success: true});
         });
     }).catch(err => console.log(err));
     
