@@ -17,27 +17,14 @@ import ResetPassword from './components/auth/ResetPassword';
 import FarmsList from './components/FarmsList';
 import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
+import Farm from './components/Farm';
 
-// const NavDisplay= (props) => {
-//   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-//   return(( !(link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') &&  <AppNavbar />))
-// }
-// SAAD !!!! I thought this looked more pretty you can decide which ever you like ALSO IN BOTH CASES WARNINGS ATI DO
-// function NavDisplay (props) {
-//   const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-//   if (link === 'register' || link === 'login' || link === 'forgot-password' || link === 'reset-password') {
-//     return null;
-//   } else {
-//     return <AppNavbar />;
-//   }
-// }
-// just adding to see if git works
 class App extends Component{
   render() {
     return (
       <Router>
         <div className="App">
-          <Route path="/register" component={ Register } />
+          <Route exact path="/register" component={ Register } />
           <Route path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route path="/forgot-password" component={ ForgotPassword } />
@@ -48,6 +35,7 @@ class App extends Component{
             <Route path="/alerts" />
             <Route path="/finances" />
           </Switch>
+          <Route path="/home/farms/:farmID" component={ Farm } />
         </div>  
       </Router>   
     );

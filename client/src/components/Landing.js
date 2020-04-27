@@ -14,7 +14,7 @@ class Landing extends Component{
                 { this.props.children }
                 <Tab name="Farms" link="/home/farms" type="large" />
                 <Tab name="Alerts" link="alerts" type="large" />
-                <Tab name="Finance" link="finance" type="large" />
+                <Tab name="Finance" link="finances" type="large" />
             </div>
         );
     }
