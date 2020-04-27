@@ -31,7 +31,7 @@ class App extends Component{
           <Route path="/" component={ AppNavbar } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
-          <Route exact path="/reset-password" component={ ResetPassword } />
+          <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
           <Route exact path="/(home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>

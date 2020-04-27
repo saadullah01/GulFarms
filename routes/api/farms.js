@@ -1,50 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
-const sgMail = require("@sendgrid/mail");
-// Load input validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
-const validateFieldInput = require("../../validation/field");
 
 // User Model
-const User = require('../../models/User');
+const Farm = require('../../models/Farm')
 
-const ResetToken = require('../../models/ResetToken');
-
-// // @route   GET api/users
-// // @desc    Get All Users
-// // @access  Public
-// router.get('/', (req, res) => {w
-//     User.find({})
-//         .sort({timestamps: -1})
-//         .then(users => res.json(users))
-// });
-
-// // @route   POST api/users
-// // @desc    Create A User
-// // @access  Public
-// router.post('/', (req, res) => {
-//     const newUser = new User({
-//         name: req.body.name,
-//         email: req.body.email,
-//         password: req.body.password
-//     });
-//     newUser.save().then(user => res.json(user));
-// });
-
-// // @route   DELETE api/users/:id
-// // @desc    Delete A User
-// // @access  Public
-// router.delete('/:id', (req, res) => {
-//     User.findOne({"_id": req.params.id})
-//         .then(user => user.remove().then(() => res.json({success: true})))
-//         .catch(err => res.status(404).json({success: false}));
-// });
-
-// @route POST api/users/register
+// @route POST api/farms/
 // @desc Register user
 // @access Public
 router.post("/register", (req, res) => {
@@ -174,7 +134,7 @@ router.post("/forgot-password", (req, res) => {
                     
                     sgMail.setApiKey(apiKey);
                     // send email
-                    let link = "http://localhost:3000/reset-password/" + token.resetPasswordToken;
+                    let link = "http://" + req.headers.host + "/reset-password/" + token.resetPasswordToken;
                     const mailOptions = {
                         to: token.email,
                         from: keys.sendgridEMAIL,
@@ -220,24 +180,25 @@ router.post("/reset-password/:token", (req, res) => {
         token.remove();
 
         // Hash password before saving in database
+        let newPass = ""
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(req.body.password, salt, (err, hash) => {
                 if (err) throw err;
-                const newPass = hash;
-                
-                //Find user and update password
-                User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
-                    // Check if user exists
-                    if (!user) {
-                        return res.status(404).json({ email: "Email " + email + " not found" });
-                    }
-                    if(user.password != newPass)
-                    {
-                        return res.status(400).json({message: "Password reset failed", success: false});
-                    }
-                    return res.status(200).json({message: "Password has been changed", success: true});
-                });
+                newPass = hash;
             });
+        });
+
+        //Find user and update password
+        User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
+            // Check if user exists
+            if (!user) {
+                return res.status(404).json({ email: "Email " + email + " not found" });
+            }
+            if(user.password != newPass)
+            {
+                return res.status(400).json({message: "Password reset failed", success: false});
+            }
+            return res.status(200).json({message: "Password has been changed", success: true});
         });
     }).catch(err => console.log(err));
     
