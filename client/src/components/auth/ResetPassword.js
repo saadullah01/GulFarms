@@ -5,7 +5,7 @@ import {
     FormGroup, 
     Input
 } from 'reactstrap';
-
+import axios from "axios"
 class ResetPassword extends Component {
     state = {
         password: "",
@@ -23,7 +23,22 @@ class ResetPassword extends Component {
             password: this.state.password,
             rePassword: this.state.rePassword
         }
+        const token = window.location.href.substring( window.location.href.lastIndexOf('/') + 1)
         console.log(userData);
+        console.log("/api/users/reset-password/"+token)
+        axios
+            .post("/api/users/reset-password/"+token,userData)
+            .then(res => 
+                window.location.href="/login"
+            )
+            .catch(err => {
+
+                console.log(err.response)
+                this.setState({
+                    email: "",
+                    errors: err.response.data
+                })
+            })
     }
 
     render() {
