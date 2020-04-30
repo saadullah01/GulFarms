@@ -11,6 +11,7 @@ import './App.css';
 
 import AppNavbar from './components/sub_components/AppNavbar';
 import Register from './components/auth/Register';
+import AddUser from './components/auth/AddUser';
 import Login from './components/auth/Login';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
@@ -46,11 +47,12 @@ const  App =()=>{
     return (
       <Router>
         <div className="App">
-          <PrivateRoute path="/" component={ AppNavbar } />
+          <Route path="/" component={ AppNavbar } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
+          <PrivateRoute exact path="/add-user" component={ AddUser } />
           <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />

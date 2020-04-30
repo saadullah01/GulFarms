@@ -23,6 +23,7 @@ import { logoutUser } from "../../actions/authActions";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function NavLinks (props) {
     const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -84,7 +85,9 @@ class AppNavbar extends Component{
                                     <DropdownMenu>
                                         <DropdownItem>Change Password</DropdownItem>
                                         <DropdownItem divider />
-                                        <DropdownItem>Manage Users</DropdownItem>
+                                        <Link to="/add-user">
+                                            <DropdownItem>Add User</DropdownItem>
+                                        </Link>
                                         <DropdownItem divider />
                                         <DropdownItem onClick={this.props.logoutUser}>Log Out</DropdownItem>
                                     </DropdownMenu>

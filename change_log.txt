@@ -23,3 +23,12 @@
 -Added forgot-password route
 -Added reset-password route
 -Added email functionality to password recovery
+
+1.4 m-arham
+-made adduser front end react page 
+-added route for adduser in app.js
+-changed settings of navbar
+-edited navbar to have add user option removed manage users option added link to adduser page
+-backend set variable host line 11 so emailed links work for heroku and local
+-changed link line 177
+-added function add-user 
