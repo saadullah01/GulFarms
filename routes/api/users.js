@@ -11,8 +11,8 @@ const validateFieldInput = require("../../validation/field");
 
 // User Model
 const User = require('../../models/User');
-
 const ResetToken = require('../../models/ResetToken');
+const RegisterToken = require('../../models/RegisterToken');
 
 // // @route   GET api/users
 // // @desc    Get All Users
@@ -43,6 +43,65 @@ const ResetToken = require('../../models/ResetToken');
 //         .then(user => user.remove().then(() => res.json({success: true})))
 //         .catch(err => res.status(404).json({success: false}));
 // });
+
+// @route POST api/users/forgot-password
+// @desc user can request a reset-password link
+// @access Public
+router.post("/forgot-password", (req, res) => {
+    const {errors, isValid} = validateFieldInput.email(req.body);
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    
+    const email = req.body.email;
+
+    // Find user by email
+    User.findOne({ email }).then(user => {
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ email: "Email not found" });
+        }
+        
+        //Send a reset-password link to user's email address
+        ResetToken.findOne({ email: email }).then( token => {
+            if(!token) {
+                const newToken = new ResetToken({email: email});
+                newToken.save().catch( err => console.log("Error creating new reset token", err));
+                token = newToken;
+            }
+            token.generateResetToken();
+            token.save().then(token => {
+                //Temporary until development completes
+                ResetToken.findOne({email: "API"}).then( key => {
+                    const apiKey = key.resetPasswordToken; 
+                    
+                    sgMail.setApiKey(apiKey);
+                    // send email
+                    let link = "http://localhost:3000/reset-password/" + token.resetPasswordToken;
+                    const mailOptions = {
+                        to: token.email,
+                        from: keys.sendgridEMAIL,
+                        subject: "Reset Password Request",
+                        text: `Assalam O Alaikum ${user.firstName} \n 
+                        Please click on the following link ${link} to reset your password. \n\n 
+                        If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+                    };
+                    
+                    sgMail.send(mailOptions, (error, result) => {
+                        if (error) return res.status(400).json({error, message: error.message});
+                        
+                        return res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.', success: true});
+                    });
+                    
+                });
+            }).catch(err => res.status(400).json({err, message: 'Failed to email reset token.', success: false}));
+        
+        });//.catch(err => res.status(400).json({error: err, message: 'Failed to send reset token.', success: false})); 
+    });
+});
+
 
 // @route POST api/users/register
 // @desc Register user

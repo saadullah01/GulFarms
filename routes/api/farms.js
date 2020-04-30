@@ -4,10 +4,10 @@ const router = express.Router();
 // User Model
 const Farm = require('../../models/Farm')
 
-// @route POST api/farms/
+// @route POST api/farms/new
 // @desc Register user
 // @access Public
-router.post("/register", (req, res) => {
+router.post("/new", (req, res) => {
     // Form validation
     const { errors, isValid } = validateRegisterInput(req.body);
     console.log(`Recieved new register request for: ${req.body.email}`);

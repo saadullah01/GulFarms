@@ -6,6 +6,7 @@ const path =require('path');
 
 // Routes
 const users = require('./routes/api/users');
+const farms = require('./routes/api/farms');
 
 // Initialize express
 const app = express();
@@ -35,6 +36,7 @@ mongoose
 
 // Use Routes
 app.use('/api/users', users);
+app.use('/api/farms', farms);
 
 //in production
 

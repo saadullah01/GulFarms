@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const AlertSchema = new Schema({
     name: {type: String, required: true},
-    duration: {type: Integer, required: true},
+    duration: {type: Number, required: true},
     duration_type: {type: String, enum: ["year", "month", "week", "day"]}
 });
 
