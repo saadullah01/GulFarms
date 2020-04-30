@@ -17,13 +17,12 @@ class Farm extends Component{
             location: ""
         }
     }
-    addNew = () => {
-        this.setState(this.state.form = <CreateFarm/>)
-    }
     render() {
         return (
             <div className="main-container">
-                Farm 1
+                <p>Farm ID: { this.state.id }</p>
+                <p>Farm Name: { this.state.name }</p>
+                <p>Farm Location: { this.state.location }</p>
             </div>
         );
     }
