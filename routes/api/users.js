@@ -44,10 +44,10 @@ const RegisterToken = require('../../models/RegisterToken');
 //         .catch(err => res.status(404).json({success: false}));
 // });
 
-// @route POST api/users/forgot-password
-// @desc user can request a reset-password link
+// @route POST api/users/invite
+// @desc user can email a registeration invite
 // @access Public
-router.post("/forgot-password", (req, res) => {
+router.post("/invite", (req, res) => {
     const {errors, isValid} = validateFieldInput.email(req.body);
 
     // Check validation
@@ -57,91 +57,92 @@ router.post("/forgot-password", (req, res) => {
     
     const email = req.body.email;
 
-    // Find user by email
-    User.findOne({ email }).then(user => {
-        // Check if user exists
-        if (!user) {
-            return res.status(404).json({ email: "Email not found" });
+    //Send a register link to given email address
+    RegisterToken.findOne({email: email}).then( token => {
+        if(!token){
+            const newToken = new RegisterToken({email: email});
+            token = newToken;
         }
-        
-        //Send a reset-password link to user's email address
-        ResetToken.findOne({ email: email }).then( token => {
-            if(!token) {
-                const newToken = new ResetToken({email: email});
-                newToken.save().catch( err => console.log("Error creating new reset token", err));
-                token = newToken;
-            }
-            token.generateResetToken();
-            token.save().then(token => {
-                //Temporary until development completes
-                ResetToken.findOne({email: "API"}).then( key => {
-                    const apiKey = key.resetPasswordToken; 
+        token.generateRegisterToken();
+        token.save().then(token => {
+            //Temporary until development completes
+            ResetToken.findOne({email: "API"}).then( key => {
+                const apiKey = key.resetPasswordToken; 
+                
+                sgMail.setApiKey(apiKey);
+                // send email
+                let link = "http://localhost:3000/register/" + token.registerToken;
+                const mailOptions = {
+                    to: email,
+                    from: keys.sendgridEMAIL,
+                    subject: "Gulfarms Invitation",
+                    text: `Assalam O Alaikum,\n 
+                    You have been invited to register at Gulfarms. \n
+                    Please click on the following invitation link to start your registration. \n\n
+                    ${link}\n`,
+                };
+                
+                sgMail.send(mailOptions, (error, result) => {
+                    if (error) return res.status(400).json({error, message: error.message});
                     
-                    sgMail.setApiKey(apiKey);
-                    // send email
-                    let link = "http://localhost:3000/reset-password/" + token.resetPasswordToken;
-                    const mailOptions = {
-                        to: token.email,
-                        from: keys.sendgridEMAIL,
-                        subject: "Reset Password Request",
-                        text: `Assalam O Alaikum ${user.firstName} \n 
-                        Please click on the following link ${link} to reset your password. \n\n 
-                        If you did not request this, please ignore this email and your password will remain unchanged.\n`,
-                    };
-                    
-                    sgMail.send(mailOptions, (error, result) => {
-                        if (error) return res.status(400).json({error, message: error.message});
-                        
-                        return res.status(200).json({message: 'A reset email has been sent to ' + user.email + '.', success: true});
-                    });
-                    
+                    return res.status(200).json({message: 'An invite has been emailed to ' + email + '.', success: true});
                 });
-            }).catch(err => res.status(400).json({err, message: 'Failed to email reset token.', success: false}));
-        
-        });//.catch(err => res.status(400).json({error: err, message: 'Failed to send reset token.', success: false})); 
-    });
+                
+            });
+        }).catch(err => res.status(400).json({err, message: 'Failed to email registeration token.'}));
+    }).catch(err => res.status(400).json({err, message: 'Failed to lookup register token.', success: false}));
 });
 
 
-// @route POST api/users/register
+// @route POST api/users/register/id
 // @desc Register user
 // @access Public
-router.post("/register", (req, res) => {
-    // Form validation
-    const { errors, isValid } = validateRegisterInput(req.body);
-    console.log(`Recieved new register request for: ${req.body.email}`);
-    
-    // Check validation
-    if (!isValid) {
-        console.log("error is ",errors)
-        return res.status(400).json(errors);
-    }
-
-    // Error Checks and Register User
-    User.findOne({ email: req.body.email }).then(user => {
-        if (user) {
-            return res.status(400).json({ email: "Email already exists" });
-        } else {
-            const newUser = new User({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                password: req.body.password
-            });
-
-            // Hash password before saving in database
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    if (err) throw err;
-                    newUser.password = hash;
-                    newUser
-                    .save()
-                    .then(user => res.status(200).json(user))
-                    .catch(err => console.log(err));
-                });
-            });
+router.post("/register/:registerToken", (req, res) => {
+    RegisterToken.findOne({ registerToken: req.params.registerToken }).then( token =>{
+        if(!token)
+        {
+            return res.status(400).json({message: "Invalid registeration token."});
         }
-    });
+        
+        // Form validation
+        const { errors, isValid } = validateRegisterInput(req.body);
+        console.log(`Recieved new register request for: ${req.body.email}`);
+        
+        // Check validation
+        if (!isValid) {
+            console.log("error is ",errors)
+            return res.status(400).json(errors);
+        }
+            
+        // Error Checks and Register User
+        User.findOne({ email: req.body.email }).then(user => {
+            if (user) {
+                return res.status(400).json({ email: "Email already exists" });
+            } else {
+                const newUser = new User({
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                    password: req.body.password
+                });
+                
+                // Hash password before saving in database
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        newUser.password = hash;
+                        newUser
+                        .save()
+                        .then(user => {
+                            token.remove();
+                            return res.status(200).json(user);
+                        })
+                        .catch(err => console.log(err));
+                    });
+                });
+            }
+        });
+    }).catch(err => res.status(400).json({err, message: "unable to lookup register token."}));
 });
 
 // @route POST api/users/login
@@ -164,7 +165,7 @@ router.post("/login", (req, res) => {
     User.findOne({ email }).then(user => {
         // Check if user exists
         if (!user) {
-            return res.status(404).json({ email: "Email not found" });
+            return res.status(404).json({ email: "Email or password is invalid" });
         }
         // Check password
         bcrypt.compare(password, user.password).then(isMatch => {
@@ -192,7 +193,7 @@ router.post("/login", (req, res) => {
             } else {
                 return res
                     .status(400)
-                    .json({ password: "Password incorrect" });
+                    .json({ email: "Email or password is invalid" });
             }
         });
     });
@@ -222,7 +223,6 @@ router.post("/forgot-password", (req, res) => {
         ResetToken.findOne({ email: email }).then( token => {
             if(!token) {
                 const newToken = new ResetToken({email: email});
-                newToken.save().catch( err => console.log("Error creating new reset token", err));
                 token = newToken;
             }
             token.generateResetToken();
@@ -276,8 +276,7 @@ router.post("/reset-password/:token", (req, res) => {
             return res.status(404).json({message: "Password token is invalid or has expired."});
         }
         email = token.email;
-        token.remove();
-
+        
         // Hash password before saving in database
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -294,6 +293,7 @@ router.post("/reset-password/:token", (req, res) => {
                     {
                         return res.status(400).json({message: "Password reset failed", success: false});
                     }
+                    token.remove();
                     return res.status(200).json({message: "Password has been changed", success: true});
                 });
             });
