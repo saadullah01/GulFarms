@@ -44,3 +44,8 @@
 made farm actions
 added farm types to types
 made farm reducer better
+changed routing of add user
+added token to register user
+added register user action
+
+
