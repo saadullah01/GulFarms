@@ -47,7 +47,7 @@ const RegisterToken = require('../../models/RegisterToken');
 // @route POST api/users/invite
 // @desc user can email a registeration invite
 // @access Public
-router.post("/invite", (req, res) => {
+router.post("/add-user", (req, res) => {
     const {errors, isValid} = validateFieldInput.email(req.body);
 
     // Check validation
@@ -71,7 +71,7 @@ router.post("/invite", (req, res) => {
                 
                 sgMail.setApiKey(apiKey);
                 // send email
-                let link = "http://localhost:3000/register/" + token.registerToken;
+                let link = "http://" + host + "/register/" + token.registerToken;
                 const mailOptions = {
                     to: email,
                     from: keys.sendgridEMAIL,

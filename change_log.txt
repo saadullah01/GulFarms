@@ -32,3 +32,7 @@
 -backend set variable host line 11 so emailed links work for heroku and local
 -changed link line 177
 -added function add-user 
+
+1.5 m-jojo-s
+-Added backend routes for add-user
+-Added email based invites for new user
