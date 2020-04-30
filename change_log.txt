@@ -40,3 +40,7 @@
 1.6 saadullah01
 -Changed Logo
 -Made Basic Fram Page for backend integration
+1.7 arham
+made farm actions
+added farm types to types
+made farm reducer better

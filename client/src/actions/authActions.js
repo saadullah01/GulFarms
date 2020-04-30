@@ -8,7 +8,6 @@ import {
 } from "./types";
 // Register User
 export const registerUser = (userData, history,token) => dispatch => {
-    console.log("we came till here0")
     axios
         .post("/api/users/register/"+token, userData)
         .then(res => {
