@@ -8,7 +8,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
-import logo from '../../images/logo.png';
+// import logo from '../../images/logo.png';
 
 
 class ForgotPassword extends Component {
@@ -52,8 +52,8 @@ class ForgotPassword extends Component {
         return (
             <div className="home-page">
                 <div className="container main">
-                    <img src={ logo } alt={ "Logo" } />
-                    {/* <p className="text-heading mb-4">GUL FARMS</p> */}
+                    {/* <img src={ logo } alt={ "Logo" } /> */}
+                    <p className="text-heading mb-4">GUL FARMS</p>
                     <p className="text">Forgot your password?</p>
                     <p className="text">Nothing to worry about.</p>
                     <p className="text">Enter the email you used to sign up</p>

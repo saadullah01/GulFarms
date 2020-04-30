@@ -8,7 +8,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
-import logo from '../../images/logo.png';
+// import logo from '../../images/logo.png';
 
 class ResetPassword extends Component {
     state = {
@@ -55,7 +55,7 @@ class ResetPassword extends Component {
         return (
             <div className="home-page">
                 <div className="container main">
-                    <p className="text-heading mb-4"><img src={ logo } alt={ "Logo" }  /></p>
+                    <p className="text-heading mb-4">GUL FARMS</p>
                     <p className="text">Reset Password</p>
                     <p className="text mb-3">Enter your new password below</p>
                     <Form className="reg-form" noValidate onSubmit={this.onSubmit}>

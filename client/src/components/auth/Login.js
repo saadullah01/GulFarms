@@ -10,7 +10,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
-import logo from '../../images/logo.png';
+// import logo from '../../images/logo.png';
 
 class Login extends Component {
     state = {
@@ -49,7 +49,7 @@ class Login extends Component {
         return (
             <div className="home-page">
                 <div className="container main">
-                    <p className="brand-name"><img src={ logo } alt={ "Logo" } /></p>
+                    <p className="brand-name">GUL FARMS</p>
                     <Form className="reg-form" noValidate onSubmit={this.onSubmit}>
                         <FormGroup>
                             <Input

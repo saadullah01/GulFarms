@@ -11,7 +11,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
-import logo from '../../images/logo.png';
+// import logo from '../../images/logo.png';
 
 class Register extends Component {
     // Can Add Constructor
@@ -57,7 +57,7 @@ class Register extends Component {
         return (
             <div className="home-page">
                 <div className="container main">
-                    <h1 className="text"><img src={ logo } alt={ "Logo" } /></h1>
+                    <h1 className="text">GUL FARMS</h1>
                     <p className="text m-0">We are glad to have you join our team!</p>
                     <p className="text">Please fill the form below to complete the sign up process.</p>
                     <Form className="reg-form mt-3" noValidate onSubmit={this.onSubmit}>
