@@ -48,7 +48,7 @@ const  App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route exact path="/register" component={ Register } />
+          <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
