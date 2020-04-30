@@ -8,7 +8,7 @@ const sgMail = require("@sendgrid/mail");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateFieldInput = require("../../validation/field");
-
+const host = process.env.PORT || "localhost:3000";
 // User Model
 const User = require('../../models/User');
 const ResetToken = require('../../models/ResetToken');
@@ -233,7 +233,7 @@ router.post("/forgot-password", (req, res) => {
                     
                     sgMail.setApiKey(apiKey);
                     // send email
-                    let link = "http://localhost:3000/reset-password/" + token.resetPasswordToken;
+                    let link = `http://${host}/reset-password/` + token.resetPasswordToken;
                     const mailOptions = {
                         to: token.email,
                         from: keys.sendgridEMAIL,
@@ -302,5 +302,62 @@ router.post("/reset-password/:token", (req, res) => {
     
 
 })
+// @route POST api/users/add-user
+// @desc user can add a new user
+// @access Public
+router.post("/add-user", (req, res) => {
+    const {errors, isValid} = validateFieldInput.email(req.body);
+    console.log(req.body)
+    console.log(`http://${host}/Register/`)
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    
+    const email = req.body.email;
 
+    // Find user by email
+    User.findOne({ email }).then(user => {
+        // Check if user exists
+        if (user) {
+            return res.status(404).json({ email: "one email can not be used twice" });
+        }
+        
+        //Send a register-account link to user's email address
+        ResetToken.findOne({ email: email }).then( token => {
+            if(!token) {
+                const newToken = new ResetToken({email: email});
+                newToken.save().catch( err => console.log("Error creating new user token", err));
+                token = newToken;
+            }
+            token.generateResetToken();
+            token.save().then(token => {
+                //Temporary until development completes
+                ResetToken.findOne({email: "API"}).then( key => {
+                    const apiKey = key.resetPasswordToken; 
+                    
+                    sgMail.setApiKey(apiKey);
+                    // send email
+                    let link = `http://${host}/Register/` + token.resetPasswordToken;
+                    const mailOptions = {
+                        to: token.email,
+                        from: keys.sendgridEMAIL,
+                        subject: "Reset Password Request",
+                        text: `Assalam O Alaikum  \n 
+                        Please click on the following link ${link} to register your new account. \n\n 
+                        If you did not request this, please ignore this email.\n`,
+                    };
+                    
+                    sgMail.send(mailOptions, (error, result) => {
+                        if (error) return res.status(400).json({error, message: error.message});
+                        
+                        return res.status(200).json({message: 'An email has been sent to ' + user.email + '.', success: true});
+                    });
+                    
+                });
+            }).catch(err => res.status(401).json({err, message: 'Failed to send email', success: false}));
+        
+        });//.catch(err => res.status(400).json({error: err, message: 'Failed to send reset token.', success: false})); 
+    });
+});
 module.exports = router;

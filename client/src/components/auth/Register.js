@@ -11,6 +11,7 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
+// import logo from '../../images/logo.png';
 
 class Register extends Component {
     // Can Add Constructor
@@ -30,6 +31,12 @@ class Register extends Component {
             this.setState({
                 errors: this.props.errors
             });
+        }
+    }
+    componentDidMount=()=>{
+        if(this.props.auth)
+        {
+            this.props.history.push("/home");
         }
     }
     onSubmit = e => {

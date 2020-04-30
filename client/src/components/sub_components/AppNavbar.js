@@ -14,12 +14,16 @@ import {
     Form,
     FormGroup,
     Label,
-    Input
+    Input,
+    Button
 } from 'reactstrap';
+
+import { logoutUser } from "../../actions/authActions";
 
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function NavLinks (props) {
     const link = props.link.substring(props.link.lastIndexOf('/') + 1);
@@ -68,26 +72,26 @@ class AppNavbar extends Component{
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <NavLinks link={window.location.href} />
                             <Nav className="ml-auto">
-                                {/* <NavItem> */}
-                                    <Form inline nav>
-                                        <FormGroup>
-                                            <Label className="search"><FontAwesomeIcon icon={ faSearch } /></Label>
-                                            <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
-                                        </FormGroup>
-                                    </Form>
-                                {/* </NavItem> */}
-                                {/* <NavItem> */}
+                                <Form inline nav>
+                                    <FormGroup>
+                                        <Button className="nav-button"><FontAwesomeIcon icon={ faSearch } size="lg" /></Button>
+                                        <Input type="text" name="search" id="exampleSearch" placeholder="Search Animal ID" />
+                                    </FormGroup>
+                                </Form>
                                 <UncontrolledDropdown className="edit-info">
-                                    <DropdownToggle nav>
+                                    <DropdownToggle className="nav-button">
                                         <FontAwesomeIcon icon={ faCog } size="lg" />
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         <DropdownItem>Change Password</DropdownItem>
                                         <DropdownItem divider />
-                                        <DropdownItem>Manage Users</DropdownItem>
+                                        <Link to="/add-user">
+                                            <DropdownItem>Add User</DropdownItem>
+                                        </Link>
+                                        <DropdownItem divider />
+                                        <DropdownItem onClick={this.props.logoutUser}>Log Out</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
-                                {/* </NavItem> */}
                             </Nav>
                         </Collapse>
                     </div>
@@ -96,11 +100,4 @@ class AppNavbar extends Component{
         );
     }
 }
-// const mapStateToProps = state => ({
-//     auth: state.authReducer.islogged,
-// });
-// export default connect(
-//     mapStateToProps,
-//     { }
-// )(AppNavbar);
-export default AppNavbar;
+export default connect(null,{ logoutUser })(AppNavbar);

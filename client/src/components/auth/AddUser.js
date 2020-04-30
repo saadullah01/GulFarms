@@ -8,10 +8,10 @@ import {
     FormGroup,
     Input
 } from 'reactstrap';
-// import logo from '../../images/logo.png';
+import logo from '../../images/logo.png';
 
 
-class ForgotPassword extends Component {
+class AddUser extends Component {
     state = {
         email: "",
         errors: {}
@@ -20,12 +20,6 @@ class ForgotPassword extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    componentDidMount=()=>{
-        if(this.props.auth)
-        {
-            this.props.history.push("/home");
-        }
-    }
     onSubmit = e => {
         e.preventDefault();
         const userData = {
@@ -33,9 +27,9 @@ class ForgotPassword extends Component {
         }
         console.log(userData);
         axios
-            .post("/api/users/forgot-password",userData)
+            .post("/api/users/add-user",userData)
             .then(res => 
-                window.location.href="/login"
+                window.location.href="/home"
             )
             .catch(err => {
 
@@ -51,19 +45,15 @@ class ForgotPassword extends Component {
         const { errors } = this.state;
         return (
             <div className="home-page">
-                <div className="container main">
-                    {/* <img src={ logo } alt={ "Logo" } /> */}
-                    <p className="text-heading mb-4">GUL FARMS</p>
-                    <p className="text">Forgot your password?</p>
-                    <p className="text">Nothing to worry about.</p>
-                    <p className="text">Enter the email you used to sign up</p>
-                    <p className="text mb-3">and a password-reset link will be emailed to you.</p>
+                    {/* <p className="text-heading mb-4">GUL FARMS</p> */}
+                    <p className="text">please enter email of new user</p>
+                    <p className="text">Ask them to follow instructions in email</p>
                     <Form className="reg-form" noValidate onSubmit={this.onSubmit}>
                         <FormGroup>
                             <Input
                                 className="input-field"
                                 type="email"
-                                placeholder="Enter your email address"
+                                placeholder="Enter the email address"
                                 onChange={this.onChange}
                                 value={this.state.email}
                                 error={errors.email}
@@ -76,7 +66,6 @@ class ForgotPassword extends Component {
                         </div>
                     </Form>
                 </div>
-            </div>
         )
     }
 }
@@ -86,4 +75,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {  }
-)(withRouter(ForgotPassword));
+)(withRouter(AddUser));

@@ -2,8 +2,6 @@
   text-align: center;
   color: chartreuse;
   align-self: start;
-
-
 }
 .h4{
   text-align: center;
@@ -114,22 +112,19 @@ html, body {
   height: 100%;
   margin: 0;
 }
-
 .home-page {
   height: 100vh;
-  background: url(./images/gulfarms.jpg) no-repeat center center fixed; 
+  background: url(./images/gulfarms.jpeg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   z-index: -999;
 }
-
 .main-container {
   width: 90%;
   margin: 0 auto;
 }
-
 .main {
   position: absolute;
   top: 50%;
@@ -138,21 +133,17 @@ html, body {
   z-index: 2;
   text-align: center;
 }
-
 .reg-form {
   width: 40%;
   margin: 0 auto;
 }
-
 .input-field {
   height: 50px;
   margin: 0 auto;
 }
-
 .password-container {
   position: relative;
 }
-
 .pop-up {
   width: 100%;
   display:inline-block;
@@ -188,6 +179,16 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   width: 100%;
   margin: 0 auto;
   text-align: center;
+}
+
+.nav-button {
+  background-color: #6c757d00;
+  border-color: #6c757d00;
+}
+
+.nav-button:hover {
+  background-color: #6c757d00;
+  border-color: #6c757d00;
 }
 
 .brand-name {
@@ -321,9 +322,26 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) { 
   /* Tab */
+  .navbar-brand {
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin-right: 0%;
+    margin-left: -65px !important;
+  }
+  .form-group {
+    width: 100%;
+    display: inherit;
+    margin-top: 1rem;
+  }
+  .nav-link {
+    margin-left: 3%;
+  }
+  .form-inline {
+    width: 100%;
+  }
   .tab-small {
     height: 100px;
-    width: 40%;
+    width: 45%;
   }
   .tab-large {
     width: 100%;
@@ -342,6 +360,9 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
     width: 100%;
   }
   .login-btn {
+    width: 100%;
+  }
+  .main-container {
     width: 100%;
   }
 }
