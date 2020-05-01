@@ -7,10 +7,9 @@ import {
     USER_LOADING
 } from "./types";
 // Register User
-export const registerUser = (userData, history) => dispatch => {
-    console.log("we came till here0")
+export const registerUser = (userData, history,token) => dispatch => {
     axios
-        .post("/api/users/register", userData)
+        .post("/api/users/register/"+token, userData)
         .then(res => {
             history.push("/login")
         }) // re-direct to login on successful register

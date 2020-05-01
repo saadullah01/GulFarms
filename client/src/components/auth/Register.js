@@ -48,8 +48,8 @@ class Register extends Component {
             password: this.state.password,
             rePassword: this.state.rePassword
         }
-        console.log(newUser);
-        this.props.registerUser(newUser, this.props.history);
+        const token = window.location.href.substring( window.location.href.lastIndexOf('/') + 1)
+        this.props.registerUser(newUser, this.props.history,token);
     }
     render() {
         const { errors } = this.state;

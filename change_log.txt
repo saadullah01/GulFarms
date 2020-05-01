@@ -41,6 +41,14 @@
 -Changed Logo
 -Made Basic Fram Page for backend integration
 
+1.7 arham
+made farm actions
+added farm types to types
+made farm reducer better
+changed routing of add user
+added token to register user
+added register user action
+
 2.0 m-jojo-s
 -Added backend routes for farms
 -Added create-farm, get farms, view-farm, edit and search
