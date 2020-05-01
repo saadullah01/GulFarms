@@ -8,7 +8,7 @@ const sgMail = require("@sendgrid/mail");
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const validateFieldInput = require("../../validation/field");
-const host = process.env.PORT || "localhost:3000";
+
 // User Model
 const User = require('../../models/User');
 const ResetToken = require('../../models/ResetToken');
@@ -68,7 +68,7 @@ router.post("/add-user", (req, res) => {
             //Temporary until development completes
             ResetToken.findOne({email: "API"}).then( key => {
                 const apiKey = key.resetPasswordToken; 
-                
+                const host = req.hostname || "localhost:3000";
                 sgMail.setApiKey(apiKey);
                 // send email
                 let link = "http://" + host + "/register/" + token.registerToken;
@@ -230,6 +230,7 @@ router.post("/forgot-password", (req, res) => {
                 //Temporary until development completes
                 ResetToken.findOne({email: "API"}).then( key => {
                     const apiKey = key.resetPasswordToken; 
+                    const host = req.hostname || "localhost:3000";
                     
                     sgMail.setApiKey(apiKey);
                     // send email
@@ -339,6 +340,7 @@ router.post("/add-user", (req, res) => {
                 //Temporary until development completes
                 ResetToken.findOne({email: "API"}).then( key => {
                     const apiKey = key.resetPasswordToken; 
+                    const host = req.hostname || "localhost:3000";
                     
                     sgMail.setApiKey(apiKey);
                     // send email

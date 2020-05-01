@@ -19,12 +19,12 @@ import {
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
 
-class CreateFarm extends Component{
+class CreateAnimal extends Component{
     
     // Can Add Constructor
     state = {
         modal:true,
-        AnimalName:"",
+        animalName:"",
         p1:"",
         p2: "",
         errors : {}
@@ -45,7 +45,7 @@ class CreateFarm extends Component{
     onSubmit = e => {
         e.preventDefault();
         const newUser = {
-            farmName: this.state.farmName,
+            animalName: this.state.animalName,
             Location: this.state.Location,
             Description: this.state.Description,
             alerts: this.state.alerts
@@ -75,7 +75,7 @@ class CreateFarm extends Component{
                 </ModalHeader></center>
                 <ModalBody>
                 <Container>
-                <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
+                <Form className="add-animal" noValidate onSubmit={this.onSubmit}>
                     <Row>
                         <Col>
                         <FormGroup><Row>
@@ -191,4 +191,4 @@ class CreateFarm extends Component{
         )
     }
 }
-export default CreateFarm;
+export default CreateAnimal;
