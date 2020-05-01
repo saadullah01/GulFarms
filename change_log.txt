@@ -1,4 +1,4 @@
-#==================== CHANGE LOG ================================================
+#==================================== CHANGE LOG ================================
 #   This log contains description of each commit.
 #
 #   Please add an entry in the form of <log#> <username> followed by description
@@ -40,3 +40,7 @@
 1.6 saadullah01
 -Changed Logo
 -Made Basic Fram Page for backend integration
+
+2.0 m-jojo-s
+-Added backend routes for farms
+-Added create-farm, get farms, view-farm, edit and search

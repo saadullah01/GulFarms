@@ -287,11 +287,15 @@ router.post("/reset-password/:token", (req, res) => {
                 User.findOneAndUpdate({ email }, {password: newPass}, {new: true}, (err, user, _) => {
                     // Check if user exists
                     if (!user) {
-                        return res.status(404).json({ email: "Email " + email + " not found" });
+                        return res.status(404).json({ email: "Email " + email + " not found" , error: err});
                     }
                     if(user.password != newPass)
                     {
-                        return res.status(400).json({message: "Password reset failed", success: false});
+                        return res.status(400).json({message: "Password reset failed", success: false, error: err});
+                    }
+                    if(err)
+                    {
+                        return res.status(400).json({message: "Unknown error occured", success: false, error: err});
                     }
                     token.remove();
                     return res.status(200).json({message: "Password has been changed", success: true});
