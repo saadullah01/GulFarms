@@ -7,6 +7,7 @@ class Tab extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            key: props.key,
             name: props.name,
             link: props.link,
             type: props.type

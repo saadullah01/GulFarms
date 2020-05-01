@@ -6,15 +6,12 @@ import {
     faMapMarkerAlt, 
     faClipboard, 
     faPen,
-    faBars 
+    faBars,
+    faPlusCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import Tab from './sub_components/Tab';
-// import CreateFarm from './CreateFarm';
-
-// function useQuery() {
-//     return new URLSearchParams(useLocation().search);
-// }
+import CreateAnimalPreset from './CreateNewAnimal';
 
 class Farm extends Component {
     state = {
@@ -40,8 +37,10 @@ class Farm extends Component {
         });
     }
     render() {
-        const animalPresets = this.state.animalPresets.map((x) => 
-            <Tab name={ x.name } link={ x.name } type="small" />
+        const url = "/home/farms/";
+        const urlTab = "/home/farms?preset_id=";
+        const animalPresets = this.state.animalPresets.map((preset, index) => 
+            <Tab name={ preset.name } key={ preset.id } link={ urlTab.concat(index.toString()) } type="small" />
         );
         return (
             <div className="farm-back">
@@ -66,6 +65,9 @@ class Farm extends Component {
                 </div>
                 <div className="inner-main-container row pt-2 pb-2">
                     { animalPresets }
+                    <Link to={url+"create-preset"} className="tab-small">
+                        <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
+                    </Link>
                 </div>
             </div>
         )

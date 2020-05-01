@@ -24,9 +24,10 @@ class FarmsList extends Component{
         this.props.getFarms()
     }
     render() {
-        const url = "/home/farms?farm_id=";
+        const url = "/home/farms/";
+        const urlTab = "/home/farms?farm_id=";
         const farms = this.props.farms.map((farm,index) =>
-            <Tab name={ farm.name } key={farm.id} link={ url.concat(index.toString()) } type="small" />
+            <Tab name={ farm.name } key={farm.id} link={ urlTab.concat(index.toString()) } type="small" />
         );
         return (
             <div className="next-layer mt-4">
