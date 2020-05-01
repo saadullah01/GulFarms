@@ -1,8 +1,11 @@
 import {
-    SET_FARMS
+    SET_FARMS,
+    SET_DETAIL_FARM
 } from "../actions/types";
+
 const initialState = {
-    farms: []
+    key:[],
+    farms:  []
 }
 const farmReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -10,6 +13,15 @@ const farmReducer = (state = initialState, action) => {
             return {
                 ...state,
                 farms:action.payload
+            }
+        case SET_DETAIL_FARM:
+            return{
+                ...state,
+                farms:[
+                    ...state.farms.slice(0,action.id),
+                    action.payload,
+                    ...state.farms.slice(action.id+1,)
+                ]
             }
         default:
             return state

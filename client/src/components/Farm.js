@@ -23,7 +23,7 @@ class Farm extends Component {
         alerts: []
     }
     componentDidMount() {
-        const farmID = window.location.href.substring( window.location.href.lastIndexOf('=') + 1)
+        const farmID = window.location.href.substring( window.location.href.lastIndexOf('/') + 1)
         this.setState({
             id: parseInt(farmID),
             name: "Farm 1",

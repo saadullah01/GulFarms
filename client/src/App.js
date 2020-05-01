@@ -25,7 +25,6 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import PrivateRoute from "./components/PrivateRoute"
 import store from "./store"
-
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -44,14 +43,12 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
-
-const App =()=>{
+const  App =()=>{
     return (
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Farm />
-          {/* <Route path="/register" component={ Register } />
+          <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
@@ -59,10 +56,11 @@ const App =()=>{
           <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
+            <PrivateRoute exact path="/home/farms/:id" component={Farm} />
             <PrivateRoute exact path="/home/alerts" />
             <PrivateRoute exact path="/home/finances" />
           </Switch>
-          <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } /> */}
+          <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
         </div>  
       </Router>   
     );
