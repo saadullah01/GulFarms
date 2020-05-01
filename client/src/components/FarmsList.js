@@ -24,7 +24,7 @@ class FarmsList extends Component{
         this.props.getFarms()
     }
     render() {
-        const url = "/home/farms/";
+        const url = "/home/farms?farm_id=";
         const farms = this.props.farms.map((farm,index) =>
             <Tab name={ farm.name } key={farm.id} link={ url.concat(index.toString()) } type="small" />
         );

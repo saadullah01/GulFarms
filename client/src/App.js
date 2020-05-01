@@ -25,6 +25,7 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import PrivateRoute from "./components/PrivateRoute"
 import store from "./store"
+
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -43,6 +44,7 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
+
 const  App =()=>{
     return (
       <Router>
