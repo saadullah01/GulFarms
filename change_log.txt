@@ -57,3 +57,6 @@ added register user action
 -changed farm actions line 13
 -commented out unsued packages in farm.js
 -connected farmlist to backend and redux
+2.2 arham
+changes farmjs so that get doesnt give whole farms instead only the summary
+ made tab code more precise

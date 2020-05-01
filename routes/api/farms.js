@@ -9,8 +9,8 @@ const FarmModels = require('../../models/Farm')
 // @access Public
 router.post("/create", (req, res) => {
     // Form validation
-    const { errors, isValid } = {erros: "", isValid: true}; //=============ADD proper validation
-    
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    console.log(req.body)
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -23,12 +23,12 @@ router.post("/create", (req, res) => {
         location: req.body.location.toLowerCase(),
         description: req.body.description.toLowerCase(),
         animalPresets: req.body.animalPresets,
-        alerts: req.body.alerts 
+        alerts: req.body.alerts
     });
-    
+
     farm.save()
-        .then( farm => res.status(200).json({message: "Farm created.", success: true}))
-        .catch( err => res.status(400).json({error: err, message: "error creating new farm.", success: false}));
+        .then(farm => res.status(200).json({ message: "Farm created.", success: true }))
+        .catch(err => res.status(400).json({ error: err, message: "error creating new farm.", success: false }));
 });
 
 // @route POST api/farms/view-farm
@@ -36,25 +36,34 @@ router.post("/create", (req, res) => {
 // @access Public
 router.post("/view-farm", (req, res) => {
     // Form validation
-    const { errors, isValid } = {erros: "", isValid: true}; //=============ADD proper validation
-    
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    
+
     FarmModels.Farm.findById(req.body.id)
-        .then( farm => res.status(200).json(farm))
-        .catch(err => res.status(400).json({error: err, message: "error finding farm", success: false}));
+        .then(farm => res.status(200).json(farm))
+        .catch(err => res.status(400).json({ error: err, message: "error finding farm", success: false }));
 });
 
 // @route POST api/farms/get
 // @desc Retrieve a list of all farms
 // @access Public
-router.post("/get", (req, res) => {    
-    FarmModels.Farm.find( {} )
-        .then( farms => res.status(200).json(farms))
-        .catch(err => res.status(400).json({error: err, message: "error retrieving farms", success: false}));
+const giveSummary = (data)=>(
+    {
+        id:data.id,
+        name:data.name
+    }
+)
+router.post("/get", (req, res) => {
+    FarmModels.Farm.find({})
+        .then(farms => { 
+            const farmSummary = farms.map(giveSummary)
+            res.status(200).json(farmSummary) 
+        })
+        .catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
 });
 
 // @route POST api/farms/edit
@@ -63,8 +72,8 @@ router.post("/get", (req, res) => {
 router.post("/edit", (req, res) => {
 
     // Form validation
-    const { errors, isValid } = {erros: "", isValid: true}; //=============ADD proper validation
-    
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -78,17 +87,15 @@ router.post("/edit", (req, res) => {
         animalPresets: req.body.animalPresets,
         alerts: req.body.alerts
     };
-    
-    FarmModels.Farm.findByIdAndUpdate({_id: req.body._id}, updatedValues, {new: true}, (err, farm, _) => {
-        if(!farm)
-        {
-            return res.status(404).json({message: "Error finding farm to modify.", success: false, error: err});
+
+    FarmModels.Farm.findByIdAndUpdate({ _id: req.body._id }, updatedValues, { new: true }, (err, farm, _) => {
+        if (!farm) {
+            return res.status(404).json({ message: "Error finding farm to modify.", success: false, error: err });
         }
-        if(err)
-        {
-            return res.status(400).json({message: "Unknown error occured", success: false, error: err});
+        if (err) {
+            return res.status(400).json({ message: "Unknown error occured", success: false, error: err });
         }
-        return res.status(200).json({message: "Farm modified.", success: true});
+        return res.status(200).json({ message: "Farm modified.", success: true });
     });
 });
 
@@ -99,18 +106,20 @@ router.post("/edit", (req, res) => {
 router.post("/search", (req, res) => {
     //============================= Validate search name, location etc
     // Form validation
-    const { errors, isValid } = {erros: "", isValid: true}; //=============ADD proper validation
-    
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    FarmModels.Farm.find( {$or: [
-        {name: {$regex: req.body.search.toLowerCase()}},
-        {location: {$regex: req.body.search.toLowerCase()}}
-    ]} )
-        .then( farms => res.status(200).json(farms))
-        .catch(err => res.status(400).json({error: err, message: "error searching farms", success: false}));
+    FarmModels.Farm.find({
+        $or: [
+            { name: { $regex: req.body.search.toLowerCase() } },
+            { location: { $regex: req.body.search.toLowerCase() } }
+        ]
+    })
+        .then(farms => res.status(200).json(farms))
+        .catch(err => res.status(400).json({ error: err, message: "error searching farms", success: false }));
 });
 
 module.exports = router;

@@ -12,17 +12,15 @@ class Tab extends Component {
             type: props.type
         }
     }
-    goTo = () => {
+    changeColor = () => {
         var tab = document.getElementById(this.state.name);
         tab.style.backgroundColor = "white";
         tab.style.color = "green";
     }
     render() {
         return (
-            <Link to={this.state.link}>
-                <div id={this.state.name} className={"tab-".concat(this.state.type)} onClick={this.goTo}>
-                    <p className="tab-text">{this.state.name}</p>
-                </div>
+            <Link to={this.state.link} id={this.state.name} className={"tab-".concat(this.state.type)} onClick={this.changeColor}>
+                <p className="tab-text">{this.state.name}</p>
             </Link>
         );
     }
