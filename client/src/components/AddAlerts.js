@@ -8,7 +8,12 @@ import {
     Form,
     FormGroup,
     ModalBody,
-    Input
+    Input,
+    Dropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    UncontrolledDropdown
 } from 'reactstrap';
 
 class AddAlert extends Component {
@@ -22,7 +27,7 @@ class AddAlert extends Component {
             number: 1,
             a_description:"",
             a_duration:"",      
-            selectedOption: "y"
+            selectedOption: "Year"
             
         }
     }
@@ -42,21 +47,29 @@ class AddAlert extends Component {
         this.setState({
             a_duration:"",
             a_description:"",
-            selectedOption:"y"
+            selectedOption:"Year"
          });
     };
-    handleOptionChange = changeEvent => {
-        this.setState({
-            selectedOption: changeEvent.target.value
-        });
-    };
+    select = e => {
+        this.setState({ selectedOption: e.target.id });
+    }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
+    remove = d => {
+        
+        this.setState(state => {
+
+            const data = state.data.filter((item, j) => d !==j )
+            return {
+              data,
+            };
+          });
+    }
     
     display() {
-        return this.state.data.map(d => {
+        return this.state.data.map((d,index) => {
             return (
                 <Row>
                         <Col >
@@ -66,50 +79,18 @@ class AddAlert extends Component {
                         <Label className="text-label">{d.duration}</Label>
                         </Col>
                         <FormGroup>
-                            <Col >
                             <Row>
-                                 <Col xs="auto" ><Label className="small">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="y"
-                                        checked={this.state.selectedOption === "y"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    />
-                                    Y</Label>
-                                </Col>
-                                <Col xs= "auto">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="m"
-                                        checked={this.state.selectedOption === "m"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">M</Label>
-                                </Col> 
-                                 <Col xs="auto">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="d"
-                                        checked={this.state.selectedOption === "d"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">D</Label>
-                                </Col>
-                                 <Col >
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="h"
-                                        checked={this.state.selectedOption === "h"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">H</Label></Col>
+                            <Col >
+                            <Label className="text-label">{d.selectedOption}</Label>
+                            </Col>
+                            <Col> 
+                            <Button close onClick={() =>   this.remove(index)}>x</Button>
+                            </Col>
+                            <Col>
+                            </Col>
+                            <Col>
+                            </Col>
                             </Row>
-                        </Col>
                         </FormGroup>
                         
                     </Row>
@@ -152,47 +133,20 @@ class AddAlert extends Component {
                         <FormGroup>
                             <Col >
                             <Row>
-                                 <Col xs="auto" ><Label className="small">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="y"
-                                        checked={this.state.selectedOption === "y"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    />
-                                    Y</Label>
-                                </Col>
-                                <Col xs= "auto">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="m"
-                                        checked={this.state.selectedOption === "m"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">M</Label>
-                                </Col> 
-                                 <Col xs="auto">
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="d"
-                                        checked={this.state.selectedOption === "d"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">D</Label>
-                                </Col>
-                                 <Col >
-                                    <input
-                                        type="radio"
-                                        name="duration"
-                                        value="h"
-                                        checked={this.state.selectedOption === "h"}
-                                        onChange={this.handleOptionChange}
-                                        className="form-check-input"
-                                    /><Label className="small">H</Label></Col>
-                                
+                                <UncontrolledDropdown className="edit-info" color= "chartreuse">
+                                    <DropdownToggle color="success" caret>
+                                        {this.state.selectedOption}
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem id= "Year" onClick= {this.select}>Year</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem id= "Month" onClick= {this.select}>Month</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem id= "Day" onClick= {this.select}>Day</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem id= "Hour" onClick= {this.select}>Hour</DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                             </Row>
                             <Row>
                                 <Button className="plus-btn" onClick= {this.add} >+</Button>
