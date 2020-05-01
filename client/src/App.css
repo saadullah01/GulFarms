@@ -313,10 +313,50 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   color: white;
 }
 
-/* Farm */
+/* FarmList */
 .next-layer {
   background-color: lightgrey;
   height: 100%;
+}
+
+/* Farm */
+.farm-main-container {
+  background-color: white;
+  z-index: 3;
+}
+
+.inner-main-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.farm-back {
+  background-color: lightgray;
+  width: 100%;
+  height: 100%;
+}
+
+.farm-name {
+  font-size: 2rem;
+  font-family: "Arial";
+}
+
+.farm-icon {
+  float: left;
+  margin: 0 10px 0 0;
+}
+
+.farm-text {
+  font-size: 1.5rem;
+  font-family: "Arial";
+  width: 50%;
+  margin-left: 35px;
+}
+
+.top-icon {
+  float: right;
+  margin: 10px;
+  color: green;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -364,6 +404,9 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
   }
   .main-container {
     width: 100%;
+  }
+  .farm-text {
+    width: 90%;
   }
 }
 
@@ -435,5 +478,4 @@ input[type="password"]:hover ~ .pop-up{visibility:visible}
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-
 }

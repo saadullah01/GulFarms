@@ -50,7 +50,8 @@ const App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route path="/register" component={ Register } />
+          <Farm />
+          {/* <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
@@ -61,7 +62,7 @@ const App =()=>{
             <PrivateRoute exact path="/home/alerts" />
             <PrivateRoute exact path="/home/finances" />
           </Switch>
-          <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
+          <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } /> */}
         </div>  
       </Router>   
     );
