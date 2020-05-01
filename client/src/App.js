@@ -45,7 +45,7 @@ if (localStorage.jwtToken) {
   }
 }
 
-const  App =()=>{
+const App =()=>{
     return (
       <Router>
         <div className="App">

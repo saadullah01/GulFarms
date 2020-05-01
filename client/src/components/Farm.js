@@ -1,15 +1,15 @@
 import React, { Component } from 'react'; 
 import { useLocation } from 'react-router-dom';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
-// import Tab from './sub_components/Tab';
+import Tab from './sub_components/Tab';
 // import CreateFarm from './CreateFarm';
 
-const useQuery = () => {
-    return new URLSearchParams(useLocation().search);
-}
+// function useQuery() {
+//     return new URLSearchParams(useLocation().search);
+// }
 
 class Farm extends Component {
     state = {
@@ -20,34 +20,30 @@ class Farm extends Component {
         animalPresets: [],
         alerts: []
     }
-    render() {
-        let query = useQuery();
+    componentDidMount() {
+        const farmID = window.location.href.substring( window.location.href.lastIndexOf('=') + 1)
         this.setState({
-            id: query.get("farm_id"),
+            id: parseInt(farmID),
             name: "Farm 1",
             location: "Lahore",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             animalPresets: [
                 {'id': 1, 'name': "Sheep"},
                 {'id': 2, 'name': "Cow"}
-            ]
-            // ,alerts: [
-            //     {
-            //         name: "Milk Alert",
-            //         description: "Every 24 hours alert",
-            //         duration: 24,
-            //         durationType: "hour"
-            //     },
-            //     {
-            //         name: "Wool Alert",
-            //         description: "Every 1 month alert",
-            //         duration: 1,
-            //         durationType: "month"
-            //     }
-            // ]
+            ],
+            alerts: []
         });
+    }
+    render() {
+        
         return (
-            <div className="main-container">Farm</div>
+            <div className="main-container">
+                <p>{ this.state.name }</p>
+                <div className="location">
+                    <FontAwesomeIcon icon={ faMapMarkerAlt } />
+                    <p>{ this.state.location }</p>
+                </div>
+            </div>
         )
     }
 };
