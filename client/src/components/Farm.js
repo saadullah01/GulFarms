@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import {
 } from 'reactstrap';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import Tab from './sub_components/Tab';
-import CreateFarm from './CreateFarm';
+// import Tab from './sub_components/Tab';
+// import CreateFarm from './CreateFarm';
+
+
+
+
 
 class Farm extends Component{
     constructor (props) {

@@ -6,11 +6,12 @@ import axios from "axios";
 
 export const getFarms =()=>dispatch=>{
     axios
-        .get("/api/farms/get")
+        .post("/api/farms/get")
         .then(res=>{
+            console.log(res)
             dispatch({
                 type: SET_FARMS,
-                payload: res.response.data
+                payload: res.data
             }) 
         })
         .catch(err=>{

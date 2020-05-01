@@ -6,41 +6,50 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Tab from './sub_components/Tab';
-import CreateFarm from './CreateFarm';
+
+//redux
+import { connect } from "react-redux"
+import {getFarms} from "../actions/farmActions"
+import { Link, withRouter } from "react-router-dom";
 
 class FarmsList extends Component{
     constructor (props) {
         super(props);
         this.state = {
-            farms: [
-                {'id': 1, 'name': "Farm 1"},
-                {'id': 2, 'name': "Farm 2"}
-            ],
+            farms: this.props.farms,
             form: ''
         }
     }
-    goTo() {
-        window.location = "/home/farms/create-farm";
+    componentDidMount(){
+        this.props.getFarms()
     }
     render() {
         const url = "/home/farms/";
-        const farms = this.state.farms.map((farm) => 
-            <Tab name={ farm['name'] } link={ url.concat(farm['id'].toString()) } type="small" />
+        const farms = this.props.farms.map((farm,index) =>
+            <Tab name={ farm.name } key={farm.id} link={ url.concat(index.toString()) } type="small" />
         );
         return (
             <div className="next-layer mt-4">
                 <div className="main-container row">
                     { farms }
-                    <div onClick={ this.goTo } className="tab-small">
+                    <Link to={url+"create-farm"} className="tab-small">
                         <p className="tab-add"><FontAwesomeIcon icon={ faPlusCircle } /></p>
-                    </div>
+                    </Link>
                 </div>
             </div>
         );
     }
 }
 
-export default FarmsList;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms
+});
+export default connect(
+    mapStateToProps,
+    { getFarms }
+)(withRouter(FarmsList));
 
 ///DONT DELETE THIS
 

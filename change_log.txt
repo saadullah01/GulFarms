@@ -52,3 +52,8 @@ added register user action
 2.0 m-jojo-s
 -Added backend routes for farms
 -Added create-farm, get farms, view-farm, edit and search
+2.1 arham
+-changed inital state of the darm reducer
+-changed farm actions line 13
+-commented out unsued packages in farm.js
+-connected farmlist to backend and redux
