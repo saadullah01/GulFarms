@@ -40,7 +40,10 @@ class CreateFarm extends Component{
     }
 
     onChange = e => {
-        this.setState({ [e.target.id]: e.target.value });
+        if(this.state.selectedOption === "Other") {
+            this.setState({ [e.target.id]: e.target.value });
+        }
+        
     }
 
     onSubmit = e => {

@@ -32,16 +32,25 @@ class AddAlert extends Component {
         }
     }
     
-
+    submitt = () =>{
+        this.props.update(this.state.data)    
+    }
+    update = e =>{
+            
+        
+    }
     add = e => {
+        
         this.setState(state => {
 
             const data = state.data.concat({description: state.a_description, duration: state.a_duration, selectedOption: state.selectedOption});
             return {
-              data,
+            data,
             };
-          });
-        this.resett()  
+        }, ()=> this.submitt()
+        );
+        this.resett()
+        
     };
     resett = () =>{
         this.setState({
@@ -60,17 +69,21 @@ class AddAlert extends Component {
     remove = d => {
         
         this.setState(state => {
-
+            
             const data = state.data.filter((item, j) => d !==j )
             return {
               data,
+              
             };
           });
+          this.submitt()
+          
     }
     
     display() {
         return this.state.data.map((d,index) => {
             return (
+                
                 <Row>
                         <Col >
                         <Label className="text-label">{d.description}</Label>
@@ -94,6 +107,7 @@ class AddAlert extends Component {
                         </FormGroup>
                         
                     </Row>
+                    
             );
         })
     }
@@ -107,7 +121,7 @@ class AddAlert extends Component {
                     </Row>
                     
                     {this.display()}
-                    
+                    {this.submitt}
                     <Row>
                         
                         <Col>
@@ -148,14 +162,20 @@ class AddAlert extends Component {
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </Row>
-                            <Row>
-                                <Button className="plus-btn" onClick= {this.add} >+</Button>
-                            </Row>
                         </Col>
                         </FormGroup>
                     </Row>
+                    <Row>
+                        <Col/>
+                        <Col>
+                            <Row>
+                                    <Button className="plus-btn" onClick= {this.add} >+</Button>
+                                    
+                                </Row>
+                        </Col>
+                        <Col/>
+                    </Row>
                 </div>
-        
         )
     }
 }
