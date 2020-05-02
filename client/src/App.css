@@ -2,6 +2,8 @@
   text-align: center;
   color: chartreuse;
   align-self: start;
+
+
 }
 .h4{
   text-align: center;
@@ -39,6 +41,12 @@ input[type="radio"]{
   font-size: small;
   margin-left: 20px;
 }
+.edit-info{
+  color: green;
+  background: green;
+  background-color: green;
+  border-radius: 10px;
+}
 .small{
     text-align:right;
     vertical-align: middle;
@@ -47,6 +55,7 @@ input[type="radio"]{
     font-size: small;
     margin-left: 0px;
     margin-right: 0px;
+  
 }
 .text-label-black{
   text-align:right;
@@ -87,18 +96,30 @@ input[type="radio"]{
   margin: 0 auto;
   border-top-width: thick;
 }
+
 .plus-btn {
   margin: 0 auto;
-  width: 30%;
+  width: 60%;
   border-radius: 10px;
   background-color: green;
   border: solid 1px green;
   font-size: 150%;
   margin-top: 10px;
 }
+
 .plus-btn-small {
   margin:05%;
   width: 30px;
+  height:30px;
+  border-radius: 10px;
+  background-color: green;
+  border: solid 1px green;
+  font-size: 70%;
+  margin-top: 0px;
+}
+.undo-btn {
+  margin:05%;
+  width: 70px;
   height:30px;
   border-radius: 10px;
   background-color: green;
