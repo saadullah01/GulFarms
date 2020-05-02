@@ -25,9 +25,9 @@ export const getFarms =()=>(dispatch)=>{
 export const getFarmDetail =(data)=>(dispatch,getState)=>{
     const state = getState()
     
-    const dbid = state.farmReducer.farms[data]
+    const dbId = state.farmReducer.farms[data].id
     axios
-        .post("/api/farms/view-farm",{id:dbid})
+        .post("/api/farms/view-farm",{id:dbId})
         .then(res=>{
             console.log(res)
             dispatch({
