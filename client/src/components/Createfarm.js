@@ -99,15 +99,14 @@ class CreateFarm extends Component {
                                         <Label for="flocation" className="text-label">Location: </Label>
                                     </Col>
                                     <Col >
-                                        <Input
+                                    <Input
                                             className="input-field-a"
                                             type="text"
-                                            id="farmlocation"
+                                            id="Location"
                                             placeholder="Enter location"
                                             onChange={this.onChange}
                                             value={this.state.Location}
                                             error={errors.Location}
-                                            id="farmlocation"
                                         />
                                     </Col></Row>
                                 </FormGroup>
@@ -134,12 +133,13 @@ class CreateFarm extends Component {
                                     <Col><AddAlert update= {this.onAdd} Name="Alerts" title = "Duration"></AddAlert></Col>
                                     <Col></Col>
                                     </Row>
+                                    <Row>
+                                        
+                                    <Button className="login-btn" onClick={this.toggle}>Save</Button>
+                                    </Row>
                 </Form>
                 </Container>
                 </ModalBody>
-                        <ModalFooter>
-                            <Button className="login-btn" onClick={this.toggle}>Save</Button>
-                        </ModalFooter>
                 </Modal>
         )
     }
