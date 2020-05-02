@@ -134,14 +134,14 @@ class CreateFarm extends Component{
                         </Col>
                         
                         </Col>
-                        
+                        <Row>
+                            
+                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
+                        </Row>
                 </Row>
                 </Form>
                 </Container>
                 </ModalBody>
-                <ModalFooter>
-                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
-                </ModalFooter>
                 </Modal>
         )
     }

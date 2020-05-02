@@ -162,12 +162,13 @@ class RemoveAnimalTemplate extends Component{
                             </Col>
                         </Row>
                     </FormGroup>
+                    <Row>
+                        
+                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
+                    </Row>
                 </Form>
                 </Container>
                 </ModalBody>
-                <ModalFooter>
-                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
-                </ModalFooter>
                 </Modal>
         )
     }

@@ -19,7 +19,7 @@ import {
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
 
-class CreateFarm extends Component{
+class CreateNewAnimal extends Component{
     
     // Can Add Constructor
     state = {
@@ -185,16 +185,17 @@ class CreateFarm extends Component{
                         </Row>
                         </Col>
                         </Col>
+                        <Row>
+                            
+                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
+                        </Row>
                         
                 </Row>
                 </Form>
                 </Container>
                 </ModalBody>
-                <ModalFooter>
-                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
-                </ModalFooter>
                 </Modal>
         )
     }
 }
-export default CreateFarm;
+export default CreateNewAnimal;
