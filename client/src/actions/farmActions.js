@@ -2,44 +2,61 @@ import {
     GET_ERRORS,
     SET_FARMS,
     SET_DETAIL_FARM,
+    SET_FARM
 } from "./types";
 import axios from "axios";
 
-export const getFarms =()=>(dispatch)=>{
+export const getFarms = () => (dispatch) => {
     axios
         .post("/api/farms/get")
-        .then(res=>{
+        .then(res => {
             console.log(res)
             dispatch({
                 type: SET_FARMS,
                 payload: res.data
-            }) 
+            })
         })
-        .catch(err=>{
+        .catch(err => {
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
             })
         })
 }
-export const getFarmDetail =(data)=>(dispatch,getState)=>{
+export const getFarmDetail = (data) => (dispatch, getState) => {
     const state = getState()
-    
+
     const dbId = state.farmReducer.farms[data].id
     axios
-        .post("/api/farms/view-farm",{id:dbId})
-        .then(res=>{
+        .post("/api/farms/view-farm", { id: dbId })
+        .then(res => {
             console.log(res)
             dispatch({
                 type: SET_DETAIL_FARM,
                 payload: res.data,
-                id:data
-            }) 
+                id: data
+            })
         })
-        .catch(err=>{
+        .catch(err => {
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
             })
         })
+}
+export const saveFarm = (data) => (dispatch, getState) => {
+    const farm = data.farm
+    const alerts = data.alerts
+    axios
+        .post("/api/farms/create", farm)
+        .then(res => {
+            //alerts ko fix kero 
+        })
+        .catch(err=>{
+            console.log(err.response)
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })  
 }
