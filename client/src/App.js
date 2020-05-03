@@ -20,7 +20,7 @@ import Farm from "./components/Farm";
 import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
 import CreateAnimalIndividual from './components/CreateAnimalIndividual'
-
+import CreateNewAnimal from './components/CreateNewAnimal'
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -50,7 +50,7 @@ const  App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route path="/cf" component={ CreateAnimalIndividual } />
+          <Route path="/cf" component={ CreateNewAnimal } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
