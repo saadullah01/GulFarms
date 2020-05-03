@@ -33,7 +33,6 @@ class Farm extends Component {
         }
         else{
             this.props.getFarmDetail(this.state.id)
-            console.log("here",this.props)
         }
     }
     componentDidUpdate(prevProps,prevState) {
@@ -70,9 +69,6 @@ class Farm extends Component {
                 </div>
                 <div className="inner-main-container row pt-2 pb-2">
                     {animalPresets}
-                    {
-                        console.log(window.location.href)
-                    }
                     <Link to={url+"/create-preset"} className="tab-small">
                         <p className="tab-add"><FontAwesomeIcon icon={faPlusCircle} /></p>
                     </Link>

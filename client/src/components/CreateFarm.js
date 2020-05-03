@@ -50,7 +50,7 @@ class CreateFarm extends Component {
     }
 
     onSubmit = e => {
-        console.log(e);
+        // console.log(e);
         e.preventDefault();
         const alertsPacket = this.state.alerts.map((alert) => {
             return {
@@ -69,7 +69,7 @@ class CreateFarm extends Component {
             },
             alerts: alertsPacket
         }
-        console.log(data);
+        // console.log(data);
         this.props.saveFarm(data)
 
     }

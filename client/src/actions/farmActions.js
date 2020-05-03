@@ -10,7 +10,7 @@ export const getFarms = () => (dispatch) => {
     axios
         .post("/api/farms/get")
         .then(res => {
-            console.log(res)
+            // console.log(res)
             dispatch({
                 type: SET_FARMS,
                 payload: res.data
@@ -30,7 +30,7 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
     axios
         .post("/api/farms/view-farm", { id: dbId })
         .then(res => {
-            console.log(res)
+            // console.log(res)
             dispatch({
                 type: SET_DETAIL_FARM,
                 payload: res.data,
@@ -46,7 +46,7 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
 }
 export const saveFarm = (data) => (dispatch, getState) => {
     const farm = data.farm
-    console.log(-2, data)
+    // console.log(-2, data)
 
     axios
         .post("/api/farms/create", farm)
@@ -57,7 +57,7 @@ export const saveFarm = (data) => (dispatch, getState) => {
                     linkedTo: res.data.farm._id
                 }
             })
-            console.log(res)
+            // console.log(res)
             Promise.all(alertsPacket.map(alert => {
                 axios.post("/api/alerts/create", alert)
             }))
@@ -66,7 +66,7 @@ export const saveFarm = (data) => (dispatch, getState) => {
                     payload: res.data.farm
                 }))
                 .catch(err => {
-                    console.log(err.response)
+                    // console.log(err.response)
                     dispatch({
                         type: GET_ERRORS,
                         payload: err.response.data
@@ -75,7 +75,7 @@ export const saveFarm = (data) => (dispatch, getState) => {
 
         })
         .catch(err => {
-            console.log(err.response)
+            // console.log(err.response)
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
