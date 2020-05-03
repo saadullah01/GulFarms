@@ -22,12 +22,11 @@ const summarize = data => (
 router.post("/create", (req, res) => {
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
-    console.log(req.body)
+    // console.log(req.body)
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     const allAlerts = req.body.alerts.map( alertInfo => {
 
         const alert = new BaseModels.Alert({
@@ -37,28 +36,26 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
-    
-        alert.save()
-            .then(alert => {
-    
-                //Add alert to linked object
-                const model = nameToModelMap[alert.linkedModel];
-                model.findById(alert.linkedTo).then( doc => {                
-                    doc.alerts.push(alert._id);
-                    console.log("doc before " + doc);
-                    model.updateOne({_id: doc._id}, {alerts: doc.alerts}, (err, doc) => {
-                        if(err){
-                            return Promise.reject(({error: err, id: alert._id}));
-                        }
-    
-                        return alert;
-                    });
-                })
-            }).catch(err => ({error: err, id: alert._id}));
+        return alert.save().then(alert => alert).catch(err => ({error: err, id: alert._id}));
     });
-    Promise.all(allAlerts)
-        .then(alerts => res.status(200).json({ message: "Alert(s) created.", id: alerts.map(one => one.id), success: true }))
-        .catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating alert.", success: false }));
+    Promise.all(allAlerts).then(alerts => {
+        // console.log("alerts created: " + alerts);
+
+        //Add alerts to linked object
+        const model = nameToModelMap[alerts[0].linkedModel];
+        model.findById(alerts[0].linkedTo).then( doc => {                
+            // console.log("doc before " + doc);
+            model.updateOne({_id: doc._id}, {alerts: doc.alerts.concat(alerts)}, (err, _) => {
+                if(err){
+                    // console.log("error: " + err);
+                    
+                    return res.status(400).json({error: err, message: "Unknown error while updating linked document.", status: false});
+                }
+                
+                return res.status(200).json({ message: "Alert(s) created.", id: alerts.filter(element => element._id), success: true });
+            });
+         }).catch(err => res.status(404).json({ error: err, message: "Error finding linked document.", success: false }));
+    }).catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating alert.", success: false }));
 });
 
 // @route POST api/alerts/view-alert
