@@ -20,7 +20,7 @@ import Farm from "./components/Farm";
 import Landing from './components/Landing';
 import CreateFarm from './components/Createfarm';
 import CreateAnimalIndividual from './components/CreateAnimalIndividual'
-
+import CreateNewAnimal from "./components/CreateNewAnimal"
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
@@ -64,6 +64,7 @@ const  App =()=>{
             <PrivateRoute exact path="/home/finances" />
           </Switch>
           <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
+          <PrivateRoute exact path="/home/farms/:id/create-preset" component={ CreateNewAnimal } />
         </div>  
       </Router>   
     );
