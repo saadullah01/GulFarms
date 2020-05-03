@@ -16,7 +16,7 @@ import {
 import AddAlert from './AddAlerts';
 import { connect } from "react-redux";
 import { saveFarm } from "../actions/farmActions";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 class CreateFarm extends Component {
 
     // Can Add Constructor
