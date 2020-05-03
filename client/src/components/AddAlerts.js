@@ -150,7 +150,7 @@ class AddAlert extends Component {
                                         <DropdownItem divider />
                                         <DropdownItem id= "Day" onClick= {this.select}>Day</DropdownItem>
                                         <DropdownItem divider />
-                                        <DropdownItem id= "Hour" onClick= {this.select}>Hour</DropdownItem>
+                                        <DropdownItem id= "week" onClick= {this.select}>week</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </Row>
