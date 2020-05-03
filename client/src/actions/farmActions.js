@@ -51,10 +51,11 @@ export const saveFarm = (data) => (dispatch, getState) => {
     axios
         .post("/api/farms/create", farm)
         .then(res => {
-            dispatch({
-                type:SET_FARM,
-                payload:res.farm
-            })
+            console.log(res)
+            // dispatch({
+            //     type:SET_FARM,
+            //     payload:res.farm
+            // })
         })
         .catch(err=>{
             console.log(err.response)
