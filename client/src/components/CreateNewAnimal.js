@@ -187,12 +187,13 @@ class CreateNewAnimal extends Component{
                         </Row>
                         </Col>
                         </Col>
-                        <Row>
+                        
+                        
+                </Row>
+                <Row>
                             
                     <Button className="login-btn" onClick= {this.toggle}>Save</Button>
                         </Row>
-                        
-                </Row>
                 </Form>
                 </Container>
                 </ModalBody>
