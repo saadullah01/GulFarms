@@ -29,7 +29,7 @@ class CreateFarm extends Component {
         errors: {}
     }
     componentDidUpdate=(prevProps, prevState)=>{
-        if(this.props.allFarms.length !== prevProps.allFarms.length || prevState.modal){
+        if(this.props.allFarms.length !== prevProps.allFarms.length || prevState.modal !== this.state.modal){
             this.toggle()
             this.props.history.push("/home/farms")
         }
