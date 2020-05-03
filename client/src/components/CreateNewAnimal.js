@@ -12,9 +12,10 @@ import {
     Container,
     Row,
     Col,
-    UncontrolledCollapse,
-    Card,
-    CardBody
+    UncontrolledDropdown,
+    DropdownItem,
+    DropdownToggle,
+    DropdownMenu
 } from 'reactstrap';
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
@@ -28,7 +29,7 @@ class CreateNewAnimal extends Component{
         modal:true,
         AnimalName:"",
         p1:"",
-        p2: "",
+        Track:"Keep Track",
         errors : {},
         attributes:[],
         alerts:[]
@@ -45,7 +46,9 @@ class CreateNewAnimal extends Component{
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    
+    select = e => {
+        this.setState({ Track: e.target.id });
+    }
     onAdd = e =>{
         this.setState({ alerts: e });
     }
@@ -149,41 +152,19 @@ class CreateNewAnimal extends Component{
                         </Row>
                         <Row>
                             <Col>
-                            <div>
-                            <Button className="plus-btn-small" id="toggler" style={{ marginBottom: '2rem' }}>
-                            +
-                            </Button>
-                            <UncontrolledCollapse toggler="#toggler">
-                            <Card>
-                                <CardBody>
-                                <Row>
-                                    <Input 
-                                        className="input-field-add"
-                                        type="text"  
-                                        placeholder="Enter Parent 1" 
-                                        onChange={this.onChange} 
-                                        value={this.state.p1} 
-                                        error={errors.p1} 
-                                        id="p1"
-                                    /> 
-                                </Row>
-                                <Row>
-                                    <Input 
-                                        className="input-field-add"
-                                        type="text"  
-                                        placeholder="Enter Parent 2" 
-                                        onChange={this.onChange} 
-                                        value={this.state.p2} 
-                                        error={errors.p2} 
-                                        id="p2"
-                                    /> 
-                                </Row>
-                                
-                                </CardBody>
-                            </Card>
-                            </UncontrolledCollapse>
-                        </div>
+                            <UncontrolledDropdown className="edit-info">
+                                <DropdownToggle color="correct" caret>
+                                    {this.state.Track}
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem id= "Keep Track" onClick= {this.select}>Keep Track</DropdownItem>
+                                    <DropdownItem divider />
+                                    <DropdownItem id= "Do Not Keep Track" onClick= {this.select}>Do Not Keep Track</DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                             </Col>
+                            <Col/>
+                            <Col/>
                         </Row>
                         </Col>
                         </Col>
