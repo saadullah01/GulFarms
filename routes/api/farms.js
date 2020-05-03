@@ -53,7 +53,7 @@ router.post("/view-farm", (req, res) => {
 // @access Public
 const giveSummary = (data)=>(
     {
-        id:data.id,
+        _id:data._id,
         name:data.name
     }
 )
@@ -65,11 +65,6 @@ router.post("/get", (req, res) => {
         })
         .catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
 });
-
-//Edit function
-const EditFarm = req => {
-    
-}
 
 // @route POST api/farms/edit
 // @desc Modify an existing farm

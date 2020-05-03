@@ -9,6 +9,12 @@ const FarmModels = require('../../models/Farm');
 const FarmRoutes = require('./farms');
 
 const nameToModelMap = {'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product}
+const summarize = data => (
+    {
+        _id:data.id,
+        name:data.name
+    }
+)
 
 // @route POST api/alerts/create
 // @desc Create a new alert
@@ -23,7 +29,7 @@ router.post("/create", (req, res) => {
     }
 
     const alert = new BaseModels.Alert({
-        alertName: req.body.alertName.toLowerCase(),
+        name: req.body.name.toLowerCase(),
         duration: req.body.duration,
         durationType: req.body.durationType.toLowerCase(),
         linkedTo: req.body.linkedTo,
@@ -36,14 +42,15 @@ router.post("/create", (req, res) => {
             //Add alert to linked object
             const model = nameToModelMap[alert.linkedModel];
             model.findById(alert.linkedTo).then( doc => {                
-                doc.alerts = doc.alerts.push(alert._id);
-                console.log("doc " + doc);
-                model.updateOne({_id: doc._id}, { doc }).then( doc => {
-                    if(!doc){
-                        res.status(400).json({error: doc, id: alert._id, message: "Alert created but could not be linked.", success: false});
+                doc.alerts.push(alert._id);
+                console.log("doc before " + doc);
+                model.updateOne({_id: doc._id}, {alerts: doc.alerts}, (err, doc) => {
+                    if(err){
+                        return res.status(400).json({error: err, id: alert._id, message: "Alert created but could not be linked.", success: false});
                     }
-                    res.status(200).json({ message: "Alert created.", id: alert._id, success: true });
-                }).catch(err => res.status(400).json({error: err, message: "Alert created but could not be linked.", success: false}));
+
+                    return res.status(200).json({ message: "Alert created.", id: alert._id, success: true });
+                });
             })
         }).catch(err => res.status(400).json({ error: err, message: "error creating alert.", success: false }));
 });
@@ -62,27 +69,23 @@ router.post("/view-alert", (req, res) => {
 
     BaseModels.Alert.findById(req.body.id)
         .then(alert => {
-            alert.execPopulate('linkedTo').then(alert => {
-                res.status(200).json(alert);
-            }).catch(err => res.status(400).json({error: err, message: "Error populating alert", success: false}));
-
-        }).catch(err => res.status(400).json({ error: err, message: "error finding alert", success: false }));
+            if(!alert){
+                return res.status(404).json({error: alert, message: "Could not find alert.", status: false});
+            }
+            // alert.populate('linkedTo').execPopulate().then(alert => {
+                return res.status(200).json(alert);
+            // }).catch(err => res.status(400).json({error: err, message: "Error populating alert", success: false}));
+        }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
 });
 
 // @route POST api/alerts/get
 // @desc Retrieve a list of all alerts
 // @access Public
-const giveSummary = (data)=>(
-    {
-        id:data.id,
-        name:data.name
-    }
-)
 router.post("/get", (req, res) => {
     BaseModels.Alert.find({})
         .then(farms => { 
-            const farmSummary = farms.map(giveSummary)
-            res.status(200).json(farmSummary) 
+            const farmSummary = farms.map(summarize)
+            return res.status(200).json(farmSummary) 
         })
         .catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
 });

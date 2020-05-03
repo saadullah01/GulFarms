@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 //https://mongoosejs.com/docs/populate.html
 
 const AlertSchema = new Schema({
-    alertName: {type: String, required: true},
+    name: {type: String, required: true},
     duration: {type: Number, required: true},
     durationType: {type: String, enum: ["year", "month", "week", "day"], required: true},
     linkedTo: {type: Schema.Types.ObjectId, refPath: "linkedModel", required: true},
