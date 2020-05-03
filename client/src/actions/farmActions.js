@@ -58,13 +58,15 @@ export const saveFarm = (data) => (dispatch, getState) => {
                 }
             })
             // console.log(res)
-            Promise.all(alertsPacket.map(alert => {
-                axios.post("/api/alerts/create", alert)
-            }))
-                .then(dispatch({
-                    type: SET_FARM,
-                    payload: res.data.farm
-                }))
+            // Promise.all(alertsPacket.map(alert => {
+            //     axios.post("/api/alerts/create", alert)
+            // }))
+            axios.post("/api/alerts/create", { alerts: alertsPacket })
+                .then(
+                    dispatch({
+                        type: SET_FARM,
+                        payload: res.data.farm
+                    }))
                 .catch(err => {
                     // console.log(err.response)
                     dispatch({
