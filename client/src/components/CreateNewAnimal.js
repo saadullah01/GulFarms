@@ -70,12 +70,14 @@ class CreateNewAnimal extends Component {
     }
     onSubmit = e => {
         e.preventDefault();
+        const id = getId()
         const data = {
             AnimalName: this.state.AnimalName,
             p1: this.state.p1,
             track: this.state.track,
             attributes: this.state.attributes,
-            alerts: this.state.alerts  
+            alerts: this.state.alerts,
+            farmID:id
         }
         console.log(data);
         this.props.savePreset(data)
