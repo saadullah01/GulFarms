@@ -44,7 +44,7 @@ class Farm extends Component {
         const url = "/home/farms/"+String(this.state.id);
         const urlTab = "/home/farms?preset_id=";
         const animalPresets = this.state.animalPresets.map((preset, index) =>
-            <Tab name={preset.name} key={preset.id} link={urlTab.concat(index.toString())} type="small" />
+            <Tab name={preset.name} key={index} link={urlTab.concat(index.toString())} type="small" />
         );
         return (
             <div className="farm-back">

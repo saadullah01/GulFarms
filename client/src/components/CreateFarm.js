@@ -32,7 +32,6 @@ class CreateFarm extends Component {
       this.props.allFarms.length !== prevProps.allFarms.length ||
       prevState.modal !== this.state.modal
     ) {
-      this.toggle();
       this.props.history.push("/home/farms");
     }
   };
