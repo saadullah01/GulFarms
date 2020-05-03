@@ -34,6 +34,5 @@ const Barn = mongoose.model('barn', BarnSchema);
 module.exports = {
     Farm: Farm,
     Animal: Animal,
-    Barn: Barn,
-    BaseModels: baseModels
+    Barn: Barn
 }

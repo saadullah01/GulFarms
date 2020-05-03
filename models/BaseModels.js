@@ -4,9 +4,11 @@ const Schema = mongoose.Schema;
 //https://mongoosejs.com/docs/populate.html
 
 const AlertSchema = new Schema({
-    name: {type: String, required: true},
+    alertName: {type: String, required: true},
     duration: {type: Number, required: true},
-    duration_type: {type: String, enum: ["year", "month", "week", "day"]}
+    durationType: {type: String, enum: ["year", "month", "week", "day"], required: true},
+    linkedTo: {type: Schema.Types.ObjectId, refPath: "linkedModel", required: true},
+    linkedModel: {type: String, enum: ['farm', 'barn', 'product'], required: true} //Onchange: Update nameToModelMap in routes/api/alerts.js
 });
 
 const AttributeSchema = new Schema({
@@ -30,11 +32,13 @@ const AnimalPresetSchema = new Schema({
     barns: [{type: Schema.Types.ObjectId, ref: 'barn'}]
 });
 
+const Alert = mongoose.model('alert', AlertSchema);
 const Attribute = mongoose.model('attribute', AttributeSchema);
 const Product = mongoose.model('product', ProductSchema);
 const AnimalPreset = mongoose.model('animalPreset', AnimalPresetSchema);
 
 module.exports = {
+    Alert: Alert,
     Attribute: Attribute,
     Product: Product,
     AnimalPreset: AnimalPreset
