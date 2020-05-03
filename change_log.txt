@@ -52,17 +52,22 @@ added register user action
 2.0 m-jojo-s
 -Added backend routes for farms
 -Added create-farm, get farms, view-farm, edit and search
+
 2.1 arham
 -changed inital state of the darm reducer
 -changed farm actions line 13
 -commented out unsued packages in farm.js
 -connected farmlist to backend and redux
+
 2.2 arham
 changes farmjs so that get doesnt give whole farms instead only the summary
 made tab code more precise
+
 2.3 arham
 made route for farm app.js
 made getfarmdetail in farmAction added type in types.js and other stuff
+<<<<<<< HEAD
+=======
 2.4 arham
 chhanged file name
 edited savefarm 
@@ -71,6 +76,12 @@ connected createfarm to redux
 added setfarm reducer
 changed create
 app doesnt work ill fix
+
 2.5 arham
 fixed cross button add farm working
 added route for create animal preset
+>>>>>>> df55bdd730a7a1aac8f59b85605b39672213ba80
+
+2.6 m-jojo-s
+-Updated alert db schema
+-Backend routes for create and view alerts
