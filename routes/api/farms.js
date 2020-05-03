@@ -19,15 +19,15 @@ router.post("/create", (req, res) => {
     //Incoming req must have empty arrays or strings for the not required properties.
     //This can be implemented in the validation function as well.
     const farm = new FarmModels.Farm({
-        name: req.body.name.toLowerCase(),
-        location: req.body.location.toLowerCase(),
-        description: req.body.description.toLowerCase(),
-        animalPresets: req.body.animalPresets,
-        alerts: req.body.alerts
+        name: req.body.farmName.toLowerCase(),
+        location: req.body.Location.toLowerCase(),
+        description: req.body.Description.toLowerCase(),
+        animalPresets: [],
+        alerts: []
     });
-
+    console.log(farm)
     farm.save()
-        .then(farm => res.status(200).json({ message: "Farm created.", success: true }))
+        .then(farm => res.status(200).json({ message: "Farm created.", success: true,farm:giveSummary(farm) }))
         .catch(err => res.status(400).json({ error: err, message: "error creating new farm.", success: false }));
 });
 

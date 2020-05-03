@@ -63,4 +63,11 @@ made tab code more precise
 2.3 arham
 made route for farm app.js
 made getfarmdetail in farmAction added type in types.js and other stuff
-
+2.4 arham
+chhanged file name
+edited savefarm 
+removed addalert error
+connected createfarm to redux
+added setfarm reducer
+changed create
+app doesnt work ill fix

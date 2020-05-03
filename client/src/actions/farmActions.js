@@ -47,10 +47,14 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
 export const saveFarm = (data) => (dispatch, getState) => {
     const farm = data.farm
     const alerts = data.alerts
+    console.log(-2,data)
     axios
         .post("/api/farms/create", farm)
         .then(res => {
-            //alerts ko fix kero 
+            dispatch({
+                type:SET_FARM,
+                payload:res.farm
+            })
         })
         .catch(err=>{
             console.log(err.response)
