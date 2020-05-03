@@ -84,3 +84,7 @@ added route for create animal preset
 -Updated alert db schema
 -Backend routes for create and view alerts
 -api/farms/get now returns summary with _id instead of id
+
+2.7 -Zainab 
+-added css
+-changed classname of Create Farm form title
