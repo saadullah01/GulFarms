@@ -71,3 +71,5 @@ connected createfarm to redux
 added setfarm reducer
 changed create
 app doesnt work ill fix
+2.5 arham
+fixed cross button add farm working

@@ -52,10 +52,10 @@ export const saveFarm = (data) => (dispatch, getState) => {
         .post("/api/farms/create", farm)
         .then(res => {
             console.log(res)
-            // dispatch({
-            //     type:SET_FARM,
-            //     payload:res.farm
-            // })
+            dispatch({
+                type:SET_FARM,
+                payload:res.data.farm
+            })
         })
         .catch(err=>{
             console.log(err.response)
