@@ -18,7 +18,7 @@ import ResetPassword from './components/auth/ResetPassword';
 import FarmsList from './components/FarmsList';
 import Farm from "./components/Farm";
 import Landing from './components/Landing';
-import CreateFarm from './components/Createfarm';
+import CreateFarm from './components/CreateFarm';
 import CreateAnimalIndividual from './components/CreateAnimalIndividual'
 import CreateNewAnimal from "./components/CreateNewAnimal"
 

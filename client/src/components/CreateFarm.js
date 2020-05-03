@@ -28,8 +28,8 @@ class CreateFarm extends Component {
         alerts: [{ description: "L" }],
         errors: {}
     }
-    componentDidUpdate=(prevProps, prevState)=>{
-        if(this.props.allFarms.length !== prevProps.allFarms.length || prevState.modal !== this.state.modal){
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.allFarms.length !== prevProps.allFarms.length || prevState.modal !== this.state.modal) {
             this.toggle()
             this.props.history.push("/home/farms")
         }
@@ -52,14 +52,22 @@ class CreateFarm extends Component {
     onSubmit = e => {
         console.log(e);
         e.preventDefault();
+        const alertsPacket = this.state.alerts.map((alert) => {
+            return {
+                name: alert.description,
+                duration: alert.duration,
+                durationType: alert.selectedOption,
+                linkedModel: "farm"
+            }
+        })
         const data = {
-            farm:{
+            farm: {
                 farmName: this.state.farmName,
                 Location: this.state.Location,
                 Description: this.state.Description,
                 alerts: []
             },
-            alerts:this.state.alerts
+            alerts: alertsPacket
         }
         console.log(data);
         this.props.saveFarm(data)
