@@ -419,6 +419,13 @@ input[type="password"]:hover ~ .pop-up {
   margin-left: 35px;
 }
 
+.farm-icon-ex {
+  float: left;
+  margin: 0 10px 0 0;
+  font-size: 2em;
+  margin-left: 7px;
+}
+
 .top-icon {
   float: right;
   margin: 10px;
