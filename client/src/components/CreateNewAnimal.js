@@ -18,7 +18,9 @@ import {
 } from 'reactstrap';
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
-
+import { connect } from "react-redux";
+import { savePreset } from "../actions/farmActions";
+import { withRouter } from "react-router-dom";
 class CreateNewAnimal extends Component{
     
     // Can Add Constructor
