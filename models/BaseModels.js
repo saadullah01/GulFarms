@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Schema = mongoose.Schema;
 
 //https://mongoosejs.com/docs/populate.html
@@ -7,6 +8,7 @@ const AlertSchema = new Schema({
     name: {type: String, required: true},
     duration: {type: Number, required: true},
     durationType: {type: String, enum: ["year", "month", "week", "day"], required: true},
+    due: {type: Date, default: Date.now()},
     linkedTo: {type: Schema.Types.ObjectId, refPath: "linkedModel", required: true},
     linkedModel: {type: String, enum: ['farm', 'barn', 'product'], required: true} //Onchange: Update nameToModelMap in routes/api/alerts.js
 });
@@ -31,6 +33,11 @@ const AnimalPresetSchema = new Schema({
     products: [{type: Schema.Types.ObjectId, ref: 'product'}],
     barns: [{type: Schema.Types.ObjectId, ref: 'barn'}]
 });
+
+AlertSchema.methods.Snooze = function(snoozeFor) {
+    const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
+    this.due = moment(Date.now()).add(snoozeFor, type).toDate();
+};
 
 const Alert = mongoose.model('alert', AlertSchema);
 const Attribute = mongoose.model('attribute', AttributeSchema);

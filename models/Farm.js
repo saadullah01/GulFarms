@@ -13,6 +13,7 @@ const FarmSchema = new Schema({
 
 const AnimalSchema = new Schema({
     preset: [{type: Schema.Types.ObjectId, ref: 'animalPreset', required: true}],
+    publicID: {type: Number, unique: true, required: true},
     alive: {type: Boolean},
     selfAttributes: [{type: Schema.Types.ObjectId, ref: 'attribute'}],
     selfProducts: [{type: Schema.Types.ObjectId, ref: 'product'}],

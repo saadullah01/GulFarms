@@ -84,6 +84,29 @@ router.post("/view-alert", (req, res) => {
         }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
 });
 
+// @route POST api/alerts/snooze
+// @desc Snooze an existing alert
+// @access Public
+router.post("/snooze", (req, res) => {
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    BaseModels.Alert.findById(req.body.id)
+        .then(alert => {
+            if(!alert){
+                return res.status(404).json({error: alert, message: "Could not find alert.", status: false});
+            }
+            alert.Snooze(req.body.snoozeFor).save().then(alert => {
+                return res.status(200).json({alert, message: "Snoozed", success: true});
+            }).catch(err => res.status(400).json({error: err, message: "Error - could not snooze.", success: false}));
+        }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
+});
+
 // @route POST api/alerts/get
 // @desc Retrieve a list of all alerts
 // @access Public
