@@ -11,7 +11,7 @@ const FarmRoutes = require('./farms');
 const nameToModelMap = {'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product}
 const summarize = data => (
     {
-        _id:data.id,
+        _id:data._id,
         name:data.name
     }
 )
@@ -28,31 +28,37 @@ router.post("/create", (req, res) => {
         return res.status(400).json(errors);
     }
 
-    const alert = new BaseModels.Alert({
-        name: req.body.name.toLowerCase(),
-        duration: req.body.duration,
-        durationType: req.body.durationType.toLowerCase(),
-        linkedTo: req.body.linkedTo,
-        linkedModel: req.body.linkedModel.toLowerCase()
+    const allAlerts = req.body.alerts.map( alertInfo => {
+
+        const alert = new BaseModels.Alert({
+            name: alertInfo.name.toLowerCase(),
+            duration: alertInfo.duration,
+            durationType: alertInfo.durationType.toLowerCase(),
+            linkedTo: alertInfo.linkedTo,
+            linkedModel: alertInfo.linkedModel.toLowerCase()
+        });
+    
+        alert.save()
+            .then(alert => {
+    
+                //Add alert to linked object
+                const model = nameToModelMap[alert.linkedModel];
+                model.findById(alert.linkedTo).then( doc => {                
+                    doc.alerts.push(alert._id);
+                    console.log("doc before " + doc);
+                    model.updateOne({_id: doc._id}, {alerts: doc.alerts}, (err, doc) => {
+                        if(err){
+                            return Promise.reject(({error: err, id: alert._id}));
+                        }
+    
+                        return alert;
+                    });
+                })
+            }).catch(err => ({error: err, id: alert._id}));
     });
-
-    alert.save()
-        .then(alert => {
-
-            //Add alert to linked object
-            const model = nameToModelMap[alert.linkedModel];
-            model.findById(alert.linkedTo).then( doc => {                
-                doc.alerts.push(alert._id);
-                console.log("doc before " + doc);
-                model.updateOne({_id: doc._id}, {alerts: doc.alerts}, (err, doc) => {
-                    if(err){
-                        return res.status(400).json({error: err, id: alert._id, message: "Alert created but could not be linked.", success: false});
-                    }
-
-                    return res.status(200).json({ message: "Alert created.", id: alert._id, success: true });
-                });
-            })
-        }).catch(err => res.status(400).json({ error: err, message: "error creating alert.", success: false }));
+    Promise.all(allAlerts)
+        .then(alerts => res.status(200).json({ message: "Alert(s) created.", id: alerts.map(one => one.id), success: true }))
+        .catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating alert.", success: false }));
 });
 
 // @route POST api/alerts/view-alert
@@ -72,9 +78,12 @@ router.post("/view-alert", (req, res) => {
             if(!alert){
                 return res.status(404).json({error: alert, message: "Could not find alert.", status: false});
             }
-            // alert.populate('linkedTo').execPopulate().then(alert => {
-                return res.status(200).json(alert);
-            // }).catch(err => res.status(400).json({error: err, message: "Error populating alert", success: false}));
+            
+            alert.populate('linkedTo').execPopulate().then(alert => {
+                const newAlert = alert.toJSON();
+                newAlert.linkedTo = summarize(newAlert.linkedTo);
+                return res.status(200).json(newAlert);
+            }).catch(err => res.status(400).json({error: err, message: "Error populating alert", success: false}));
         }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
 });
 
@@ -83,15 +92,14 @@ router.post("/view-alert", (req, res) => {
 // @access Public
 router.post("/get", (req, res) => {
     BaseModels.Alert.find({})
-        .then(farms => { 
-            const farmSummary = farms.map(summarize)
-            return res.status(200).json(farmSummary) 
+        .then(alerts => { 
+            return res.status(200).json(alerts) 
         })
-        .catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
+        .catch(err => res.status(400).json({ error: err, message: "Error retrieving alerts", success: false }));
 });
 
-// @route POST api/farms/edit
-// @desc Modify an existing farm
+// @route POST api/alerts/edit
+// @desc Modify an existing alert
 // @access Public
 router.post("/edit", (req, res) => {
 
@@ -103,32 +111,31 @@ router.post("/edit", (req, res) => {
         return res.status(400).json(errors);
     }
 
-    //Incoming body must have all properties for the new farm values
+    //Incoming body must have all properties for the new alert values
     const updatedValues = {
         name: req.body.name.toLowerCase(),
-        location: req.body.location.toLowerCase(),
-        description: req.body.description.toLowerCase(),
-        animalPresets: req.body.animalPresets,
-        alerts: req.body.alerts
+        duration: req.body.duration,
+        durationType: req.body.durationType.toLowerCase(),
+        linkedTo: req.body.linkedTo,
+        linkedModel: req.body.linkedModel.toLowerCase()
     };
 
-    FarmModels.Farm.findByIdAndUpdate({ _id: req.body._id }, updatedValues, { new: true }, (err, farm, _) => {
-        if (!farm) {
-            return res.status(404).json({ message: "Error finding farm to modify.", success: false, error: err });
+    BaseModels.Alert.findByIdAndUpdate({ _id: req.body._id }, updatedValues, { new: true }, (err, alert, _) => {
+        if (!alert) {
+            return res.status(404).json({ message: "Error finding alert to modify.", success: false, error: err });
         }
         if (err) {
             return res.status(400).json({ message: "Unknown error occured", success: false, error: err });
         }
-        return res.status(200).json({ message: "Farm modified.", success: true });
+        return res.status(200).json({ message: "Alert modified.", success: true });
     });
 });
 
-// @route POST api/farms/search
-// @desc Retrieve a list of all farms matching search substring
-//       Match with name or location
+// @route POST api/farms/delete
+// @desc Delete alerts matching given IDs
 // @access Public
-router.post("/search", (req, res) => {
-    //============================= Validate search name, location etc
+router.post("/delete", (req, res) => {
+
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
 
@@ -136,14 +143,38 @@ router.post("/search", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    FarmModels.Farm.find({
-        $or: [
-            { name: { $regex: req.body.search.toLowerCase() } },
-            { location: { $regex: req.body.search.toLowerCase() } }
-        ]
-    })
-        .then(farms => res.status(200).json(farms))
-        .catch(err => res.status(400).json({ error: err, message: "error searching farms", success: false }));
+    //Incoming req should have an array of ids to delete alerts
+
+    BaseModels.Alert.find({_id: {$in: req.body.id}}).then( alerts => {
+        if (!alerts) {
+            return res.status(404).json({ message: "Error finding alert(s) to delete.", success: false, error: err });
+        }
+        alerts.map( alert => alert.remove());
+        return res.status(200).json({ message: "Alerts deleted.", success: true });
+    });
 });
+
+// // @route POST api/farms/search
+// // @desc Retrieve a list of all farms matching search substring
+// //       Match with name or location
+// // @access Public
+// router.post("/search", (req, res) => {
+//     //============================= Validate search name, location etc
+//     // Form validation
+//     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
+//     // Check validation
+//     if (!isValid) {
+//         return res.status(400).json(errors);
+//     }
+//     FarmModels.Farm.find({
+//         $or: [
+//             { name: { $regex: req.body.search.toLowerCase() } },
+//             { location: { $regex: req.body.search.toLowerCase() } }
+//         ]
+//     })
+//         .then(farms => res.status(200).json(farms))
+//         .catch(err => res.status(400).json({ error: err, message: "error searching farms", success: false }));
+// });
 
 module.exports = router;

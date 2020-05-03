@@ -152,7 +152,7 @@ class CreateFarm extends Component {
                     <Col>
                       <Input
                         className="input-field-a"
-                        type="text"
+                        type="textarea"
                         placeholder="Enter description"
                         onChange={this.onChange}
                         value={this.state.Description}

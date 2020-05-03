@@ -88,3 +88,6 @@ added route for create animal preset
 2.7 -Zainab 
 -added css
 -changed classname of Create Farm form title
+
+2.8 m-jojo-s
+-Updated create-alerts to work with multiple creation requests
