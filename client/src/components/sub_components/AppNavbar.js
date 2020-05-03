@@ -30,17 +30,11 @@ function NavLinks (props) {
     if (link && link !== "home" && link !== "farms" && link !== "alerts" && link !== "finance") {
         return (
             <Nav className="mr-auto" navbar>
-                <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/home/farms">Farms</NavLink>
-                </NavItem>
+                <Link className="nav-link" to="/home/farms">Farms</Link>
                 <span className="separator"></span>
-                <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/home/alerts">Alerts</NavLink>
-                </NavItem>
+                <Link className="nav-link" to="/home/alerts">Alerts</Link>
                 <span className="separator"></span>
-                <NavItem className="nav-link-container">
-                    <NavLink className="nav-link" href="/home/finance">Finance</NavLink>
-                </NavItem>
+                <Link className="nav-link" to="/home/finance">Finance</Link>
             </Nav>
         );
     } else {

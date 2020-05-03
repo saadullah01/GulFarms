@@ -21,7 +21,7 @@ const farmReducer = (state = initialState, action) => {
                 farms:[
                     ...state.farms.slice(0,action.id),
                     action.payload,
-                    ...state.farms.slice(action.id+1,)
+                    ...state.farms.slice(parseInt(action.id)+1,)
                 ]
             }
         case SET_FARM:
