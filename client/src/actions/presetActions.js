@@ -1,11 +1,12 @@
 import {
+    SET_PRESETS,
     SET_PRESET
 } from "./types";
 import axios from "axios";
 
-export const getPresets = () => (dispatch) => {
+export const getPresets = () => (dispatch,data) => {
     axios
-        .post("/api/farms/get")
+        .post("/api/farms/get",data)
         .then(res => {
             console.log(res)
             dispatch({
