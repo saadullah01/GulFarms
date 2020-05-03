@@ -76,7 +76,7 @@ class AddAlert extends Component {
         return this.state.data.map((d,index) => {
             return (
                 
-                <Row>
+                <Row key ={index}>
                         <Col >
                         <Label className="text-label">{d.description}</Label>
                         </Col>

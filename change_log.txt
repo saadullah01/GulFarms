@@ -66,7 +66,22 @@ made tab code more precise
 2.3 arham
 made route for farm app.js
 made getfarmdetail in farmAction added type in types.js and other stuff
+<<<<<<< HEAD
+=======
+2.4 arham
+chhanged file name
+edited savefarm 
+removed addalert error
+connected createfarm to redux
+added setfarm reducer
+changed create
+app doesnt work ill fix
 
-2.4 m-jojo-s
+2.5 arham
+fixed cross button add farm working
+added route for create animal preset
+>>>>>>> df55bdd730a7a1aac8f59b85605b39672213ba80
+
+2.6 m-jojo-s
 -Updated alert db schema
 -Backend routes for create and view alerts

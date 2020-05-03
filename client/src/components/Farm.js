@@ -42,7 +42,7 @@ class Farm extends Component {
         }
     }
     render() {
-        const url = "/home/farms/";
+        const url = "/home/farms/"+String(this.state.id);
         const urlTab = "/home/farms?preset_id=";
         const animalPresets = this.state.animalPresets.map((preset, index) =>
             <Tab name={preset.name} key={preset.id} link={urlTab.concat(index.toString())} type="small" />
@@ -70,7 +70,10 @@ class Farm extends Component {
                 </div>
                 <div className="inner-main-container row pt-2 pb-2">
                     {animalPresets}
-                    <Link to={url + "create-preset"} className="tab-small">
+                    {
+                        console.log(window.location.href)
+                    }
+                    <Link to={url+"/create-preset"} className="tab-small">
                         <p className="tab-add"><FontAwesomeIcon icon={faPlusCircle} /></p>
                     </Link>
                 </div>

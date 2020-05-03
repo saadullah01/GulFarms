@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import {
     Button,
     Modal,
@@ -14,7 +14,9 @@ import {
     Col
 } from 'reactstrap';
 import AddAlert from './AddAlerts';
-
+import { connect } from "react-redux";
+import { saveFarm } from "../actions/farmActions";
+import { Link, withRouter } from "react-router-dom";
 class CreateFarm extends Component {
 
     // Can Add Constructor
@@ -23,10 +25,15 @@ class CreateFarm extends Component {
         farmName: "",
         Location: "",
         Description: "",
-        alerts: [{description:"L"}],
+        alerts: [{ description: "L" }],
         errors: {}
     }
-
+    componentDidUpdate=(prevProps, prevState)=>{
+        if(this.props.allFarms.length !== prevProps.allFarms.length || prevState.modal !== this.state.modal){
+            this.toggle()
+            this.props.history.push("/home/farms")
+        }
+    }
 
 
     toggle = () => {
@@ -38,22 +45,29 @@ class CreateFarm extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    onAdd = e =>{
+    onAdd = e => {
         this.setState({ alerts: e });
     }
+
     onSubmit = e => {
+        console.log(e);
         e.preventDefault();
-        const newUser = {
-            farmName: this.state.farmName,
-            Location: this.state.Location,
-            Description: this.state.Description,
-            alerts: this.state.alerts
+        const data = {
+            farm:{
+                farmName: this.state.farmName,
+                Location: this.state.Location,
+                Description: this.state.Description,
+                alerts: []
+            },
+            alerts:this.state.alerts
         }
-        console.log(newUser);
+        console.log(data);
+        this.props.saveFarm(data)
+
     }
     render() {
         var modal = false
-        const { errors } = this.state;
+        const { errors } = this.props;
         return (
             <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
                 <center>
@@ -99,7 +113,7 @@ class CreateFarm extends Component {
                                         <Label for="flocation" className="text-label">Location: </Label>
                                     </Col>
                                     <Col >
-                                    <Input
+                                        <Input
                                             className="input-field-a"
                                             type="text"
                                             id="Location"
@@ -129,19 +143,27 @@ class CreateFarm extends Component {
                                     </Col></Row>
                                 </FormGroup>
                             </Row>
-                                    <Row>
-                                    <Col><AddAlert update= {this.onAdd} Name="Alerts" title = "Duration"></AddAlert></Col>
-                                    <Col></Col>
-                                    </Row>
-                                    <Row>
-                                        
-                                    <Button className="login-btn" onClick={this.toggle}>Save</Button>
-                                    </Row>
-                </Form>
-                </Container>
+                            <Row>
+                                <Col><AddAlert update={this.onAdd} Name="Alerts" title="Duration"></AddAlert></Col>
+                                <Col></Col>
+                            </Row>
+                            <Row>
+
+                                <Button className="login-btn" type="submit">Save</Button>
+                            </Row>
+                        </Form>
+                    </Container>
                 </ModalBody>
-                </Modal>
+            </Modal>
         )
     }
 }
-export default CreateFarm;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    allFarms: state.farmReducer.farms
+});
+export default connect(
+    mapStateToProps,
+    { saveFarm }
+)(withRouter(CreateFarm));
