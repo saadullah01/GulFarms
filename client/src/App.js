@@ -20,11 +20,7 @@ import Farm from "./components/Farm";
 import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
 import CreateAnimalIndividual from './components/CreateAnimalIndividual'
-<<<<<<< HEAD
-import CreateNewAnimal from './components/CreateNewAnimal'
-=======
 import CreateNewAnimal from "./components/CreateNewAnimal"
->>>>>>> cf1672d138c7009c4b1ced7a0d188b4c43c3e684
 
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
