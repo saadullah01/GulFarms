@@ -13,8 +13,8 @@ class Landing extends Component{
             <div className="main-container row mt-4">
                 { this.props.children }
                 <Tab name="Farms" link="/home/farms" type="large" />
-                <Tab name="Alerts" link="alerts" type="large" />
-                <Tab name="Finance" link="finances" type="large" />
+                <Tab name="Alerts" link="/home/alerts" type="large" />
+                <Tab name="Finance" link="/home/finances" type="large" />
             </div>
         );
     }

@@ -76,7 +76,7 @@ class AddAlert extends Component {
         return this.state.data.map((d,index) => {
             return (
                 
-                <Row>
+                <Row key ={index}>
                         <Col >
                         <Label className="text-label">{d.description}</Label>
                         </Col>
@@ -150,7 +150,7 @@ class AddAlert extends Component {
                                         <DropdownItem divider />
                                         <DropdownItem id= "Day" onClick= {this.select}>Day</DropdownItem>
                                         <DropdownItem divider />
-                                        <DropdownItem id= "Hour" onClick= {this.select}>Hour</DropdownItem>
+                                        <DropdownItem id= "week" onClick= {this.select}>week</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                             </Row>

@@ -1,6 +1,7 @@
 import {
     SET_FARMS,
-    SET_DETAIL_FARM
+    SET_DETAIL_FARM,
+    SET_FARM
 } from "../actions/types";
 
 const initialState = {
@@ -21,6 +22,14 @@ const farmReducer = (state = initialState, action) => {
                     ...state.farms.slice(0,action.id),
                     action.payload,
                     ...state.farms.slice(action.id+1,)
+                ]
+            }
+        case SET_FARM:
+            return{
+                ...state,
+                farms:[
+                    ...state.farms,
+                    action.payload
                 ]
             }
         default:
