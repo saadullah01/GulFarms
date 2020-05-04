@@ -51,6 +51,11 @@ class AddTextField extends Component {
             checked : !prevState.checked
         }))
     }
+    onChangeCheckNot = e =>{
+        this.setState(prevState=>({
+            checked : prevState.checked
+        }))
+    }
     resett = () =>{
         this.setState({
             FieldName:"",
@@ -152,6 +157,7 @@ class AddTextField extends Component {
                             className="input-field-check"
                             type="checkbox"
                             checked = {this.state.checked}
+                            onChange = {this.onChangeCheckNot}
                         />
                         </Col>
                         {this.displayValue(d)}
