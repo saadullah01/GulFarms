@@ -80,11 +80,7 @@ class CreateNewAnimal extends Component {
         e.preventDefault();
         const id = getId()
         const data = {
-            AnimalName: this.state.AnimalName,
-            p1: this.state.p1,
-            track: this.state.track,
-            attributes: this.state.attributes,
-            alerts: this.state.alerts,
+            ...this.state,
             farmID: id
         }
         console.log(data);
