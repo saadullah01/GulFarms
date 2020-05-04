@@ -17,6 +17,7 @@ import AddTextField from './AddTextField'
 import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
+import AddAlert from './AddAlerts';
 class CreateNewAnimal extends Component {
 
     // Can Add Constructor
@@ -155,7 +156,7 @@ class CreateNewAnimal extends Component {
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <AddProduct Name="Products" title="Cycle" update={this.onAdd}></AddProduct>
+                                                <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
                                             </Col>
                                             <Col />
                                         </Row>
