@@ -28,7 +28,7 @@ class AddTextField extends Component {
             FieldName:"",
             FieldType:"String",
             Unit:"",
-            Option:""
+            Option:[]
             
         }
     }
@@ -54,7 +54,6 @@ class AddTextField extends Component {
             FieldName:"",
             FieldType:"Field Type",
             Unit:"",
-            Option:[]
          });
     };
 
@@ -105,6 +104,13 @@ class AddTextField extends Component {
         }
 
     }
+    ViewOption = (d)=> {
+        return d.forEach(dd => {
+            return (
+                <Label>dd</Label>
+            );
+        })
+    }
     display() {
         return this.state.data.map( (d,index) => {
             return (
@@ -120,7 +126,7 @@ class AddTextField extends Component {
                         <Label className="text-label-b">{d.Unit}</Label>
                         </Col>
                         <Col>
-                        <Label className="text-label-b">{d.Option}</Label>
+                        <Label className="text-label-b">{this.ViewOption()}</Label>
                         </Col>
                         <Button close onClick={() =>   this.remove(index)}>x</Button>
                         </Row>
