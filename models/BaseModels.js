@@ -119,8 +119,10 @@ ProductSchema.methods.SetCycle = function() {
         linkedModel: 'product'
     });
     return newAlert.Snooze(this.duration).save()
-    .then(alert => [alert]);
+    .then(alert => [alert])
+    .catch(err => err);
 };
+
 ProductSchema.methods.UpdateCycle = function() {
     const Alert = mongoose.model('alert', Alert);
     
