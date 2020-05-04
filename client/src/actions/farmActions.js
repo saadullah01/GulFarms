@@ -5,7 +5,7 @@ import {
     SET_FARM
 } from "./types";
 import axios from "axios";
-
+import {getPresets} from "./presetActions"
 export const getFarms = () => (dispatch) => {
     axios
         .post("/api/farms/get")
@@ -31,11 +31,13 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
         .post("/api/farms/view-farm", { id: dbId })
         .then(res => {
             // console.log(res)
+            getPresets(res.data.animalPresets)
             dispatch({
                 type: SET_DETAIL_FARM,
                 payload: res.data,
                 id: data
             })
+            
         })
         .catch(err => {
             dispatch({
