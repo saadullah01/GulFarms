@@ -28,12 +28,13 @@ const CreateMultiple = (dataList, dataType) => {
             docInfo.name = data.name;
             docInfo.attributeType = data.attributeType;
             docInfo.keepTrack = data.keepTrack;
+            docInfo.options = docInfo.attributeType != 'option' ? [] : data.options
         }
         if(dataType == 'product'){
             docInfo.name = data.name;
-            docInfo.startingDate = Date(data.startingDate);
+            docInfo.duration = data.duration
+            doccInfo.durationType = data.durationType
             docInfo.keepTrack = data.keepTrack;
-            // docInfo.alerts = data.alerts;
         }
         if(data.hasOwnProperty('unit')){
             docInfo.unit = data.unit;
@@ -42,13 +43,22 @@ const CreateMultiple = (dataList, dataType) => {
             docInfo.isPreset = false;
             docInfo.value = data.value;
         }
+        
         const doc = new nameToModelMap[dataType](docInfo);
+        if(dataType == 'product' && docInfo.isPreset == false){
+            doc.alerts.push(doc._id);
+            doc.SetCycle();
+        }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
         console.log("document created: " + docs);
     
-        return ({message: dataType + "(s) created.", created: docs.map(doc => doc._id), success: true});
+        return ({
+            message: dataType + "(s) created.",
+            created: docs.map(doc => (doc._id)),
+            success: true
+        });
     }).catch(err => ({ error: err.error, id: err.id, message: "Error creating " + dataType, success: false }));
 }
 
@@ -75,12 +85,13 @@ const EditOne = (data, dataType) => {
         updatedValues.name = data.name;
         updatedValues.attributeType = data.attributeType;
         updatedValues.keepTrack = data.keepTrack;
+        updatedValues.options = updatedValues.attributeType != 'option' ? [] : data.options
     }
     if(dataType == 'product'){
         updatedValues.name = data.name;
-        updatedValues.startingDate = Date(data.startingDate);
         updatedValues.keepTrack = data.keepTrack;
-        // updatedValues.alerts = data.alerts;
+        updatedValues.duration = data.duration
+        updatedValues.durationType = data.durationType
     }
     if(data.hasOwnProperty('unit')){
         updatedValues.unit = data.unit;
@@ -97,7 +108,10 @@ const EditOne = (data, dataType) => {
         if(updatedValues.keepTrack == true){
             doc.PushHistory();
         }
-        updatedValues.history = doc.history;
+        if(dataType == 'product' && docInfo.isPreset == false){
+            doc.SetCycle();
+        }
+        updatedValues.history = doc.history; //probabaly not needed, here as a precaution
         return new Promise( (resolve, reject) => {
             model.updateOne({_id: doc._id}, updatedValues, (err, _) => {
                 if(err){
@@ -348,7 +362,7 @@ router.post("/create-preset", (req, res) => {
         animalPreset.attributes = object.attributes;
         animalPreset.products = object.products;
         return animalPreset.save().then( preset => {
-            return res.status(200).json({message: "Animal preset created.", id: preset._id, success: true});
+            return res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true});
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
     }).catch(err => res.status(400).json({error: err, message: "Error creating presets.", success: false}));
 });
