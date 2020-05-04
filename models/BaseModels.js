@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 
 const AlertSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
-    duration: {type: Number, required: true},
+    duration: {type: Number, min: 0, required: true},
     durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
     due: {type: Date, default: Date.now()},
     linkedTo: {type: Schema.Types.ObjectId, refPath: "linkedModel", required: true},
@@ -18,10 +18,11 @@ const AttributeSchema = new Schema({
     attributeType: {
         type: String,
         lowercase: true,
-        enum: ['string', 'number', 'bool'], //only works at time of creation
+        enum: ['string', 'number', 'bool', 'option'], //only works at time of creation
         required: true,
         default: "string"
     },
+    options: [{type: String, lowercase:true}], //used if attribute type is set to 'option'
     value: {}, //can insert anything
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
@@ -31,7 +32,7 @@ const AttributeSchema = new Schema({
         attributeType: {
             type: String,
             lowercase: true,
-            enum: ['string', 'number', 'bool'],
+            enum: ['string', 'number', 'bool', 'option'],
             required: true,
             default: "string"
         },
@@ -43,13 +44,13 @@ const AttributeSchema = new Schema({
 
 const ProductSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
-    duration: {type: Number, required: true},
+    duration: {type: Number, min: 0, required: true},
     durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
     value: {}, //can insert anything
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
-    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],  //First alert to be always reserved for product duration cycle
     history: [{
         name: {type: String, lowercase: true, required: true},
         startingDate: {type: Date, required: true},
@@ -70,7 +71,7 @@ const AnimalPresetSchema = new Schema({
     linkParents: {type: Boolean, required: true}
 });
 
-//Schema methods
+//=========================Schema methods
 AlertSchema.methods.Snooze = function(snoozeFor) {
     const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
     this.due = moment(Date.now()).add(snoozeFor, type).toDate();
@@ -95,11 +96,42 @@ ProductSchema.methods.PushHistory = function() {
     }
     this.history.push({
         name: this.name,
-        startingDate: this.startingDate,
+        duration: this.duration,
+        durationType: this.durationType,
         value: this.value,
         unit: this.unit,
         updatedAt: Date.now()
     });
+};
+
+ProductSchema.methods.SetCycle = function() {
+    if(this.isPreset){
+        return;
+    }
+    const Alert = mongoose.model('alert', Alert);
+    
+    //Create new alert
+    const newAlert = new Alert({
+        name: this.name,
+        duration: this.duration,
+        durationType: this.durationType,
+        linkedTo: this._id,
+        linkedModel: 'product'
+    });
+    return newAlert.Snooze(this.duration).save()
+    .then(alert => [alert])
+    .catch(err => err);
+};
+
+ProductSchema.methods.UpdateCycle = function() {
+    const Alert = mongoose.model('alert', Alert);
+    
+    return Alert.findById(this.alerts[0]).then( alert => {
+        return alert.Snooze(this.duration).save();
+    })
+    .then(updatedAlert => {
+        return [updatedAlert].concat(this.alerts.slice(1));
+    }).catch(err => err);
 };
 
 // AttributeSchema.pre('findByIdAndUpdate', () => {

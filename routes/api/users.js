@@ -4,6 +4,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const sgMail = require("@sendgrid/mail");
+
+const host = "localhost:3000";
+
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
@@ -68,10 +71,9 @@ router.post("/add-user", (req, res) => {
             //Temporary until development completes
             ResetToken.findOne({email: "API"}).then( key => {
                 const apiKey = key.resetPasswordToken; 
-                const host = req.hostname || "localhost:3000";
                 sgMail.setApiKey(apiKey);
                 // send email
-                let link = "http://" + host + "/register/" + token.registerToken;
+                let link = req.protocol + "://" + host + "/register/" + token.registerToken;
                 const mailOptions = {
                     to: email,
                     from: keys.sendgridEMAIL,
@@ -230,11 +232,10 @@ router.post("/forgot-password", (req, res) => {
                 //Temporary until development completes
                 ResetToken.findOne({email: "API"}).then( key => {
                     const apiKey = key.resetPasswordToken; 
-                    const host = req.hostname || "localhost:3000";
                     
                     sgMail.setApiKey(apiKey);
                     // send email
-                    let link = `http://${host}/reset-password/` + token.resetPasswordToken;
+                    let link = req.protocol + "://" + host + "/reset-password/" + token.resetPasswordToken;
                     const mailOptions = {
                         to: token.email,
                         from: keys.sendgridEMAIL,
@@ -340,11 +341,10 @@ router.post("/add-user", (req, res) => {
                 //Temporary until development completes
                 ResetToken.findOne({email: "API"}).then( key => {
                     const apiKey = key.resetPasswordToken; 
-                    const host = req.hostname || "localhost:3000";
                     
                     sgMail.setApiKey(apiKey);
                     // send email
-                    let link = `http://${host}/Register/` + token.resetPasswordToken;
+                    let link = req.protocol + "://" + host + "/Register/" + token.resetPasswordToken;
                     const mailOptions = {
                         to: token.email,
                         from: keys.sendgridEMAIL,

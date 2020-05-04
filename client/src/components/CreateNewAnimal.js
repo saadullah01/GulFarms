@@ -33,7 +33,7 @@ class CreateNewAnimal extends Component {
 
     }
     componentDidMount() {
-        if (this.props.farms.length <= getId()) {
+        if (this.props.farms.length <= getId() || !this.props.farm.hasOwnProperty('animalPresets')) {
             this.props.history.push("/home/farms");
             return
         }
@@ -47,7 +47,7 @@ class CreateNewAnimal extends Component {
     componentDidUpdate = (prevProps, prevState) => {
         if (
             this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
-            prevState.modal !== this.state.modal
+            prevState.modal !== this.state.modal ||this.props.allPresets.length !== prevProps.allPresets.length
         ) {
             this.props.history.push("/home/farms/" + String(getId()));
         }
@@ -81,7 +81,7 @@ class CreateNewAnimal extends Component {
         const id = getId()
         const data = {
             ...this.state,
-            farmID: id
+            farmId: id
         }
         console.log(data);
         this.props.savePreset(data)

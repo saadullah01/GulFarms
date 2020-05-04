@@ -12,6 +12,7 @@ const nameToModelMap = {
     'attribute': BaseModels.Attribute,
     "animalPreset": BaseModels.AnimalPreset
 };
+
 const summarize = data => (
     {
         _id:data._id,
@@ -23,7 +24,7 @@ const summarize = data => (
 const CreateMultiple = (dataList, dataType) => {
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
-        const docInfo = {}
+        const docInfo = {};
         if(dataType == 'attribute'){
             docInfo.name = data.name;
             docInfo.attributeType = data.attributeType;
@@ -32,9 +33,9 @@ const CreateMultiple = (dataList, dataType) => {
         }
         if(dataType == 'product'){
             docInfo.name = data.name;
-            docInfo.duration = data.duration
-            doccInfo.durationType = data.durationType
-            docInfo.keepTrack = data.keepTrack;
+            docInfo.duration = data.duration;
+            docInfo.durationType = data.durationType;
+            docInfo.keepTrack = true;
         }
         if(data.hasOwnProperty('unit')){
             docInfo.unit = data.unit;
@@ -47,12 +48,12 @@ const CreateMultiple = (dataList, dataType) => {
         const doc = new nameToModelMap[dataType](docInfo);
         if(dataType == 'product' && docInfo.isPreset == false){
             doc.alerts.push(doc._id);
-            doc.SetCycle();
+            doc.alerts = doc.SetCycle();
         }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
-        console.log("document created: " + docs);
+        console.log("documents created: ", docs.map(doc => doc.toJSON()));
     
         return ({
             message: dataType + "(s) created.",
@@ -89,7 +90,7 @@ const EditOne = (data, dataType) => {
     }
     if(dataType == 'product'){
         updatedValues.name = data.name;
-        updatedValues.keepTrack = data.keepTrack;
+        updatedValues.keepTrack = true;
         updatedValues.duration = data.duration
         updatedValues.durationType = data.durationType
     }
@@ -109,7 +110,7 @@ const EditOne = (data, dataType) => {
             doc.PushHistory();
         }
         if(dataType == 'product' && docInfo.isPreset == false){
-            doc.SetCycle();
+            doc.alerts = doc.UpdateCycle();
         }
         updatedValues.history = doc.history; //probabaly not needed, here as a precaution
         return new Promise( (resolve, reject) => {
@@ -144,6 +145,11 @@ const RemoveMultiple = (listRemove, dataType) => {
 // @desc Create one or more new attribute(s)
 // @access Public
 router.post("/attributes/create", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
     // console.log(req.body)
@@ -161,6 +167,11 @@ router.post("/attributes/create", (req, res) => {
 // @desc Retrieve an attribute from database
 // @access Public
 router.post("/attributes/view-attribute", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
 
@@ -177,6 +188,11 @@ router.post("/attributes/view-attribute", (req, res) => {
 // @desc Retrieve a list of all attributes
 // @access Public
 router.post("/attributes/get", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     //Returns only presets if body.presets == true otherwise only instances
     return GetAll("attribute", req.body.presets)
         .then(attributes => res.status(200).json(attributes))
@@ -187,6 +203,11 @@ router.post("/attributes/get", (req, res) => {
 // @desc Modify an existing attribute
 // @access Public
 router.post("/attributes/edit", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
@@ -206,6 +227,11 @@ router.post("/attributes/edit", (req, res) => {
 // @desc Delete attributes matching given IDs
 // @access Public
 router.post("/attributes/delete", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
@@ -228,6 +254,11 @@ router.post("/attributes/delete", (req, res) => {
 // @desc Create one or more new product(s)
 // @access Public
 router.post("/products/create", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
     // console.log(req.body)
@@ -245,6 +276,11 @@ router.post("/products/create", (req, res) => {
 // @desc Retrieve an product from database
 // @access Public
 router.post("/products/view-product", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
 
@@ -261,6 +297,11 @@ router.post("/products/view-product", (req, res) => {
 // @desc Retrieve a list of all products
 // @access Public
 router.post("/products/get", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     //Returns only presets if body.presets == true otherwise only instances
     return GetAll("product", req.body.presets)
         .then(products => res.status(200).json(products))
@@ -271,6 +312,11 @@ router.post("/products/get", (req, res) => {
 // @desc Modify an existing product
 // @access Public
 router.post("/products/edit", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
@@ -289,6 +335,11 @@ router.post("/products/edit", (req, res) => {
 // @desc Delete products matching given IDs
 // @access Public
 router.post("/products/delete", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
@@ -311,6 +362,15 @@ router.post("/products/delete", (req, res) => {
 // @desc Create one or more new product(s)
 // @access Public
 router.post("/create-preset", (req, res) => {
+    for (key in req.body) {
+        console.log(key,": ", req.body[key]);
+    }
+    
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
     // console.log(req.body)
@@ -318,6 +378,9 @@ router.post("/create-preset", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
+    // console.log(JSON.stringify(req.body));
+    req.body.attributes = req.body.attributes[0];
+    req.body.products = req.body.products[0];
 
     const animalPreset = new BaseModels.AnimalPreset({
         name: req.body.name,
@@ -332,7 +395,7 @@ router.post("/create-preset", (req, res) => {
     //otherwise create new ones below
     //
     // to be implemented
-
+    
     //Create product/attribute to link parents or track offspring
     if(animalPreset.linkParents == true){
         const parentsAttribute = {
@@ -341,7 +404,7 @@ router.post("/create-preset", (req, res) => {
             keepTrack: false
         };
         req.body.attributes.push(parentsAttribute);
-        console.log("new attributes: " + req.body.attributes);
+        // console.log("new attributes: " + JSON.stringify(req.body.attributes));
     }
     if(animalPreset.trackOffspring == true){
         const offspringProduct = {
@@ -354,7 +417,7 @@ router.post("/create-preset", (req, res) => {
             offspringProduct.durationType = req.body.durationType; //duration type
         }
         req.body.products.push(offspringProduct);
-        console.log("new products: " + req.body.products);
+        // console.log("new products: " + req.body.products);
     }
 
     return CreateMultiple(req.body.attributes, "attribute")
@@ -365,9 +428,15 @@ router.post("/create-preset", (req, res) => {
         animalPreset.attributes = object.attributes;
         animalPreset.products = object.products;
         return animalPreset.save().then( preset => {
-            return res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true});
+            //Add preset's id to farm
+            return FarmModels.Farm.findById(req.body.farmId).then(farm => {
+                farm.animalPresets = farm.animalPresets.push(preset._id)
+                return farm.save();
+            })
+            .then(() => res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true}))
+            .catch(err => res.status(400).json({error: err, message: "Error linking animal preset to farm.", success: false}));
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
-    }).catch(err => res.status(400).json({error: err, message: "Error creating presets.", success: false}));
+    }).catch(err => res.status(400).json({error: err, message: "Error creating animal preset.", success: false}));
 });
 
 
@@ -375,6 +444,11 @@ router.post("/create-preset", (req, res) => {
 // @desc View an animal preset
 // @access Public
 router.post("/view-preset", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
 
@@ -391,6 +465,11 @@ router.post("/view-preset", (req, res) => {
 // @desc Retrieve a list of all animal presets
 // @access Public
 router.post("/get-preset", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     return GetAll("animalPreset", false)
         .then(animalPreset => res.status(200).json(animalPreset))
@@ -401,6 +480,11 @@ router.post("/get-preset", (req, res) => {
 // @desc Modify an existing preset
 // @access Public
 router.post("/edit-preset", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
@@ -416,7 +500,7 @@ router.post("/edit-preset", (req, res) => {
         attributes: req.body.attributes,
         products: req.body.products,
         barns: req.body.barns
-        
+
         //To be implemented
         // trackOffspring: req.body.trackOffspring,
         // linkParents: req.body.linkParents
@@ -437,6 +521,11 @@ router.post("/edit-preset", (req, res) => {
 // @desc Delete presets matching given IDs
 // @access Public
 router.post("/delete-preset", (req, res) => {
+    console.log("Request @ api/animals/ : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
 
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
