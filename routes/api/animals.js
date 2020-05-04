@@ -428,7 +428,13 @@ router.post("/create-preset", (req, res) => {
         animalPreset.attributes = object.attributes;
         animalPreset.products = object.products;
         return animalPreset.save().then( preset => {
-            return res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true});
+            //Add preset's id to farm
+            return FarmModels.Farm.findById(req.body.farmId).then(farm => {
+                farm.animalPresets = farm.animalPresets.push(preset._id)
+                return farm.save();
+            })
+            .then(() => res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true}))
+            .catch(err => res.status(400).json({error: err, message: "Error linking animal preset to farm.", success: false}));
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
     }).catch(err => res.status(400).json({error: err, message: "Error creating animal preset.", success: false}));
 });
