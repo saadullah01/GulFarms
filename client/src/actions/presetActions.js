@@ -22,63 +22,59 @@ export const getPresets = (data) => (dispatch) => {
                 type: GET_ERRORS,
                 payload: err.response.data
             })
-            
+
         })
 }
-const attributeTypes={
-    "Numeric":"number",
-    "Options":"option",
-    "String":"string"
+const attributeTypes = {
+    "Numeric": "number",
+    "Options": "option",
+    "String": "string"
 }
 export const savePreset = (data) => (dispatch, getState) => {
 
     const preset = {}
     const state = getState()
     const farm = state.farmReducer.farms[data.farmId]
-    console.log("farm!!!!!!!! :",farm)
+    console.log("farm!!!!!!!! :", farm)
     preset.name = data.AnimalName
     preset.trackOffspring = data.recordOffspring
     preset.linkParents = data.recordParents
     preset.barns = []
     preset.farmId = data.farmId
-    preset.attributes = !data.attributes.length?[]:[
-        data.attributes.map(attribute => {
-            const att = {
-                name:attribute.Name,
-                attributeType:attributeTypes[attribute.Type],
-                keepTrack:attribute.checked
-            }
-            if(attribute.Unit.length){
-                att.unit = attribute.Unit
-            }
-            if(attribute.Option.length){
-                att.options = attribute.Option
-            }
-            return att
-        })
-    ]
-    preset.products =!data.alerts.length?[]: [
-        data.alerts.map(product => {
-            const att = {
-                name:product.description,
-                duration:product.duration,
-                durationType:product.selectedOption
-            }
-            return att
-        })
-    ]
+    preset.attributes = !data.attributes.length ? [] : data.attributes.map(attribute => {
+        const att = {
+            name: attribute.Name,
+            attributeType: attributeTypes[attribute.Type],
+            keepTrack: attribute.checked
+        }
+        if (attribute.Unit.length) {
+            att.unit = attribute.Unit
+        }
+        if (attribute.Option.length) {
+            att.options = attribute.Option
+        }
+        return att
+    })
+    preset.products = !data.alerts.length ? [] : data.alerts.map(product => {
+        const att = {
+            name: product.description,
+            duration: product.duration,
+            durationType: product.selectedOption
+        }
+        return att
+    })
     console.log(preset)
-    axios.post("/api/animals/create-preset",preset)
-        .then(res=>{
-            const updatedPresets=[
+    axios.post("/api/animals/create-preset", preset)
+        .then(res => {
+            const updatedPresets = [
                 ...farm.animalPresets,
                 res.data.id
-                
+
             ]
             // console.log("lololo",updatedFarm)
             dispatch({
                 type: SET_PRESET,
-                payload: {id:res.data.id,name:res.data.name}
+                payload: { id: res.data.id, name: res.data.name }
             })
 
             // dispatch({
@@ -90,7 +86,7 @@ export const savePreset = (data) => (dispatch, getState) => {
             //     id:res.data.id
             // })
         })
-        .catch(err=>{
+        .catch(err => {
             console.log(err)
             dispatch({
                 type: GET_ERRORS,
