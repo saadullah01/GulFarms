@@ -23,7 +23,7 @@ const summarize = data => (
 const CreateMultiple = (dataList, dataType) => {
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
-        const docInfo = {}
+        const docInfo = {};
         if(dataType == 'attribute'){
             docInfo.name = data.name;
             docInfo.attributeType = data.attributeType;
