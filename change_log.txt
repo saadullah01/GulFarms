@@ -104,6 +104,4 @@ https://www.google.com/search?q=farm+minimal+photo&rlz=1C1SQJL_enPK786PK787&sxsr
 see related images of this for more photos 
 thenx
 
-2.10 Zainab
-Edited AddAlerts.js to suit design requirements
 
