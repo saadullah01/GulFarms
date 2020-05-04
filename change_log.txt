@@ -93,3 +93,15 @@ added route for create animal preset
 -Updated create-alerts to work with multiple creation requests
 -Added alert snooze route -> installed moment dependency.
 -Added backend routes for products and attributes.
+2.9 arham
+saad ulah mar nai dayi 
+added line 167-172 body
+commented out 390 next-layer
+commented out 396 .farm-main-container
+commented out 406 farm-back
+in app.cs also added pix
+https://www.google.com/search?q=farm+minimal+photo&rlz=1C1SQJL_enPK786PK787&sxsrf=ALeKk02v_mApgNMrhmZQghhCViIZyPWqCw:1588551308406&tbm=isch&source=iu&ictx=1&fir=4pim1X0tM3wLHM%253A%252CbwkX3GRna792DM%252C_&vet=1&usg=AI4_-kSc7dIrNcY4ltb8M0ExuR1JicY1NQ&sa=X&ved=2ahUKEwjNm8fj9pjpAhUEyoUKHX5lCHsQ9QEwAHoECAoQHQ#imgrc=4pim1X0tM3wLHM
+see related images of this for more photos 
+thenx
+
+
