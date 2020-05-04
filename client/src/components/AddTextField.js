@@ -167,7 +167,9 @@ class AddTextField extends Component {
                         {this.unit()}
                         {this.option()}
                         </Row>
+                        <Row><FormGroup></FormGroup></Row>
                         <Row>
+                            
                         <FormGroup>
                             <Row>
                                 <Col/>
@@ -175,7 +177,7 @@ class AddTextField extends Component {
                                 
                             </Row>
                         </FormGroup>
-                    </Row>
+                        </Row>
                 </div>
         
         )

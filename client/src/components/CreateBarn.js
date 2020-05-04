@@ -90,20 +90,26 @@ class CreateFarm extends Component{
                     <Row>
                         <Col>
                         <FormGroup><Row>
-                            
-                            <Row>
-                                <Input 
-                                            className="input-field-heading"
-                                            type="text"  
-                                            placeholder="Enter Animal Name" 
-                                            onChange={this.onChange} 
-                                            value={this.state.AnimalName} 
-                                            error={errors.AnimalName} 
-                                            id="AnimalName"
-                                        /> 
-                                </Row>
-                            
-                            </Row></FormGroup>
+                                        <Col>
+                                            <Label>Name:</Label>
+                                        </Col>
+                                        <Col>
+                                            <Row>
+                                                <Input 
+                                                className="input-field-heading"
+                                                type="text"  
+                                                placeholder="Enter Animal Name" 
+                                                onChange={this.onChange} 
+                                                value={this.state.AnimalName} 
+                                                error={errors.AnimalName} 
+                                                id="AnimalName"
+                                            /> 
+                                            </Row>
+                                        </Col>
+                                        <Col />
+                                        <Col />
+
+                                    </Row></FormGroup>
                             
                             
                             
@@ -134,11 +140,12 @@ class CreateFarm extends Component{
                         </Col>
                         
                         </Col>
-                        <Row>
+                        
+                </Row>
+                <Row>
                             
                     <Button className="login-btn" onClick= {this.toggle}>Save</Button>
                         </Row>
-                </Row>
                 </Form>
                 </Container>
                 </ModalBody>
