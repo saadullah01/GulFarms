@@ -53,8 +53,14 @@ router.post("/view-farm", (req, res) => {
     }
 
     FarmModels.Farm.findById(req.body.id)
-        .then(farm => res.status(200).json(farm))
-        .catch(err => res.status(400).json({ error: err, message: "error finding farm", success: false }));
+    .then(farm => {
+        farm.populate('animalPresets').execPopulate().then(farm =>{
+            const newFarm = farm.toJSON();
+            newFarm.animalPresets = newFarm.animalPresets.map( preset => giveSummary(preset));
+            return newFarm;
+        }).then(farm => res.status(200).json(farm))
+        .catch(err => res.status(400).json({ error: err, message: "error adding preset summary to farm", success: false }));
+    }).catch(err => res.status(400).json({ error: err, message: "error finding farm", success: false }));
 });
 
 // @route POST api/farms/get
