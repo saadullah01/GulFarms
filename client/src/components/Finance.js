@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { useLocation, Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    Form,
+    Input,
+    Button
+} from 'reactstrap';
+import {
     faFilter,
     faTimes
 } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +15,11 @@ class Finance extends Component {
     state = {
         netIncome: null,
         earningsList: [],
-        expensesList: []
+        expensesList: [],
+        earningDesc: "",
+        expenseDesc: "",
+        earningValue: null,
+        expenseValue: null
     }
     componentDidMount() {
         this.setState({
@@ -26,6 +35,29 @@ class Finance extends Component {
             ]
         });
     }
+    onChange = e => {
+        this.setState({ [e.target.id]: e.target.value });
+    }
+    addEarning = () => {
+        this.setState({
+            earningsList: [...this.state.earningsList, {name: this.state.earningDesc, quantity: parseFloat(this.state.earningValue)}],
+            earningDesc: "",
+            earningValue: null
+        });
+    }
+    addExpense = () => {
+        this.setState({
+            expensesList: [...this.state.expensesList, {name: this.state.expenseDesc, quantity: parseFloat(this.state.expenseValue)}],
+            expenseDesc: "",
+            expenseValue: null
+        });
+    }
+    removeEarning = e => {
+        console.log(e);
+    }
+    removeExpense = e => {
+        console.log(e)
+    }
     render() {
         let netExpenses = 0;
         let netEarnings = 0;
@@ -36,7 +68,7 @@ class Finance extends Component {
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
                     <div className="fin-record-quantity">{ e.quantity }</div>
-                    <Link><FontAwesomeIcon className="fin-inner-icon" icon={ faTimes } size="1x" /></Link>
+                    <FontAwesomeIcon id={i} onClick={ this.removeEarning } className="fin-inner-icon" icon={ faTimes } size="1x" />
                 </div>
             </div>
         );
@@ -45,7 +77,7 @@ class Finance extends Component {
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
                     <div className="fin-record-quantity">{ e.quantity }</div>
-                    <Link><FontAwesomeIcon className="fin-inner-icon" icon={ faTimes } size="1x" /></Link>
+                    <FontAwesomeIcon key={i} onClick={ this.removeExpense } className="fin-inner-icon" icon={ faTimes } size="1x" />
                 </div>
             </div>
         );
@@ -60,6 +92,29 @@ class Finance extends Component {
                         </Link>
                     </div>
                     { earnings }
+                    <div className="fin-add row">
+                        <div className="fin-temp col-md-5">
+                            <Input 
+                                type="text"
+                                value={ this.state.earningDesc }
+                                className="fin-input"
+                                onChange={ this.onChange }
+                                id="earningDesc"
+                                placeholder="Description" />
+                        </div>
+                        <div className="fin-temp col-md-5">
+                            <Input 
+                                type="text"
+                                value={ this.state.earningValue }
+                                className="fin-input"
+                                onChange={ this.onChange }
+                                id="earningValue"
+                                placeholder="0" />
+                        </div>
+                        <div className="fin-temp col-sm-4 col-md-2">
+                            <Button onClick={ this.addEarning } className="fin-button">Add</Button>
+                        </div>
+                    </div>
                 </div>
                 <div className="fin-expenses">
                     <div className="fin-top">
@@ -69,6 +124,29 @@ class Finance extends Component {
                         </Link>
                     </div>
                     { expenses }
+                    <div className="fin-add row">
+                        <div className="fin-temp col-md-5">
+                            <Input 
+                                type="text"
+                                value={ this.state.expenseDesc }
+                                onChange={ this.onChange }
+                                className="fin-input"
+                                id="expenseDesc"
+                                placeholder="Description" />
+                        </div>
+                        <div className="fin-temp col-md-5">
+                            <Input 
+                                type="text"
+                                value={ this.state.expenseValue }
+                                onChange={ this.onChange }
+                                className="fin-input"
+                                id="expenseValue"
+                                placeholder="0" />
+                        </div>
+                        <div className="fin-temp col-sm-4 col-md-2">
+                            <Button onClick={ this.addExpense } className="fin-button">Add</Button>
+                        </div>
+                    </div>
                 </div>
                 <div className="fin-net-earnings">
                     <div className="main-container">

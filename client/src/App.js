@@ -54,7 +54,7 @@ const  App =()=>{
         <div className="App">
           <Route path="/" component={ AppNavbar } />
           <Route exact path="/home/finances" component={ Finance } />
-          <Route path="/cf" component={ ViewFarm } />
+          {/* <Route path="/cf" component={ ViewFarm } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
@@ -63,12 +63,12 @@ const  App =()=>{
           <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
-            <PrivateRoute exact path="/home/farms/:id" component={Farm} />
+            <PrivateRoute exact path="/home/farms/:id" component={Farm} /> */}
             {/* <PrivateRoute exact path="/home/alerts" />
             <PrivateRoute exact path="/home/finances" /> */}
-          </Switch>
+          {/* </Switch>
           <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
-          <PrivateRoute exact path="/home/farms/:id/create-preset" component={ CreateNewAnimal } />
+          <PrivateRoute exact path="/home/farms/:id/create-preset" component={ CreateNewAnimal } /> */}
         </div>  
       </Router>   
     );
