@@ -8,22 +8,23 @@ import {
 import axios from "axios";
 
 export const getPresets = (data) => (dispatch) => {
-    axios
-        .post("/api/farms/get", data)
-        .then(res => {
-            console.log(res)
-            dispatch({
-                type: SET_PRESETS,
-                payload: res.data
-            })
-        })
-        .catch(err => {
-            dispatch({
-                type: GET_ERRORS,
-                payload: err.response.data
-            })
+    console.log(data)
+    // axios
+    //     .post("/api/farms/get", data)
+    //     .then(res => {
+    //         console.log(res)
+    //         dispatch({
+    //             type: SET_PRESETS,
+    //             payload: res.data
+    //         })
+    //     })
+    //     .catch(err => {
+    //         dispatch({
+    //             type: GET_ERRORS,
+    //             payload: err.response.data
+    //         })
 
-        })
+    //     })
 }
 const attributeTypes = {
     "Numeric": "number",
