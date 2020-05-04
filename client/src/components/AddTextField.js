@@ -4,12 +4,8 @@ import {
     Row,
     Col,
     Button,
-    Modal,
-    Form,
     FormGroup,
-    ModalBody,
     Input,
-    Dropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
@@ -52,9 +48,9 @@ class AddTextField extends Component {
     resett = () =>{
         this.setState({
             FieldName:"",
-            FieldType:"Field Type",
+            FieldType:"String",
             Unit:"",
-            Option:""
+            Option:[]
          });
     };
 
@@ -106,11 +102,29 @@ class AddTextField extends Component {
 
     }
     ViewOption = (d)=> {
-        return d.Option.forEach(dd => {
-            return (
-                <Label>dd</Label>
-            );
-        })
+        return(
+            
+            <Label>{d.Option.join(",")}</Label>
+            
+        )
+        
+    }
+    displayValue= (d)=>{
+        if(d.Type === "Numeric"){
+            return(
+            <Col>
+            <Label className="text-label-b">{d.Unit}</Label>
+            </Col>    
+            )   
+        }
+        else if(d.Type === "Options"){
+            return(
+                <Col>
+                <Label className="text-label-b">{this.ViewOption(d)}</Label>
+                </Col>    
+            )
+            
+        }
     }
     display() {
         return this.state.data.map( (d,index) => {
@@ -123,12 +137,7 @@ class AddTextField extends Component {
                         <Col>
                         <Label className="text-label-b">{d.Type}</Label>
                         </Col>
-                        <Col>
-                        <Label className="text-label-b">{d.Unit}</Label>
-                        </Col>
-                        <Col>
-                        <Label className="text-label-b">{this.ViewOption(d)}</Label>
-                        </Col>
+                        {this.displayValue(d)}
                         <Button close onClick={() =>   this.remove(index)}>x</Button>
                         </Row>
             );

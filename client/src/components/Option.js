@@ -6,10 +6,6 @@ import {
     Button,
     FormGroup,
     Input,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown
 } from 'reactstrap';
 
 class Option extends Component {
@@ -30,7 +26,7 @@ class Option extends Component {
 
         this.setState(state => {
 
-            const data = state.data.concat({ Opt: state.Opt });
+            const data = state.data.concat(state.Opt);
             return {
                 data,
             };
@@ -44,9 +40,6 @@ class Option extends Component {
             Opt: "",
         });
     };
-    select = e => {
-        this.setState({ selectedOption: e.target.id });
-    }
 
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
@@ -72,7 +65,7 @@ class Option extends Component {
                     <FormGroup>
                         <Row>
                             <Col >
-                                <Label className="text-label">{d.Opt}</Label>
+                                <Label className="text-label-b">{d}</Label>
                             </Col>
                             <Col>
                                 <Button close onClick={() => this.remove(index)}>x</Button>
@@ -91,7 +84,6 @@ class Option extends Component {
     }
 
     render() {
-        const { errors } = this.state;
         return (
             <div>
 
