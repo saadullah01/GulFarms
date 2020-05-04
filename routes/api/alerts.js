@@ -5,6 +5,9 @@ const router = express.Router();
 const BaseModels = require('../../models/BaseModels');
 const FarmModels = require('../../models/Farm');
 
+//Modify functions to add alerts
+const FarmRoutes = require('./farms');
+
 const nameToModelMap = {'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product}
 const summarize = data => (
     {
@@ -148,7 +151,7 @@ router.post("/edit", (req, res) => {
     });
 });
 
-// @route POST api/alerts/delete
+// @route POST api/farms/delete
 // @desc Delete alerts matching given IDs
 // @access Public
 router.post("/delete", (req, res) => {
@@ -166,10 +169,8 @@ router.post("/delete", (req, res) => {
         if (!alerts) {
             return res.status(404).json({ message: "Error finding alert(s) to delete.", success: false, error: err });
         }
-        const allDeleted = alerts.map( alert => alert.remove());
-        return Promise.all(allDeleted)
-                    .then( _ => res.status(200).json({ message: "Alert(s) deleted.", success: true }))
-                    .catch(err => res.status(400).json({error: err, message: "Error deleting alert(s).", success: false}));
+        alerts.map( alert => alert.remove());
+        return res.status(200).json({ message: "Alerts deleted.", success: true });
     });
 });
 
