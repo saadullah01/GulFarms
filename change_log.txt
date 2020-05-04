@@ -94,3 +94,4 @@ added route for create animal preset
 -Added alert snooze route -> installed moment dependency
 -Added backend routes for attribute, products and animal presets.
 -Modified product schema to keep duration and duration type.
+-Added setAlert, updateAlert functions for product cycle.

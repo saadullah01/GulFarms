@@ -23,7 +23,7 @@ const summarize = data => (
 const CreateMultiple = (dataList, dataType) => {
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
-        const docInfo = {}
+        const docInfo = {};
         if(dataType == 'attribute'){
             docInfo.name = data.name;
             docInfo.attributeType = data.attributeType;
@@ -47,12 +47,12 @@ const CreateMultiple = (dataList, dataType) => {
         const doc = new nameToModelMap[dataType](docInfo);
         if(dataType == 'product' && docInfo.isPreset == false){
             doc.alerts.push(doc._id);
-            doc.SetCycle();
+            doc.alerts = doc.SetCycle();
         }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
-        console.log("document created: " + docs);
+        console.log("documents created: ", docs.map(doc => doc.toJSON()));
     
         return ({
             message: dataType + "(s) created.",
@@ -109,7 +109,7 @@ const EditOne = (data, dataType) => {
             doc.PushHistory();
         }
         if(dataType == 'product' && docInfo.isPreset == false){
-            doc.SetCycle();
+            doc.alerts = doc.UpdateCycle();
         }
         updatedValues.history = doc.history; //probabaly not needed, here as a precaution
         return new Promise( (resolve, reject) => {
@@ -346,10 +346,13 @@ router.post("/create-preset", (req, res) => {
     if(animalPreset.trackOffspring == true){
         const offspringProduct = {
             name: "offspring",
-            startingDate: Date.now(),
             unit: "number of offspring",
             keepTrack: false
         };
+        if(req.body.hasOwnProperty('duration')){
+            offspringProduct.duration = req.body.duration; //ofspring duration
+            offspringProduct.durationType = req.body.durationType; //duration type
+        }
         req.body.products.push(offspringProduct);
         console.log("new products: " + req.body.products);
     }
@@ -364,7 +367,7 @@ router.post("/create-preset", (req, res) => {
         return animalPreset.save().then( preset => {
             return res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true});
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
-    }).catch(err => res.status(400).json({error: err, message: "Error creating presets.", success: false}));
+    }).catch(err => res.status(400).json({error: err, message: "Error creating animal preset.", success: false}));
 });
 
 
@@ -413,7 +416,7 @@ router.post("/edit-preset", (req, res) => {
         attributes: req.body.attributes,
         products: req.body.products,
         barns: req.body.barns
-        
+
         //To be implemented
         // trackOffspring: req.body.trackOffspring,
         // linkParents: req.body.linkParents
