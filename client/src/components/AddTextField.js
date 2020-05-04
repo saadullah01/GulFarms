@@ -36,7 +36,8 @@ class AddTextField extends Component {
         
         this.setState(state => {
 
-            const data = state.data.concat({Name: this.state.FieldName, Type: this.state.FieldType, Unit: this.state.Unit, Option: this.state.Option});
+            const data = state.data.concat({Name: this.state.FieldName, Type: this.state.FieldType, 
+                Unit: this.state.Unit, Option: this.state.Option, checked:this.state.checked});
             return {
             data,
             };
@@ -45,12 +46,23 @@ class AddTextField extends Component {
         this.resett()
         
     };
+    onChangeCheck = e =>{
+        this.setState(prevState=>({
+            checked : !prevState.checked
+        }))
+    }
+    onChangeCheckNot = e =>{
+        this.setState(prevState=>({
+            checked : prevState.checked
+        }))
+    }
     resett = () =>{
         this.setState({
             FieldName:"",
             FieldType:"String",
             Unit:"",
-            Option:[]
+            Option:[],
+            checked:false
          });
     };
 
@@ -137,6 +149,17 @@ class AddTextField extends Component {
                         <Col>
                         <Label className="text-label-b">{d.Type}</Label>
                         </Col>
+                        <Col>
+                        <Label>Track</Label>
+                        </Col>
+                        <Col>
+                        <Input
+                            className="input-field-check"
+                            type="checkbox"
+                            checked = {this.state.checked}
+                            onChange = {this.onChangeCheckNot}
+                        />
+                        </Col>
                         {this.displayValue(d)}
                         <Button close onClick={() =>   this.remove(index)}>x</Button>
                         </Row>
@@ -182,8 +205,28 @@ class AddTextField extends Component {
                         </Col>
                         {this.unit()}
                         {this.option()}
+                        <FormGroup>
+                        <Col>
+                        <Row>
+                        <Col>
+                        <Label>Track</Label>
+                        </Col>
+                        <Col>
+                        <Input
+                            className="input-field-check"
+                            type="checkbox"
+                            onChange={this.onChangeCheck}
+                            checked = {this.state.checked}
+                            id="CheckBox"
+                        />
+                        </Col>
+                        </Row>
+                        </Col>
+                        
+                    </FormGroup>
                         </Row>
                         <Row><FormGroup></FormGroup></Row>
+                        
                         <Row>
                             
                         <FormGroup>
