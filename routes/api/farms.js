@@ -4,6 +4,15 @@ const router = express.Router();
 //Model
 const FarmModels = require('../../models/Farm')
 
+//Helper functions
+const giveSummary = (data)=>(
+    {
+        _id:data._id,
+        name:data.name
+    }
+)
+
+
 // @route POST api/farms/new
 // @desc Create a new farm
 // @access Public
@@ -51,12 +60,6 @@ router.post("/view-farm", (req, res) => {
 // @route POST api/farms/get
 // @desc Retrieve a list of all farms
 // @access Public
-const giveSummary = (data)=>(
-    {
-        _id:data._id,
-        name:data.name
-    }
-)
 router.post("/get", (req, res) => {
     FarmModels.Farm.find({})
         .then(farms => { 
