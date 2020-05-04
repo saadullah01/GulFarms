@@ -5,7 +5,7 @@ import {
 } from "./types";
 import axios from "axios";
 
-export const getPresets = () => (dispatch,data) => {
+export const getPresets = (data) => (dispatch) => {
     axios
         .post("/api/farms/get",data)
         .then(res => {
@@ -22,6 +22,6 @@ export const getPresets = () => (dispatch,data) => {
             })
         })
 }
-export const savePreset=()=>(dispatch,data)=>{
+export const savePreset=(data)=>(dispatch,getState)=>{
     console.log(data)
 }
