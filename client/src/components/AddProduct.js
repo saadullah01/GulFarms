@@ -12,7 +12,7 @@ import {
     UncontrolledDropdown
 } from 'reactstrap';
 
-class AddAlert extends Component {
+class AddProduct extends Component {
     // Can Add Constructor
     constructor(props) {
         super(props);
@@ -24,7 +24,8 @@ class AddAlert extends Component {
             number: 1,
             AlertDescription: "",
             AlertDuration: "",
-            selectedOption: "Year"
+            selectedOption: "Year",
+            checked: false
 
         }
     }
@@ -36,7 +37,8 @@ class AddAlert extends Component {
 
         this.setState(state => {
 
-            const data = state.data.concat({ description: state.AlertDescription, duration: state.AlertDuration, selectedOption: state.selectedOption });
+            const data = state.data.concat({ description: state.AlertDescription, 
+                duration: state.AlertDuration, selectedOption: state.selectedOption, checked: state.checked });
             return {
                 data,
             };
@@ -49,9 +51,15 @@ class AddAlert extends Component {
         this.setState({
             AlertDuration: "",
             AlertDescription: "",
-            selectedOption: "Year"
+            selectedOption: "Year",
+            checked:false
         });
     };
+    onChangeCheck = e =>{
+        this.setState(prevState=>({
+            checked : !prevState.checked
+        }))
+    }
     select = e => {
         this.setState({ selectedOption: e.target.id });
     }
@@ -156,6 +164,25 @@ class AddAlert extends Component {
                             </Row>
                         </Col>
                     </FormGroup>
+                    <FormGroup>
+                        <Col>
+                        <Row>
+                        <Col>
+                        <Label>Track</Label>
+                        </Col>
+                        <Col>
+                        <Input
+                            className="input-field-check"
+                            type="checkbox"
+                            onChange={this.onChangeCheck}
+                            checked = {this.state.checked}
+                            id="AlertDuration"
+                        />
+                        </Col>
+                        </Row>
+                        </Col>
+                        
+                    </FormGroup>
                 </Row>
                 <Row>
                     <Col />
@@ -172,4 +199,4 @@ class AddAlert extends Component {
     }
 }
 
-export default AddAlert;
+export default AddProduct;

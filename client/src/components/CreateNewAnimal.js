@@ -17,7 +17,7 @@ import {
     DropdownToggle,
     DropdownMenu
 } from 'reactstrap';
-import AddAlert from './AddAlerts';
+import AddProduct from './AddProduct';
 import AddTextField from './AddTextField'
 import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
@@ -33,6 +33,8 @@ class CreateNewAnimal extends Component {
         errors: {},
         attributes: [],
         alerts: [],
+        recordParents: false,
+        recordOffspring: false
 
     }
     componentDidMount() {
@@ -41,6 +43,12 @@ class CreateNewAnimal extends Component {
             return
         }
     }
+    onChangeCheck = e => {
+        this.setState(prevState => ({
+            recordParents: !prevState.recordParents
+        }))
+    }
+    
     componentDidUpdate = (prevProps, prevState) => {
         if (
             this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
@@ -48,6 +56,11 @@ class CreateNewAnimal extends Component {
         ) {
             this.props.history.push("/home/farms/" + String(getId()));
         }
+    }
+    onChangeCheckO = e => {
+        this.setState(prevState => ({
+            recordOffspring: !prevState.recordOffspring
+        }))
     }
     toggle = () => {
         this.setState(prevState => ({
@@ -77,7 +90,7 @@ class CreateNewAnimal extends Component {
             track: this.state.track,
             attributes: this.state.attributes,
             alerts: this.state.alerts,
-            farmID:id
+            farmID: id
         }
         console.log(data);
         this.props.savePreset(data)
@@ -109,18 +122,24 @@ class CreateNewAnimal extends Component {
                             <Row>
                                 <Col>
                                     <FormGroup><Row>
-
-                                        <Row>
-                                            <Input
-                                                className="input-field-heading"
-                                                type="text"
-                                                placeholder="Enter Animal Name"
-                                                onChange={this.onChange}
-                                                value={this.state.AnimalName}
-                                                error={errors.AnimalName}
-                                                id="AnimalName"
-                                            />
-                                        </Row>
+                                        <Col>
+                                            <Label>Name:</Label>
+                                        </Col>
+                                        <Col>
+                                            <Row>
+                                                <Input
+                                                    className="input-field-heading"
+                                                    type="text"
+                                                    placeholder="Enter Animal Name"
+                                                    onChange={this.onChange}
+                                                    value={this.state.AnimalName}
+                                                    error={errors.AnimalName}
+                                                    id="AnimalName"
+                                                />
+                                            </Row>
+                                        </Col>
+                                        <Col />
+                                        <Col />
 
                                     </Row></FormGroup>
 
@@ -142,11 +161,11 @@ class CreateNewAnimal extends Component {
                                         <Row>
                                             <Label className="h4">
                                                 Products:
-                            </Label>
+                                            </Label>
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
+                                                <AddProduct Name="Products" title="Cycle" update={this.onAdd}></AddProduct>
                                             </Col>
                                             <Col />
                                         </Row>
@@ -155,36 +174,57 @@ class CreateNewAnimal extends Component {
                                         <Row>
                                             <Label className="h4">
                                                 Parents
-                            </Label>
+                                            </Label>
                                         </Row>
                                         <Row>
                                             <Col>
                                                 <Label className="text-label">
                                                     Record Parents:
-                            </Label>
+                                            </Label>
                                             </Col>
-                                        </Row>
-                                        <Row>
                                             <Col>
-                                                <UncontrolledDropdown className="edit-info">
-                                                    <DropdownToggle color="correct" caret>
-                                                        {this.state.track}
-                                                    </DropdownToggle>
-                                                    <DropdownMenu>
-                                                        <DropdownItem id="Keep track" onClick={this.select}>Keep track</DropdownItem>
-                                                        <DropdownItem divider />
-                                                        <DropdownItem id="Do Not Keep track" onClick={this.select}>Do Not Keep track</DropdownItem>
-                                                    </DropdownMenu>
-                                                </UncontrolledDropdown>
+                                                <Input
+                                                    className="input-field-check"
+                                                    type="checkbox"
+                                                    onChange={this.onChangeCheck}
+                                                    checked={this.state.recordParents}
+                                                    id="Record Parents"
+                                                />
                                             </Col>
                                             <Col />
                                             <Col />
                                         </Row>
                                     </Col>
+                                    
+                                    <Col>
+                                        <Row>
+                                            <Label className="h4">
+                                                Offspring
+                                            </Label>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <Label className="text-label">
+                                                    Record Offspring:
+                                            </Label>
+                                            </Col>
+                                            <Col>
+                                                <Input
+                                                    className="input-field-check"
+                                                    type="checkbox"
+                                                    onChange={this.onChangeCheckO}
+                                                    checked={this.state.recordOffspring}
+                                                    id="Record Offspring"
+                                                />
+                                            </Col>
+                                            <Col />
+                                            <Col />
+                                        </Row>
                                 </Col>
 
-
+                            </Col>
                             </Row>
+            
                             <Row>
 
                                 <Button className="login-btn" type="submit">Save</Button>
