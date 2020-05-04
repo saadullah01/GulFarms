@@ -47,7 +47,7 @@ const CreateMultiple = (dataList, dataType) => {
         const doc = new nameToModelMap[dataType](docInfo);
         if(dataType == 'product' && docInfo.isPreset == false){
             doc.alerts.push(doc._id);
-            doc.SetCycle();
+            doc.alerts = doc.SetCycle();
         }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
@@ -109,7 +109,7 @@ const EditOne = (data, dataType) => {
             doc.PushHistory();
         }
         if(dataType == 'product' && docInfo.isPreset == false){
-            doc.SetCycle();
+            doc.alerts = doc.UpdateCycle();
         }
         updatedValues.history = doc.history; //probabaly not needed, here as a precaution
         return new Promise( (resolve, reject) => {
