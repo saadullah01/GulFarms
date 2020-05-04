@@ -54,6 +54,7 @@ class AddTextField extends Component {
             FieldName:"",
             FieldType:"Field Type",
             Unit:"",
+            Option:""
          });
     };
 
@@ -105,7 +106,7 @@ class AddTextField extends Component {
 
     }
     ViewOption = (d)=> {
-        return d.forEach(dd => {
+        return d.Option.forEach(dd => {
             return (
                 <Label>dd</Label>
             );
@@ -126,7 +127,7 @@ class AddTextField extends Component {
                         <Label className="text-label-b">{d.Unit}</Label>
                         </Col>
                         <Col>
-                        <Label className="text-label-b">{this.ViewOption()}</Label>
+                        <Label className="text-label-b">{this.ViewOption(d)}</Label>
                         </Col>
                         <Button close onClick={() =>   this.remove(index)}>x</Button>
                         </Row>
