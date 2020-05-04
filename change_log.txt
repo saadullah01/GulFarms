@@ -91,5 +91,5 @@ added route for create animal preset
 
 2.8 m-jojo-s
 -Updated create-alerts to work with multiple creation requests
--Added alert snooze route -> installed moment dependency.
-
+-Added alert snooze route -> installed moment dependency
+-Added backend routes for attribute and products
