@@ -29,6 +29,7 @@ import PrivateRoute from "./components/PrivateRoute"
 import store from "./store"
 import AnimalPreset from './components/AnimalPreset';
 import ViewFarm from './components/ViewFarm'
+import Finance from './components/Finance';
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -52,7 +53,8 @@ const  App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route path="/cf" component={ CreateNewAnimal } />
+          <Route exact path="/home/finances" component={ Finance } />
+          <Route path="/cf" component={ ViewFarm } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
