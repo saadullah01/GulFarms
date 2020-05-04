@@ -5,13 +5,19 @@ const router = express.Router();
 const BaseModels = require('../../models/BaseModels');
 const FarmModels = require('../../models/Farm');
 
-const nameToModelMap = {'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product, 'attribute': BaseModels.Attribute}
+const nameToModelMap = {
+    'farm': FarmModels.Farm, 
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset
+};
 const summarize = data => (
     {
         _id:data._id,
         name:data.name
     }
-)
+);
 
 //Multipurpose helper functions (hope they work!)
 const CreateMultiple = (dataList, dataType) => {
@@ -27,7 +33,7 @@ const CreateMultiple = (dataList, dataType) => {
             docInfo.name = data.name;
             docInfo.startingDate = Date(data.startingDate);
             docInfo.keepTrack = data.keepTrack;
-            docInfo.alerts = data.alerts;
+            // docInfo.alerts = data.alerts;
         }
         if(data.hasOwnProperty('unit')){
             docInfo.unit = data.unit;
@@ -39,10 +45,10 @@ const CreateMultiple = (dataList, dataType) => {
         const doc = new nameToModelMap[dataType](docInfo);
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
-    return Promise.all(allData).then(data => {
-        // console.log("document created: " + data);
+    return Promise.all(allData).then(docs => {
+        // console.log("document created: " + docs);
 
-        return {message: dataType + "(s) created.", success: true};
+        return {message: dataType + "(s) created.", created: docs.filter(doc => doc._id), success: true};
     }).catch(err => ({ error: err.error, id: err.id, message: "Error creating " + dataType, success: false }));
 }
 
@@ -74,7 +80,7 @@ const EditOne = (data, dataType) => {
         updatedValues.name = data.name;
         updatedValues.startingDate = Date(data.startingDate);
         updatedValues.keepTrack = data.keepTrack;
-        updatedValues.alerts = data.alerts;
+        // updatedValues.alerts = data.alerts;
     }
     if(data.hasOwnProperty('unit')){
         updatedValues.unit = data.unit;
@@ -349,7 +355,146 @@ router.post("/products/delete", (req, res) => {
 //                               ANIMAL PRESETS
 //===========================================================================
 
+// @route POST api/animals/create
+// @desc Create one or more new product(s)
+// @access Public
+router.post("/create", (req, res) => {
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // console.log(req.body)
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    const animalPreset = new BaseModels.AnimalPreset({
+        name: req.body.name,
+        attributes: [],
+        products: [],
+        barns: req.body.barns,
+        trackOffspring: req.body.trackOffspring,
+        linkParents: req.body.linkParents
+    });
+    
+    //Retrieve existing presets for offspring product or parents attribute
+    //otherwise create new ones below
+    //
+    // to be implemented
+
+    //Create product/attribute to link parents or track offspring
+    if(animalPreset.linkParents == true){
+        const parentsAttribute = {
+            name: "parents",
+            attributeType: "string",
+            keepTrack: false
+        };
+        req.body.attributes.push(parentsAttribute);
+        console.log("new attributes: " + req.body.attributes);
+    }
+    if(animalPreset.trackOffspring == true){
+        const offspringProduct = {
+            name: "offspring",
+            startingDate: Date.now(),
+            unit: "number of offspring",
+            keepTrack: false
+        };
+        req.body.products.push(offspringProduct);
+        console.log("new products: " + req.body.products);
+    }
+
+    return CreateMultiple(req.body.attributes, "attribute")
+    .then(attributes => ({attributes: attributes.created}))
+    .then(object => CreateMultiple(req.body.products, "product")
+        .then(products => object.products = products.created)
+    )
+    .then(object => {
+        animalPreset.attributes = object.attributes;
+        animalPreset.products = object.products;
+        return animalPreset.save().then( preset => {
+            return res.status(200).json({message: "Animal preset created.", id: preset._id, success: true});
+        }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
+    }).catch(err => res.status(400).json({error: err, message: "Error creating presets.", success: false}));
+});
 
 
+// @route POST api/animals/view-preset
+// @desc View an animal preset
+// @access Public
+router.post("/view-preset", (req, res) => {
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    return ViewOne(req.body.id, "animalPreset")
+        .then(animalPreset => res.status(200).json(animalPreset))
+        .catch(response=> res.status(400).json(response));
+});
+
+// @route POST api/animals/get-preset
+// @desc Retrieve a list of all animal presets
+// @access Public
+router.post("/get-preset", (req, res) => {
+
+    return GetAll("animalPreset", false)
+        .then(animalPreset => res.status(200).json(animalPreset))
+        .catch(response => res.status(400).json(response)); 
+});
+
+// @route POST api/animals/edit-preset
+// @desc Modify an existing preset
+// @access Public
+router.post("/edit-preset", (req, res) => {
+
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    //Incoming body must have all properties for the new animal preset values
+    const updatedValues = {
+        name: req.body.name,
+        attributes: req.body.attributes,
+        products: req.body.products,
+        barns: req.body.barns
+        
+        //To be implemented
+        // trackOffspring: req.body.trackOffspring,
+        // linkParents: req.body.linkParents
+    };
+
+    BaseModels.AnimalPreset.findByIdAndUpdate({ _id: req.body._id }, updatedValues, { new: true }, (err, animalPreset, _) => {
+        if (!animalPreset) {
+            return res.status(404).json({ message: "Error finding animal preset to modify.", success: false, error: err });
+        }
+        if (err) {
+            return res.status(400).json({ message: "Unknown error occured", success: false, error: err });
+        }
+        return res.status(200).json({ message: "Animal preset modified.", success: true });
+    });
+});
+
+// @route POST api/animals/delete-preset
+// @desc Delete presets matching given IDs
+// @access Public
+router.post("/delete-preset", (req, res) => {
+
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    //Incoming req should have a property for id to delete preset
+    return RemoveMultiple(req.body.id, "animalPreset")
+        .then(response => res.status(200).json(response))
+        .catch(response => res.status(400).json(response));
+});
 
 module.exports = router;

@@ -36,7 +36,7 @@ const ProductSchema = new Schema({
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
-    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
+    // alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
     history: [{
         name: {type: String, lowercase: true, required: true},
         startingDate: {type: Date, required: true},
