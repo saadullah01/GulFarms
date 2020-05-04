@@ -46,9 +46,9 @@ const CreateMultiple = (dataList, dataType) => {
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
-        // console.log("document created: " + docs);
-
-        return {message: dataType + "(s) created.", created: docs.filter(doc => doc._id), success: true};
+        console.log("document created: " + docs);
+    
+        return ({message: dataType + "(s) created.", created: docs.map(doc => doc._id), success: true});
     }).catch(err => ({ error: err.error, id: err.id, message: "Error creating " + dataType, success: false }));
 }
 
@@ -98,7 +98,7 @@ const EditOne = (data, dataType) => {
             doc.PushHistory();
         }
         updatedValues.history = doc.history;
-        return new Promise(resolve, reject => {
+        return new Promise( (resolve, reject) => {
             model.updateOne({_id: doc._id}, updatedValues, (err, _) => {
                 if(err){
                     return reject({error: err, message: "Error updating " + dataType, success: false});
@@ -141,20 +141,6 @@ router.post("/attributes/create", (req, res) => {
     return CreateMultiple(req.body.attributes, 'attribute')
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
-    // const allAttributes = req.body.attributes.map( attributeInfo => {
-
-    //     const attribute = new BaseModels.Attribute({
-    //         name: attributeInfo.name,
-    //         attributeType: attributeInfo.attributeType,
-    //         keepTrack: attributeInfo.keepTrack,
-    //         value: attributeInfo.value
-    //     });
-    //     return attribute.save().then(attribute => attribute).catch(err => ({error: err, id: attribute._id}));
-    // });
-    // Promise.all(allAttributes).then(attributes => {
-    //     // console.log("attributes created: " + attributes);
-    //     return res.status(200).json({message: "Attribute(s) created.", success: true});
-    // }).catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating attribute.", success: false }));
 });
 
 // @route POST api/animals/attributes/view-attribute
@@ -171,13 +157,6 @@ router.post("/attributes/view-attribute", (req, res) => {
     return ViewOne(req.body.id, "attribute")
         .then(attribute => res.status(200).json(attribute))
         .catch(response=> res.status(400).json(response));
-    // BaseModels.Attribute.findById(req.body.id)
-    //     .then(attribute => {
-    //         if(!attribute){
-    //             return res.status(404).json({error: attribute, message: "Could not find attribute.", status: false});
-    //         }
-    //         return res.status(200).json(attribute);
-    //     }).catch(err => res.status(400).json({ error: err, message: "Error finding attribute", success: false }));
 });
 
 // @route POST api/animas/attributes/get
@@ -188,11 +167,6 @@ router.post("/attributes/get", (req, res) => {
     return GetAll("attribute", req.body.presets)
         .then(attributes => res.status(200).json(attributes))
         .catch(response => res.status(400).json(response));
-    
-    // BaseModels.Attribute.find({})
-    //     .then(attributes => { 
-    //         return res.status(200).json(attributes) 
-    //     }).catch(err => res.status(400).json({ error: err, message: "Error retrieving attributes", success: false }));
 });
 
 // @route POST api/animals/attributes/edit
@@ -208,36 +182,10 @@ router.post("/attributes/edit", (req, res) => {
         return res.status(400).json(errors);
     }
 
-    return EditOne(req.body)
+    return EditOne(req.body, "attribute")
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
 
-    // //Incoming body must have all properties for the new attribute values
-    // const updatedValues = {
-    //     name: attributeInfo.name,
-    //     attributeType: attributeInfo.attributeType,
-    //     keepTrack: attributeInfo.keepTrack,
-    //     value: attributeInfo.value
-    // };
-
-    // BaseModels.Attribute.findById(req.body.id, (err, attribute) => {
-    //     if (err) {
-    //         return res.status(400).json({ message: "Unknown error occured", success: false, error: err });
-    //     }
-    //     if (!attribute) {
-    //         return res.status(404).json({error: err, message: "Error finding attribute to modify.", success: false});
-    //     }
-    //     if(updatedValues.keepTrack){
-    //         attribute.PushHistory();
-    //     }
-    //     updatedValues.history = attribute.history;
-    //     BaseModels.Attribute.updateOne({_id: attribute._id}, updatedValues, (err, _) => {
-    //         if(err){
-    //             res.status(404).json({error: err, message: "Error updating attribute.", success: false});
-    //         }
-    //         return res.status(200).json({ message: "Attribute modified.", success: true });
-    //     });
-    // }).catch(err => res.status(404).json({error: err, message: "Error finding attribute to modify.", success: false}));
 });
 
 // @route POST api/animals/attributes/delete
@@ -256,16 +204,6 @@ router.post("/attributes/delete", (req, res) => {
     return RemoveMultiple(req.body.id, "attribute")
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
-
-    // BaseModels.Attribute.find({_id: {$in: req.body.id}}).then( attributes => {
-    //     if (!attributes) {
-    //         return res.status(404).json({ message: "Error finding attribute(s) to delete.", success: false, error: err });
-    //     }
-    //     const allDeleted = attributes.map( attribute => attribute.remove());
-    //     return Promise.all(allDeleted)
-    //                 .then( _ => res.status(200).json({ message: "Attribute(s) deleted.", success: true }))
-    //                 .catch(err => res.status(400).json({error: err, message: "Error deleting attribute(s).", success: false}));
-    // });
 });
 
 //===========================================================================
@@ -328,7 +266,7 @@ router.post("/products/edit", (req, res) => {
         return res.status(400).json(errors);
     }
 
-    return EditOne(req.body)
+    return EditOne(req.body, "product")
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
 });
@@ -355,10 +293,10 @@ router.post("/products/delete", (req, res) => {
 //                               ANIMAL PRESETS
 //===========================================================================
 
-// @route POST api/animals/create
+// @route POST api/animals/create-preset
 // @desc Create one or more new product(s)
 // @access Public
-router.post("/create", (req, res) => {
+router.post("/create-preset", (req, res) => {
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
     // console.log(req.body)
@@ -405,9 +343,8 @@ router.post("/create", (req, res) => {
     return CreateMultiple(req.body.attributes, "attribute")
     .then(attributes => ({attributes: attributes.created}))
     .then(object => CreateMultiple(req.body.products, "product")
-        .then(products => object.products = products.created)
-    )
-    .then(object => {
+        .then(products => ({attributes: object.attributes, products: products.created}))
+    ).then(object => {
         animalPreset.attributes = object.attributes;
         animalPreset.products = object.products;
         return animalPreset.save().then( preset => {
@@ -477,7 +414,7 @@ router.post("/edit-preset", (req, res) => {
         }
         return res.status(200).json({ message: "Animal preset modified.", success: true });
     });
-});
+}); 
 
 // @route POST api/animals/delete-preset
 // @desc Delete presets matching given IDs

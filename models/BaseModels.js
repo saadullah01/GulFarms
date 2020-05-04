@@ -15,14 +15,26 @@ const AlertSchema = new Schema({
 
 const AttributeSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
-    attributeType: {type: String, lowercase: true, enum: ['string', 'number', 'bool'], required: true},
+    attributeType: {
+        type: String,
+        lowercase: true,
+        enum: ['string', 'number', 'bool'], //only works at time of creation
+        required: true,
+        default: "string"
+    },
     value: {}, //can insert anything
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
     history: [{
         name: {type: String, lowercase: true, required: true},
-        attributeType: {type: String, lowercase: true, enum: ['string', 'number', 'bool'], required: true},
+        attributeType: {
+            type: String,
+            lowercase: true,
+            enum: ['string', 'number', 'bool'],
+            required: true,
+            default: "string"
+        },
         value: {},
         unit: {type: String, lowercase: true},
         updatedAt: {type: Date, required: true}
@@ -31,15 +43,18 @@ const AttributeSchema = new Schema({
 
 const ProductSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
-    startingDate: {type: Date, required: true},
+    duration: {type: Number, required: true},
+    durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
     value: {}, //can insert anything
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
-    // alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
     history: [{
         name: {type: String, lowercase: true, required: true},
         startingDate: {type: Date, required: true},
+        duration: {type: Number, required: true},
+        durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
         value: {},
         unit: {type: String, lowercase: true, default: ""},
         updatedAt: {type: Date, required: true}
