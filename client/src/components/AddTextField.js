@@ -156,7 +156,7 @@ class AddTextField extends Component {
                         <Input
                             className="input-field-check"
                             type="checkbox"
-                            checked = {this.state.checked}
+                            checked = {d.checked}
                             onChange = {this.onChangeCheckNot}
                         />
                         </Col>
