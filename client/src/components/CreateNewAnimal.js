@@ -12,10 +12,6 @@ import {
     Container,
     Row,
     Col,
-    UncontrolledDropdown,
-    DropdownItem,
-    DropdownToggle,
-    DropdownMenu
 } from 'reactstrap';
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
@@ -28,7 +24,6 @@ class CreateNewAnimal extends Component {
     state = {
         modal: true,
         AnimalName: "",
-        p1: "",
         track: "Keep track",
         errors: {},
         attributes: [],

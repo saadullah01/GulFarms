@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
     Button,
     Modal, 
@@ -12,9 +12,6 @@ import {
     Container,
     Row,
     Col,
-    UncontrolledCollapse,
-    Card,
-    CardBody
 } from 'reactstrap';
 import AddAlert from './AddAlerts';
 import AddTextField from './AddTextField'
