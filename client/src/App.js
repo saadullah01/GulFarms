@@ -21,13 +21,14 @@ import Landing from './components/Landing';
 import CreateFarm from './components/CreateFarm';
 import CreateAnimalIndividual from './components/CreateAnimalIndividual'
 import CreateNewAnimal from "./components/CreateNewAnimal"
-
+import CreateBarn from "./components/CreateBarn"
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 import PrivateRoute from "./components/PrivateRoute"
 import store from "./store"
 import AnimalPreset from './components/AnimalPreset';
+import ViewFarm from './components/ViewFarm'
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -51,7 +52,7 @@ const  App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route path="/cf" component={ CreateNewAnimal } />
+          <Route path="/cf" component={ ViewFarm } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
