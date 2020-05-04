@@ -346,10 +346,13 @@ router.post("/create-preset", (req, res) => {
     if(animalPreset.trackOffspring == true){
         const offspringProduct = {
             name: "offspring",
-            startingDate: Date.now(),
             unit: "number of offspring",
             keepTrack: false
         };
+        if(req.body.hasOwnProperty('duration')){
+            offspringProduct.duration = req.body.duration; //ofspring duration
+            offspringProduct.durationType = req.body.durationType; //duration type
+        }
         req.body.products.push(offspringProduct);
         console.log("new products: " + req.body.products);
     }
