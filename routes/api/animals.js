@@ -55,8 +55,9 @@ const ViewOne = (id, dataType) => {
     }).catch(err => ({ error: err, message: "Error finding " + dataType, success: false }));
 }
 
-const GetAll = dataType => {
-    return nameToModelMap[dataType].find({})
+const GetAll = (dataType, presetsOnly) => {
+    const filter = presetsOnly ? {isPreset: true} : {};
+    return nameToModelMap[dataType].find(filter)
         .then(docs => docs)
         .catch(err => ({ error: err, message: "Error retrieving " + dataType + "s.", success: false }));
 }
@@ -177,7 +178,8 @@ router.post("/attributes/view-attribute", (req, res) => {
 // @desc Retrieve a list of all attributes
 // @access Public
 router.post("/attributes/get", (req, res) => {
-    return GetAll("attribute")
+    //Returns only presets if body.presets == true otherwise only instances
+    return GetAll("attribute", req.body.presets)
         .then(attributes => res.status(200).json(attributes))
         .catch(response => res.status(400).json(response));
     
@@ -301,7 +303,8 @@ router.post("/products/view-product", (req, res) => {
 // @desc Retrieve a list of all products
 // @access Public
 router.post("/products/get", (req, res) => {
-    return GetAll("product")
+    //Returns only presets if body.presets == true otherwise only instances
+    return GetAll("product", req.body.presets)
         .then(products => res.status(200).json(products))
         .catch(response => res.status(400).json(response)); 
 });
@@ -341,6 +344,11 @@ router.post("/products/delete", (req, res) => {
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
 });
+
+//===========================================================================
+//                               ANIMAL PRESETS
+//===========================================================================
+
 
 
 
