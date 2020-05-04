@@ -52,7 +52,7 @@ const CreateMultiple = (dataList, dataType) => {
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
-        console.log("document created: " + docs);
+        console.log("documents created: ", docs.map(doc => doc.toJSON()));
     
         return ({
             message: dataType + "(s) created.",
@@ -367,7 +367,7 @@ router.post("/create-preset", (req, res) => {
         return animalPreset.save().then( preset => {
             return res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true});
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
-    }).catch(err => res.status(400).json({error: err, message: "Error creating presets.", success: false}));
+    }).catch(err => res.status(400).json({error: err, message: "Error creating animal preset.", success: false}));
 });
 
 
@@ -416,7 +416,7 @@ router.post("/edit-preset", (req, res) => {
         attributes: req.body.attributes,
         products: req.body.products,
         barns: req.body.barns
-        
+
         //To be implemented
         // trackOffspring: req.body.trackOffspring,
         // linkParents: req.body.linkParents
