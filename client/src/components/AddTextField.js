@@ -4,18 +4,15 @@ import {
     Row,
     Col,
     Button,
-    Modal,
-    Form,
     FormGroup,
-    ModalBody,
     Input,
-    Dropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown
 } from 'reactstrap';
 
+import Option from './Option'
 class AddTextField extends Component {
     // Can Add Constructor
     constructor(props) {
@@ -25,9 +22,9 @@ class AddTextField extends Component {
             modal: true,
             data: [],
             FieldName:"",
-            FieldType:"Field Type",
+            FieldType:"String",
             Unit:"",
-            Option:""
+            Option:[]
             
         }
     }
@@ -51,9 +48,9 @@ class AddTextField extends Component {
     resett = () =>{
         this.setState({
             FieldName:"",
-            FieldType:"Field Type",
+            FieldType:"String",
             Unit:"",
-            Option:""
+            Option:[]
          });
     };
 
@@ -75,6 +72,60 @@ class AddTextField extends Component {
           }, () => this.submitt());
         this.resett()
     };
+    unit(){
+        if(this.state.FieldType === "Numeric"){
+            return(
+                <Col>
+                        <Input 
+                                className="input-field-ad"
+                                type="text" 
+                                placeholder="Unit"
+                                onChange={this.onChange}
+                                value={this.state.Unit}
+                                id="Unit"
+                            />
+                        </Col>
+            )
+        }
+    }
+    
+    onAdd = e => {
+        this.setState({ Option : e });
+    }
+    option(){
+        if(this.state.FieldType === "Options"){
+            return(
+                
+                <Option update= {this.onAdd}></Option>
+            )
+        }
+
+    }
+    ViewOption = (d)=> {
+        return(
+            
+            <Label>{d.Option.join(",")}</Label>
+            
+        )
+        
+    }
+    displayValue= (d)=>{
+        if(d.Type === "Numeric"){
+            return(
+            <Col>
+            <Label className="text-label-b">{d.Unit}</Label>
+            </Col>    
+            )   
+        }
+        else if(d.Type === "Options"){
+            return(
+                <Col>
+                <Label className="text-label-b">{this.ViewOption(d)}</Label>
+                </Col>    
+            )
+            
+        }
+    }
     display() {
         return this.state.data.map( (d,index) => {
             return (
@@ -86,12 +137,7 @@ class AddTextField extends Component {
                         <Col>
                         <Label className="text-label-b">{d.Type}</Label>
                         </Col>
-                        <Col>
-                        <Label className="text-label-b">{d.Unit}</Label>
-                        </Col>
-                        <Col>
-                        <Label className="text-label-b">{d.Option}</Label>
-                        </Col>
+                        {this.displayValue(d)}
                         <Button close onClick={() =>   this.remove(index)}>x</Button>
                         </Row>
             );
@@ -128,34 +174,18 @@ class AddTextField extends Component {
                                 <DropdownMenu>
                                     <DropdownItem id= "String" onClick= {this.select}>String</DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem id= "Int" onClick= {this.select}>Int</DropdownItem>
+                                    <DropdownItem id= "Numeric" onClick= {this.select}>Numeric</DropdownItem>
                                     <DropdownItem divider />
-                                    <DropdownItem id= "Bool" onClick= {this.select}>Bool</DropdownItem>
+                                    <DropdownItem id= "Options" onClick= {this.select}>Options</DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                         </Col>
-                        <Col>
-                        <Input 
-                                className="input-field-ad"
-                                type="text" 
-                                placeholder="Unit"
-                                onChange={this.onChange}
-                                value={this.state.Unit}
-                                id="Unit"
-                            />
-                        </Col>
-                        <Col>
-                        <Input 
-                                className="input-field-ad"
-                                type="text" 
-                                placeholder="Option"
-                                onChange={this.onChange}
-                                value={this.state.Option}
-                                id="Option"
-                            />
-                        </Col>
+                        {this.unit()}
+                        {this.option()}
                         </Row>
+                        <Row><FormGroup></FormGroup></Row>
                         <Row>
+                            
                         <FormGroup>
                             <Row>
                                 <Col/>
@@ -163,7 +193,7 @@ class AddTextField extends Component {
                                 
                             </Row>
                         </FormGroup>
-                    </Row>
+                        </Row>
                 </div>
         
         )
