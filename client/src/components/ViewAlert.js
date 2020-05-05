@@ -18,9 +18,27 @@ class ViewAlert extends Component {
     super(props);
     this.state = {
       data: this.props.Alerts,
+      AlertDate: ""
     };
   }
-
+  
+  add = (d,index) => {
+    this.setState(
+      (state) => {
+        const data = state.data.concat({
+          description: d.a_description,
+          duration: this.state.AlertDate,
+          selectedOption: d.selectedOption,
+        
+        });
+        const data = state.data.filter((item, j) => index !== j);
+        return {
+          data,
+        };
+      },
+      () => this.submitt()
+    );
+  };
 
 
   display() {
@@ -41,6 +59,24 @@ class ViewAlert extends Component {
               <Col></Col>
               <Col></Col>
             </Row>
+          </FormGroup>
+          <FormGroup>
+            <Row style={{ flexWrap: "nowrap" }}>
+                <Col>
+                <Input
+                                className="input-field-ad"
+                                type="date"
+                                placeholder="Start Date"
+                                onChange={this.onChange}
+                                value={this.state.AlertDate}
+                                id="AlertDate"
+                            /> 
+                </Col>
+                <Col>
+                <Button className="login-btn" OnClick = {this.add(d,index)}>Snooze</Button>
+                </Col>
+                <Col></Col>
+              </Row>
           </FormGroup>
         </Row>
       );

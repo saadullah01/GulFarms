@@ -43,7 +43,7 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
-        return alert.save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
+        return alert.Snooze(alertInfo.duration).save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
     });
     Promise.all(allAlerts).then(alerts => {
         // console.log("alerts created: " + alerts);
@@ -118,7 +118,7 @@ router.post("/snooze", (req, res) => {
 // @desc Retrieve a list of all alerts
 // @access Public
 router.post("/get", (req, res) => {
-    BaseModels.Alert.find({})
+    BaseModels.Alert.find().sort({ due : 1 })
         .then(alerts => {
             return res.status(200).json(alerts)
         })
@@ -128,7 +128,7 @@ router.post("/get", (req, res) => {
 // @route POST api/alerts/get-summary
 // @desc Retrieve a list of all alerts with summary of linked objects
 // @access Public
-router.post("/get-summary", async (req, res) => {
+router.post("/get-detail", async (req, res) => {
     
     return BaseModels.Alert.find({}).then(alerts => {
         if(!alerts){
@@ -141,7 +141,7 @@ router.post("/get-summary", async (req, res) => {
             .then(alert => {
                 //Summarize linked object's details.
                 const newAlert = alert.toJSON();
-                newAlert.linkedTo = summarize(newAlert.linkedTo);
+                newAlert.linkedTo = newAlert.linkedTo;
                 return newAlert;
             }).catch(err => res.status(400).json({error: err, message: "Error summarizing alert's link details.", success: false}));
         })

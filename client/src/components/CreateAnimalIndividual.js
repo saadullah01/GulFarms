@@ -27,11 +27,12 @@ class CreateAnimalIndividual extends Component {
         p2: "",
         errors: {},
         attributes: [],//From DB
-        attributes_update:[],
+        attributes_update: [],
         alerts: [],//fromm DB
-        alerts_update:[], 
+        alerts_update: [],
         quant: "",
-        date:""
+        date: "",
+        recordParents:false,
     }
 
 
@@ -42,31 +43,32 @@ class CreateAnimalIndividual extends Component {
         }))
     }
 
-    onChange = (e, d,index) => {
+    onChange = (e, d, index) => {
         this.remove(index)
-        
+
         this.setState(state => {
 
-            const data = state.data.concat({Name: d.FieldName, Type: d.FieldType, Unit: d.Unit, Option: d.Option, quant: this.state.quant});
+            const data = state.data.concat({ Name: d.FieldName, Type: d.FieldType, Unit: d.Unit, Option: d.Option, quant: this.state.quant });
             return {
-            data,
+                data,
             };
         }
         );
         this.setState({ [e.target.id]: e.target.value });
     }
-    onChange_Product = (e, d,index) => {
+    onChange_Product = (e, d, index) => {
         this.remove(index)
-        
+
         this.setState(state => {
 
-            const data = state.data.concat({description: state.a_description, duration: state.a_duration, selectedOption: state.selectedOption, date: this.state.date});
+            const data = state.data.concat({ description: state.a_description, duration: state.a_duration, selectedOption: state.selectedOption, date: this.state.date });
             return {
-            data,
+                data,
             };
         }
         );
-        this.setState({ [e.target.id]: e.target.value , date:''
+        this.setState({
+            [e.target.id]: e.target.value, date: ''
         });
     }
 
@@ -90,41 +92,211 @@ class CreateAnimalIndividual extends Component {
         console.log(newUser);
     }
     remove = d => {
-        
+
         this.setState(state => {
-            
-            const data = state.data.filter((item, j) => d !==j )
+
+            const data = state.data.filter((item, j) => d !== j)
             return {
-              data,
-              
+                data,
+
             };
-          }, () => this.submitt());
+        }, () => this.submitt());
+    }
+    Parents() {
+        if (this.state.Parents === true) {
+            return(
+            <div>
+                <Col>
+                    <Row>
+                        <Label className="h4">
+                            Parents
+                            </Label>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Label className="text-label">
+                                Record Parents:
+                            </Label>
+                        </Col>
+                    </Row>
+                </Col>
+                <Row>
+                    <Col>
+                        <div>
+                            <Button className="plus-btn-small" id="toggler" style={{ marginBottom: '2rem' }}>
+                                +
+                            </Button>
+                            <UncontrolledCollapse toggler="#toggler">
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Input
+                                                className="input-field-add"
+                                                type="text"
+                                                placeholder="Enter Parent 1"
+                                                onChange={this.onChange}
+                                                value={this.state.p1}
+                                                error={this.state.errors.p1}
+                                                id="p1"
+                                            />
+                                        </Row>
+                                        <Row>
+                                            <Input
+                                                className="input-field-add"
+                                                type="text"
+                                                placeholder="Enter Parent 2"
+                                                onChange={this.onChange}
+                                                value={this.state.p2}
+                                                error={this.state.errors.p2}
+                                                id="p2"
+                                            />
+                                        </Row>
+
+                                    </CardBody>
+                                </Card>
+                            </UncontrolledCollapse>
+                        </div>
+                    </Col>
+                </Row>
+                <Row></Row>
+                </div >
+            )
+        }
+    }
+    helper=(d,index)=>{
+        if(d.Type === "Numeric")
+        {
+            return(
+                <div>
+                <Row>
+                        <Col>
+                            <Label className="text-label-b">Name</Label>
+                            </Col>
+                        <Col>
+                            <Label className="text-label-b">Units</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Value</Label>
+                        </Col>
+                </Row>
+                <Row>
+                    <Col>{d.Name}</Col>
+                    <Col>{d.Unit}</Col>
+                    <Col><Input
+                                className="input-field-heading"
+                                type="text"
+                                placeholder="Value"
+                                onChange={this.onChange(d, index)}
+                                value={this.state.quant}
+                                id="quant"
+                            />
+                    </Col>
+                </Row>
+                </div>
+            );
+        }
+        else if(d.Type === "String")
+        {
+            return(
+                <div>
+                <Row>
+                        <Col>
+                            <Label className="text-label-b">Name</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Value</Label>
+                        </Col>
+                </Row>
+                <Row>
+                    <Col>{d.Name}</Col>
+                    <Col><Input
+                                className="input-field-heading"
+                                type="text"
+                                placeholder="Value"
+                                onChange={this.onChange(d, index)}
+                                value={this.state.quant}
+                                id="quant"
+                            />
+                    </Col>
+                </Row>
+                </div>
+                
+                
+            );
+        }
+        else if(d.Type === "Options")
+        {
+            return(
+                <div>
+                <Row>
+                        <Col>
+                            <Label className="text-label-b">Name</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Options</Label>
+                        </Col>
+                </Row>
+                <Row>
+                    <Col>{d.Name}</Col>
+                    <Col><Input
+                                className="input-field-heading"
+                                type="text"
+                                placeholder="Value"
+                                onChange={this.onChange(d, index)}
+                                value={this.state.quant}
+                                id="quant"
+                            />
+                    </Col>
+                </Row>
+                </div>
+                
+                
+            );
+        }
     }
     Attributes() {
         return this.state.attributes.map((d, index) => {
             return (
-                <Row>
+                <div>
 
-                    <Col>
-                        <Label className="text-label-b">{d.Name}</Label>
-                    </Col>
-                    <Col>
-                        <Label className="text-label-b">{d.Type}</Label>
-                    </Col>
-                    <Col>
-                        <Label className="text-label-b">{d.Unit}</Label>
-                    </Col>
-                    <Col>
-                        <Input
-                            className="input-field-heading"
-                            type="text"
-                            placeholder="Value"
-                            onChange={this.onChange(d,index)}
-                            value={this.state.quant}
-                            id="quant"
-                        />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col>
+                            <Label className="text-label-b">Name</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Type</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Units</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">Value</Label>
+                        </Col>
+                    </Row>
+                    <Row>
+
+                        <Col>
+                            <Label className="text-label-b">{d.Name}</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">{d.Type}</Label>
+                        </Col>
+                        <Col>
+                            <Label className="text-label-b">{d.Unit}</Label>
+                        </Col>
+                        <Col>
+                            <Input
+                                className="input-field-heading"
+                                type="text"
+                                placeholder="Value"
+                                onChange={this.onChange(d, index)}
+                                value={this.state.quant}
+                                id="quant"
+                            />
+                        </Col>
+                    </Row>
+                </div>
+
             );
         })
     }
@@ -141,7 +313,7 @@ class CreateAnimalIndividual extends Component {
                             className="input-field-heading"
                             type="data"
                             placeholder="Date"
-                            onChange={this.onChange(d,index)}
+                            onChange={this.onChange(d, index)}
                             value={this.state.date}
                             id="date"
                         />
@@ -157,20 +329,20 @@ class CreateAnimalIndividual extends Component {
             <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
                 <center>
                     <ModalHeader toggle={this.toggle} >
-                    <Row>
-                        <Col>
                         <Row>
+                            <Col>
+                                <Row>
 
-                            <Col />
-                            <Col xs="13">
-                                <h3 className="h3" >
-                                    Create New {this.state.AnimalName}
-                                </h3>
+                                    <Col />
+                                    <Col xs="13">
+                                        <h3 className="h3" >
+                                            Create New {this.state.AnimalName}
+                                        </h3>
+                                    </Col>
+
+
+                                </Row>
                             </Col>
-
-                        
-                        </Row>
-                        </Col>
                         </Row>
                     </ModalHeader></center>
                 <ModalBody>
@@ -179,107 +351,39 @@ class CreateAnimalIndividual extends Component {
                             <Row>
                                 <Col>
 
-                                <Row>
-                                    <Label className="h4">
-                                        Attributes:
+                                    <Row>
+                                        <Label className="h4">
+                                            Attributes:
                             </Label>
-                                </Row>
-                                <Row>
-                                <Col>
-                                <Label className="text-label-b">Name</Label>
-                                </Col>
-                                <Col>
-                                <Label className="text-label-b">Type</Label>
-                                </Col>
-                                <Col>
-                                <Label className="text-label-b">Units</Label>
-                                </Col>
-                                <Col>
-                                <Label className="text-label-b">Value</Label>
-                                </Col>
-                                </Row>
-                                <Row>
-                                    <Col>{this.Attributes}</Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>{this.Attributes}</Col>
 
-                                </Row>
+                                    </Row>
 
-                                <Row>
-                                    <Label className="h4">
-                                        Products:
+                                    <Row>
+                                        <Label className="h4">
+                                            Products:
                             </Label>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        {this.Products}
-                                    </Col>
-                                    <Col />
-                                </Row>
-                            </Col>
-                            <Col>
-                                <Row>
-                                    <Label className="h4">
-                                        Parents
-                            </Label>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Label className="text-label">
-                                            Record Parents:
-                            </Label>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <div>
-                                            <Button className="plus-btn-small" id="toggler" style={{ marginBottom: '2rem' }}>
-                                                +
-                            </Button>
-                                            <UncontrolledCollapse toggler="#toggler">
-                                                <Card>
-                                                    <CardBody>
-                                                        <Row>
-                                                            <Input
-                                                                className="input-field-add"
-                                                                type="text"
-                                                                placeholder="Enter Parent 1"
-                                                                onChange={this.onChange}
-                                                                value={this.state.p1}
-                                                                error={errors.p1}
-                                                                id="p1"
-                                                            />
-                                                        </Row>
-                                                        <Row>
-                                                            <Input
-                                                                className="input-field-add"
-                                                                type="text"
-                                                                placeholder="Enter Parent 2"
-                                                                onChange={this.onChange}
-                                                                value={this.state.p2}
-                                                                error={errors.p2}
-                                                                id="p2"
-                                                            />
-                                                        </Row>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            {this.Products}
+                                        </Col>
+                                        <Col />
+                                    </Row>
+                                </Col>
 
-                                                    </CardBody>
-                                                </Card>
-                                            </UncontrolledCollapse>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        <Row>
+                                {this.Parents}
 
-                            
-                        </Row>
-                        
-                    
-                </Row><Row>
-                        <Button className="login-btn" onClick={this.toggle}>Save</Button>
-                        </Row>
-                </Form>
-                </Container>
+                            </Row>
+                            <Row>
+                                <Button className="login-btn" onClick={this.toggle}>Save</Button>
+                            </Row>
+                        </Form>
+                    </Container>
                 </ModalBody >
-                </Modal >
+            </Modal >
         )
     }
 }
