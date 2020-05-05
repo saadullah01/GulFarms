@@ -36,12 +36,11 @@ export const savePreset = (data) => (dispatch, getState) => {
     const preset = {}
     const state = getState()
     const farm = state.farmReducer.farms[data.farmId]
-    console.log("farm!!!!!!!! :", farm)
     preset.name = data.AnimalName
     preset.trackOffspring = data.recordOffspring
     preset.linkParents = data.recordParents
     preset.barns = []
-    preset.farmId = data.farmId
+    preset.farmId = farm._id
     preset.attributes = !data.attributes.length ? [] : data.attributes.map(attribute => {
         const att = {
             name: attribute.Name,

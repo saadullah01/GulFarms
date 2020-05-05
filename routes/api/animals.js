@@ -112,7 +112,6 @@ const EditOne = (data, dataType) => {
         if(dataType == 'product' && docInfo.isPreset == false){
             doc.alerts = doc.UpdateCycle();
         }
-        updatedValues.history = doc.history; //probabaly not needed, here as a precaution
         return new Promise( (resolve, reject) => {
             model.updateOne({_id: doc._id}, updatedValues, (err, _) => {
                 if(err){
@@ -379,8 +378,8 @@ router.post("/create-preset", (req, res) => {
         return res.status(400).json(errors);
     }
     // console.log(JSON.stringify(req.body));
-    req.body.attributes = req.body.attributes[0];
-    req.body.products = req.body.products[0];
+    req.body.attributes = req.body.attributes;
+    req.body.products = req.body.products;
 
     const animalPreset = new BaseModels.AnimalPreset({
         name: req.body.name,
@@ -410,7 +409,9 @@ router.post("/create-preset", (req, res) => {
         const offspringProduct = {
             name: "offspring",
             unit: "number of offspring",
-            keepTrack: false
+            keepTrack: true,
+            duration:6,
+            durationType:"month"
         };
         if(req.body.hasOwnProperty('duration')){
             offspringProduct.duration = req.body.duration; //ofspring duration
@@ -427,18 +428,21 @@ router.post("/create-preset", (req, res) => {
     ).then(object => {
         animalPreset.attributes = object.attributes;
         animalPreset.products = object.products;
+        // console.log("line 431 ",animalPreset.toJSON())
         return animalPreset.save().then( preset => {
             //Add preset's id to farm
             return FarmModels.Farm.findById(req.body.farmId).then(farm => {
-                farm.animalPresets = farm.animalPresets.push(preset._id)
-                return farm.save();
+                farm.animalPresets.push(preset._id)
+                return farm.save()
+                .then(farm=> console.log("Preset linked to farm"))
+                .catch(err => err);
             })
             .then(() => res.status(200).json({message: "Animal preset created.", id: preset._id, name: preset.name, success: true}))
             .catch(err => res.status(400).json({error: err, message: "Error linking animal preset to farm.", success: false}));
         }).catch(err => res.status(400).json({error: err, message: "Error saving animal preset.", success: false}));
     }).catch(err => res.status(400).json({error: err, message: "Error creating animal preset.", success: false}));
 });
-
+                                        
 
 // @route POST api/animals/view-preset
 // @desc View an animal preset
