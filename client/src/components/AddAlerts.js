@@ -79,15 +79,15 @@ class AddAlert extends Component {
       return (
         <Row key={index} style={{ flexWrap: "nowrap" }}>
           <Col>
-            <Label className="text-label">{d.description}</Label>
+            <Label className="text-label-b">{d.description}</Label>
           </Col>
           <Col>
-            <Label className="text-label">{d.duration}</Label>
+            <Label className="text-label-b">{d.duration}</Label>
           </Col>
           <FormGroup>
             <Row style={{ flexWrap: "nowrap" }}>
               <Col>
-                <Label className="text-label">{d.selectedOption}</Label>
+                <Label className="text-label-b">{d.selectedOption}</Label>
               </Col>
               <Col>
                 <Button close onClick={() => this.remove(index)}>
