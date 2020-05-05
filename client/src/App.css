@@ -485,7 +485,7 @@ input[type="password"]:hover ~ .pop-up {
   float: left;
 }
 
-.fin-record-quantity {
+.fin-record-amount {
   width: 40%;
   float: left;
   text-align: center;

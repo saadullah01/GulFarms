@@ -55,12 +55,6 @@ class Finance extends Component {
             expenseValue: null
         });
     }
-    removeEarning = e => {
-        console.log(e);
-    }
-    removeExpense = e => {
-        console.log(e)
-    }
     render() {
         let netExpenses = 0;
         let netEarnings = 0;
@@ -71,7 +65,7 @@ class Finance extends Component {
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
                     <div className="fin-record-amount">{ e.amount }</div>
-                    <FontAwesomeIcon id={i} onClick={ this.removeEarning } className="fin-inner-icon" icon={ faTimes } size="1x" />
+                    <FontAwesomeIcon className="fin-inner-icon" icon={ faTimes } size="1x" />
                 </div>
             </div>
         );
