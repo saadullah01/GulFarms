@@ -4,19 +4,25 @@ import {
 } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faBell
+    faBell,
+    faAngleRight
 } from '@fortawesome/free-solid-svg-icons';
-import Tab from "./sub_components/Tab";
+import { Link } from "react-router-dom";
 
 function OneAlert(props) {
     const color = (props.index % 2) ? "#e6ffee" : "#80ffaa";
     return (
-        <tr style={{"background-color": color}}>
-            <td>{ props.name }</td>
-            <td>{ props.id }</td>
-            <td>{ props.alertDesc }</td>
-            <td>{ props.due }</td>
-            <td>{ props.unit }</td>
+        <tr style={{ "background-color": color }}>
+            <td>{props.name}</td>
+            <td>{props.id}</td>
+            <td>{props.alertDesc}</td>
+            <td>{props.due}</td>
+            <td>
+                {props.unit}
+                <Link to={props.link}>
+                    <FontAwesomeIcon className="end-link" icon={faAngleRight} size="lg" />
+                </Link>
+            </td>
         </tr>
     );
 }
@@ -81,8 +87,9 @@ class Alerts extends Component {
         });
     }
     render() {
-        const alerts = this.state.alerts.map((a, i) => 
-            <OneAlert index={i} name={a.name} id={a.id} alertDesc={a.alertDesc} due={a.due} unit={a.unit} />
+        const url="/home/alerts/";
+        const alerts = this.state.alerts.map((a, i) =>
+            <OneAlert link={url.concat(i)} index={i} name={a.name} id={a.id} alertDesc={a.alertDesc} due={a.due} unit={a.unit} />
         );
         return (
             <div style={{ width: "100%" }}>
@@ -98,7 +105,7 @@ class Alerts extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { alerts }
+                        {alerts}
                     </tbody>
                 </Table>
             </div>

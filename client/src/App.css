@@ -581,6 +581,13 @@ input[type="password"]:hover ~ .pop-up {
   width: 80%;
   margin: 0 auto;
 }
+.end-link {
+  color: #4caf50;
+  margin-left: 20px;
+}
+
+/* Instances */
+
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
