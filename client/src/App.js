@@ -57,7 +57,7 @@ const App =()=>{
           <Route path="/" component={ AppNavbar } />
           <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
-          <Route path="/cf" component={ ViewFarm } />
+          <Route path="/cf" component={ CreateNewAnimal } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
