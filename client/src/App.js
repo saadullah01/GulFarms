@@ -30,6 +30,8 @@ import store from "./store"
 import AnimalPreset from './components/AnimalPreset';
 import ViewFarm from './components/ViewFarm'
 import Finance from './components/Finance';
+import Alerts from './components/Alerts';
+import AnimalInstance from './components/AnimalInstance';
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -48,11 +50,12 @@ if (localStorage.jwtToken) {
     window.location.href = "./login";
   }
 }
-const  App =()=>{
+const App =()=>{
     return (
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
+          <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
           <Route path="/cf" component={ ViewFarm } />
           <Route path="/register" component={ Register } />
@@ -60,7 +63,7 @@ const  App =()=>{
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
           <PrivateRoute exact path="/add-user" component={ AddUser } />
-          <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
+          <PrivateRoute exact path="/(|home|home/farms|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
             <PrivateRoute exact path="/home/farms/:id" component={Farm} />

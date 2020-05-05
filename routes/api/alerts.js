@@ -8,11 +8,18 @@ const FarmModels = require('../../models/Farm');
 //Modify functions to add alerts
 const FarmRoutes = require('./farms');
 
-const nameToModelMap = {'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product}
+const nameToModelMap = {
+    'farm': FarmModels.Farm,
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset,
+    "animal:": FarmModels.Animal
+};
 const summarize = data => (
     {
-        _id:data._id,
-        name:data.name
+        _id: data._id,
+        name: data.name
     }
 )
 
@@ -27,7 +34,7 @@ router.post("/create", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-    const allAlerts = req.body.alerts.map( alertInfo => {
+    const allAlerts = req.body.alerts.map(alertInfo => {
 
         const alert = new BaseModels.Alert({
             name: alertInfo.name.toLowerCase(),
@@ -36,25 +43,25 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
-        return alert.save().then(alert => alert).catch(err => ({error: err, id: alert._id}));
+        return alert.save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
     });
     Promise.all(allAlerts).then(alerts => {
         // console.log("alerts created: " + alerts);
 
         //Add alerts to linked object
         const model = nameToModelMap[alerts[0].linkedModel];
-        model.findById(alerts[0].linkedTo).then( doc => {                
+        model.findById(alerts[0].linkedTo).then(doc => {
             // console.log("doc before " + doc);
-            model.updateOne({_id: doc._id}, {alerts: doc.alerts.concat(alerts)}, (err, _) => {
-                if(err){
+            model.updateOne({ _id: doc._id }, { alerts: doc.alerts.concat(alerts) }, (err, _) => {
+                if (err) {
                     // console.log("error: " + err);
-                    
-                    return res.status(400).json({error: err, message: "Unknown error while updating linked document.", status: false});
+
+                    return res.status(400).json({ error: err, message: "Unknown error while updating alert's linked document", status: false });
                 }
-                
+
                 return res.status(200).json({ message: "Alert(s) created.", id: alerts.filter(element => element._id), success: true });
             });
-         }).catch(err => res.status(404).json({ error: err, message: "Error finding linked document.", success: false }));
+        }).catch(err => res.status(404).json({ error: err, message: "Error finding alert's linked document.", success: false }));
     }).catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating alert.", success: false }));
 });
 
@@ -72,15 +79,15 @@ router.post("/view-alert", (req, res) => {
 
     BaseModels.Alert.findById(req.body.id)
         .then(alert => {
-            if(!alert){
-                return res.status(404).json({error: alert, message: "Could not find alert.", status: false});
+            if (!alert) {
+                return res.status(404).json({ error: alert, message: "Could not find alert.", status: false });
             }
-            
+
             alert.populate('linkedTo').execPopulate().then(alert => {
                 const newAlert = alert.toJSON();
                 newAlert.linkedTo = summarize(newAlert.linkedTo);
                 return res.status(200).json(newAlert);
-            }).catch(err => res.status(400).json({error: err, message: "Error populating alert", success: false}));
+            }).catch(err => res.status(400).json({ error: err, message: "Error populating alert", success: false }));
         }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
 });
 
@@ -98,12 +105,12 @@ router.post("/snooze", (req, res) => {
 
     BaseModels.Alert.findById(req.body.id)
         .then(alert => {
-            if(!alert){
-                return res.status(404).json({error: alert, message: "Could not find alert.", status: false});
+            if (!alert) {
+                return res.status(404).json({ error: alert, message: "Could not find alert.", status: false });
             }
             alert.Snooze(req.body.snoozeFor).save().then(alert => {
-                return res.status(200).json({alert, message: "Snoozed", success: true});
-            }).catch(err => res.status(400).json({error: err, message: "Error - could not snooze.", success: false}));
+                return res.status(200).json({ alert, message: "Snoozed", success: true });
+            }).catch(err => res.status(400).json({ error: err, message: "Error - could not snooze.", success: false }));
         }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
 });
 
@@ -112,11 +119,39 @@ router.post("/snooze", (req, res) => {
 // @access Public
 router.post("/get", (req, res) => {
     BaseModels.Alert.find({})
-        .then(alerts => { 
-            return res.status(200).json(alerts) 
+        .then(alerts => {
+            return res.status(200).json(alerts)
         })
         .catch(err => res.status(400).json({ error: err, message: "Error retrieving alerts", success: false }));
 });
+
+// @route POST api/alerts/get-summary
+// @desc Retrieve a list of all alerts with summary of linked objects
+// @access Public
+router.post("/get-detail", async (req, res) => {
+    
+    return BaseModels.Alert.find({}).then(alerts => {
+        if(!alerts){
+            return res.status(404).json({error: err, message: "No alerts found", success: false});
+        }
+        //Sumarize all alerts
+        const allAlerts = alerts.map( alert => {
+            //Insert linked object's details
+            return alert.populate('linkedTo').execPopulate()
+            .then(alert => {
+                //Summarize linked object's details.
+                const newAlert = alert.toJSON();
+                newAlert.linkedTo = newAlert.linkedTo;
+                return newAlert;
+            }).catch(err => res.status(400).json({error: err, message: "Error summarizing alert's link details.", success: false}));
+        })
+        return Promise.all(allAlerts).then(alerts => {
+            return res.status(200).json(alerts);
+        }).catch(err => res.status(400).json({error: err, message: "Error getting alerts", success: false}));
+    
+    }).catch(err => res.status(400).json({error: err, message: "Error finding alerts.", success: false}));
+});
+
 
 // @route POST api/alerts/edit
 // @desc Modify an existing alert
@@ -165,14 +200,14 @@ router.post("/delete", (req, res) => {
     }
     //Incoming req should have an array of ids to delete alerts
 
-    BaseModels.Alert.find({_id: {$in: req.body.id}}).then( alerts => {
+    BaseModels.Alert.find({ _id: { $in: req.body.id } }).then(alerts => {
         if (!alerts) {
             return res.status(404).json({ message: "Error finding alert(s) to delete.", success: false, error: err });
         }
-        const allDeleted = alerts.map( alert => alert.remove());
+        const allDeleted = alerts.map(alert => alert.remove());
         return Promise.all(allDeleted)
-                    .then( _ => res.status(200).json({ message: "Alert(s) deleted.", success: true }))
-                    .catch(err => res.status(400).json({error: err, message: "Error deleting alert(s).", success: false}));
+            .then(_ => res.status(200).json({ message: "Alert(s) deleted.", success: true }))
+            .catch(err => res.status(400).json({ error: err, message: "Error deleting alert(s).", success: false }));
     });
 });
 

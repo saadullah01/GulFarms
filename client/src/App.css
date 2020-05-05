@@ -485,7 +485,7 @@ input[type="password"]:hover ~ .pop-up {
   float: left;
 }
 
-.fin-record-quantity {
+.fin-record-amount {
   width: 40%;
   float: left;
   text-align: center;
@@ -505,6 +505,7 @@ input[type="password"]:hover ~ .pop-up {
 }
 
 .fin-net-earnings {
+  clear: both;
   margin-top: 10px;
   width: 50%;
   float: left;
@@ -517,6 +518,7 @@ input[type="password"]:hover ~ .pop-up {
 }
 
 .fin-net-text {
+  clear: both;
   width: 40%;
   float: left;
   font-size: 23px;
@@ -532,9 +534,62 @@ input[type="password"]:hover ~ .pop-up {
 }
 
 .fin-net {
+  clear: both;
   margin-top: 20px;
-  width: 30%;
+  width: 40%;
   float: right;
+}
+
+.fin-add {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.fin-temp {
+  padding: 0;
+}
+
+.fin-input {
+  width: 100%;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.fin-button {
+  width: 100%;
+  background-color: #4caf50;
+  font-weight: bolder;
+}
+
+.fin-button:hover {
+  background-color: #4caf50;
+}
+
+/* Alerts */
+.alert-icon {
+  font-size: 50px;
+  margin-right: 20px;
+  color: #4caf50;
+}
+.alert-head {
+  font-size: 50px;
+  color: #4caf50;
+  font-weight: 400;
+  text-align: center;
+}
+.alert-table {
+  width: 80%;
+  margin: 0 auto;
+}
+.end-link {
+  color: #4caf50;
+  margin-left: 20px;
+}
+
+/* Instances */
+.instance-table {
+  width: 90%;
+  margin: 0 auto;
 }
 
 /* Extra small devices (phones, 600px and down) */

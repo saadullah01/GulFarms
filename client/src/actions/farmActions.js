@@ -2,10 +2,11 @@ import {
     GET_ERRORS,
     SET_FARMS,
     SET_DETAIL_FARM,
-    SET_FARM
+    SET_FARM,
+    SET_PRESETS
 } from "./types";
 import axios from "axios";
-
+import {getPresets} from "./presetActions"
 export const getFarms = () => (dispatch) => {
     axios
         .post("/api/farms/get")
@@ -36,6 +37,11 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
                 payload: res.data,
                 id: data
             })
+            dispatch({
+                type: SET_PRESETS,
+                payload:res.data.animalPresets
+            })
+            
         })
         .catch(err => {
             dispatch({

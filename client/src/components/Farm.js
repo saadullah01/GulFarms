@@ -22,10 +22,11 @@ class Farm extends Component {
             name: "",
             location: "",
             description: "",
-            animalPresets: [],
+            animalPresets: this.props.presets,
             alerts: []
         }
     }
+
     componentDidMount() {
         if(this.props.farms.length <= this.state.id){
             this.props.history.push("/home/farms");
@@ -37,13 +38,23 @@ class Farm extends Component {
     }
     componentDidUpdate(prevProps,prevState) {
         if (this.props.farms !== prevProps.farms) {
-            this.setState({...(this.props.farms[prevState.id]),id:prevState.id})
+            this.setState({
+                    ...(this.props.farms[prevState.id]),
+                    id:prevState.id,
+                    animalPresets: this.props.presets,
+                })
+        }
+        if (this.props.presets !== prevProps.presets) {
+            this.setState({
+                    ...prevState,
+                    animalPresets: this.props.presets,
+                })
         }
     }
     render() {
         const url = "/home/farms/"+String(this.state.id);
         const animalPresets = this.state.animalPresets.map((preset, index) =>
-            <Tab name={preset.name} key={preset.id} link={url.concat("/"+index.toString())} type="small" />
+            <Tab name={preset.name} key={index} link={url.concat("/"+index.toString())} type="small" />
         );
         return (
             <div className="farm-back">
@@ -80,7 +91,8 @@ class Farm extends Component {
 const mapStateToProps = state => ({
     loggedIn: state.authReducer.islogged,
     errors: state.errorReducer.errors,
-    farms: state.farmReducer.farms
+    farms: state.farmReducer.farms,
+    presets: state.presetReducer.presets
 });
 export default connect(
     mapStateToProps,

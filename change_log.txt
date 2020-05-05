@@ -94,3 +94,9 @@ added route for create animal preset
 -Added alert snooze route -> installed moment dependency
 -Added backend routes for attribute, products and animal presets.
 -Modified product schema to keep duration and duration type.
+-Added setAlert, updateAlert functions for product cycle.
+2.9 arham 
+linked create preset with redux and back end
+updated farm js for it 
+tried making create new animal a little better if nothing else fixed formating
+

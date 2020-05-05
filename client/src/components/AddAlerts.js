@@ -74,7 +74,7 @@ class AddAlert extends Component {
     this.resett();
   };
 
-  display() {
+  display=()=> {
     return this.state.data.map((d, index) => {
       return (
         <Row key={index} style={{ flexWrap: "nowrap" }}>
@@ -107,14 +107,12 @@ class AddAlert extends Component {
     const { errors } = this.state;
     return (
       <div>
-        <Row style={{ flexWrap: "nowrap" }}>
-          <Label for="fname" className="text-label">
-            Add {this.state.Name}:{" "}
-          </Label>
+        <Row style={{ flexWrap: "nowrap" }} xs="1">
+          <Label for="fname" className="text-label"> Add {this.state.Name}:{" "}</Label>
         </Row>
 
         {this.display()}
-        {this.submitt}
+        {/* {this.submitt} */}
         <Row style={{ flexWrap: "nowrap" }}>
           <Col>
             <Input
