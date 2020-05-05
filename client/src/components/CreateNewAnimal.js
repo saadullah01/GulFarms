@@ -62,7 +62,72 @@ class CreateNewAnimal extends Component {
             modal: !prevState.modal
         }))
     }
-
+    trackoffspring = () =>{
+        if(this.state.recordOffspring == true){
+            return(
+                <div>
+                <Row style={{ flexWrap: "nowrap" }}>
+                  <Label for="fname" className="text-label">
+                    Add {this.state.Name}:{" "}
+                  </Label>
+                </Row>
+        
+                {this.display()}
+                {this.submitt}
+                <Row style={{ flexWrap: "nowrap" }}>
+                  <Col>
+                    <Input
+                      className="input-field-ad"
+                      type="text"
+                      placeholder="Name"
+                      onChange={this.onChange}
+                      value={this.state.a_description}
+                      id="a_description"
+                    />
+                  </Col>
+                  <Col>
+                    <Input
+                      className="input-field-ad"
+                      type="text"
+                      placeholder={this.state.title}
+                      onChange={this.onChange}
+                      value={this.state.a_duration}
+                      id="a_duration"
+                    />
+                  </Col>
+                  <FormGroup>
+                    <Col>
+                      <Row>
+                        <UncontrolledDropdown className="edit-info">
+                          <DropdownToggle color="correct" caret>
+                            {this.state.selectedOption}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem id="Year" onClick={this.select}>
+                              Year
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem id="Month" onClick={this.select}>
+                              Month
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem id="Day" onClick={this.select}>
+                              Day
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem id="week" onClick={this.select}>
+                              week
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                      </Row>
+                    </Col>
+                  </FormGroup>
+                </Row>
+              </div>
+            )
+        }
+    }
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
@@ -210,6 +275,9 @@ class CreateNewAnimal extends Component {
                                             </Col>
                                             <Col />
                                             <Col />
+                                        </Row>
+                                        <Row>
+                                        {this.trackoffspring}  
                                         </Row>
                                 </Col>
 
