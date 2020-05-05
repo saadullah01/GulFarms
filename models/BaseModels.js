@@ -10,7 +10,7 @@ const AlertSchema = new Schema({
     durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
     due: {type: Date, default: Date.now()},
     linkedTo: {type: Schema.Types.ObjectId, refPath: "linkedModel", required: true},
-    linkedModel: {type: String, lowercase: true, enum: ['farm', 'barn', 'product', 'animal'], required: true} //Onchange: Update nameToModelMap in routes/api/alerts.js
+    linkedModel: {type: String, lowercase: true, enum: ['farm', 'barn', 'product', 'animal', 'animalPreset'], required: true} //Onchange: Update nameToModelMap in routes/api/alerts.js
 });
 
 const AttributeSchema = new Schema({

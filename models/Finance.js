@@ -3,18 +3,20 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const FinanceSchema = new Schema({
+    name: {type: String, lowercase: true, required: true},
     metric: {type: String, required: true},
-    netIncome: {type: Double},
-    netExpenese: {type: Double},
-    incomesList: [{type: Schema.Types.ObjectId, ref: 'record'}],
-    expensesList: [{type: Schema.Types.ObjectId, ref: 'record'}]
+    netIncome: {type: Number, min: 0},
+    netExpense: {type: Number, min: 0},
+    incomeList: [{type: Schema.Types.ObjectId, ref: 'record'}],
+    expenseList: [{type: Schema.Types.ObjectId, ref: 'record'}]
 });
 
 const RecordSchema = new Schema({
-    name: {type: String, required: true},
-    quantity: {type: Double, required: true},
+    name: {type: String, lowercase: true, required: true},
+    quantity: {type: Number, min: 0, required: true},
     quantityMetric: {type: String, required: true},
-    amount: {type: Double, required: true},
+    amount: {type: Number, min: 0, required: true},
+    amountMetric: {type: String, required: true},
     description: {type: String}
 });
 
