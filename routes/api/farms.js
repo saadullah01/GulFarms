@@ -54,7 +54,7 @@ router.post("/view-farm", (req, res) => {
 
     FarmModels.Farm.findById(req.body.id)
     .then(farm => {
-        farm.populate('animalPresets').execPopulate().then(farm =>{
+        farm.populate('animalPresets').populate('alerts').execPopulate().then(farm =>{
             const newFarm = farm.toJSON();
             newFarm.animalPresets = newFarm.animalPresets.map( preset => giveSummary(preset));
             return newFarm;

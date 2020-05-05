@@ -7,6 +7,7 @@ const path =require('path');
 // Routes
 const users = require('./routes/api/users');
 const farms = require('./routes/api/farms');
+const barns = require('./routes/api/barns');
 const alerts = require('./routes/api/alerts');
 const animals = require('./routes/api/animals');
 const finances = require('./routes/api/finances');
@@ -21,9 +22,9 @@ app.use(express.json()); //to support JSON encoded bodies
 
 //======== DB Setup =======
 // To Avoid Deprecation Warnings
+mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -41,6 +42,7 @@ mongoose
 // Use Routes
 app.use('/api/users', users);
 app.use('/api/farms', farms);
+app.use('/api/barns', barns);
 app.use('/api/alerts', alerts);
 app.use('/api/animals', animals);
 app.use('/api/finances',finances)

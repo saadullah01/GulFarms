@@ -43,7 +43,7 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
-        return alert.save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
+        return alert.Snooze(alertInfo.duration).save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
     });
     Promise.all(allAlerts).then(alerts => {
         // console.log("alerts created: " + alerts);
