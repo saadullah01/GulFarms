@@ -565,6 +565,23 @@ input[type="password"]:hover ~ .pop-up {
   background-color: #4caf50;
 }
 
+/* Alerts */
+.alert-icon {
+  font-size: 50px;
+  margin-right: 20px;
+  color: #4caf50;
+}
+.alert-head {
+  font-size: 50px;
+  color: #4caf50;
+  font-weight: 400;
+  text-align: center;
+}
+.alert-table {
+  width: 80%;
+  margin: 0 auto;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   /* Tab */
