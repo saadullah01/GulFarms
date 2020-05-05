@@ -8,7 +8,14 @@ const FarmModels = require('../../models/Farm');
 //Modify functions to add alerts
 const FarmRoutes = require('./farms');
 
-const nameToModelMap = { 'farm': FarmModels.Farm, 'barn': FarmModels.Barn, 'product': BaseModels.Product }
+const nameToModelMap = {
+    'farm': FarmModels.Farm,
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset,
+    "animal:": FarmModels.Animal
+};
 const summarize = data => (
     {
         _id: data._id,
@@ -49,12 +56,12 @@ router.post("/create", (req, res) => {
                 if (err) {
                     // console.log("error: " + err);
 
-                    return res.status(400).json({ error: err, message: "Unknown error while updating linked document.", status: false });
+                    return res.status(400).json({ error: err, message: "Unknown error while updating alert's linked document", status: false });
                 }
 
                 return res.status(200).json({ message: "Alert(s) created.", id: alerts.filter(element => element._id), success: true });
             });
-        }).catch(err => res.status(404).json({ error: err, message: "Error finding linked document.", success: false }));
+        }).catch(err => res.status(404).json({ error: err, message: "Error finding alert's linked document.", success: false }));
     }).catch(err => res.status(400).json({ error: err.error, id: err.id, message: "Error creating alert.", success: false }));
 });
 
@@ -118,33 +125,31 @@ router.post("/get", (req, res) => {
         .catch(err => res.status(400).json({ error: err, message: "Error retrieving alerts", success: false }));
 });
 
-// @route POST api/alerts/get
-// @desc Retrieve a list of all alerts
+// @route POST api/alerts/get-summary
+// @desc Retrieve a list of all alerts with summary of linked objects
 // @access Public
-router.post("/get-detailed", async (req, res) => {
-    BaseModels.Alert.find({})
-        .then(alerts => {
-            const detailedAlerts = alerts.map(aler => {
-                return(nameToModelMap[aler.linkedModel].findById(aler.linkedTo)
-                    .then((doc) => {
-                        console.log({
-                            ...aler,
-                            item: doc
-                        })
-                        return {
-                            ...aler,
-                            item: doc
-                        }
-                    })
-                    // .catch(err => console.log(err))
-            )})
-            Promise.apply(detailedAlerts).then(arr=>{
-                console.login(arr)
-                res.status(200).json(arr)
-            })
-            
+router.post("/get-summary", async (req, res) => {
+    
+    return BaseModels.Alert.find({}).then(alerts => {
+        if(!alerts){
+            return res.status(404).json({error: err, message: "No alerts found", success: false});
+        }
+        //Sumarize all alerts
+        const allAlerts = alerts.map( alert => {
+            //Insert linked object's details
+            return alert.populate('linkedTo').execPopulate()
+            .then(alert => {
+                //Summarize linked object's details.
+                const newAlert = alert.toJSON();
+                newAlert.linkedTo = summarize(newAlert.linkedTo);
+                return newAlert;
+            }).catch(err => res.status(400).json({error: err, message: "Error summarizing alert's link details.", success: false}));
         })
-        // .catch(err => res.status(400).json({ error: err, message: "Error retrieving alerts", success: false }));
+        return Promise.all(allAlerts).then(alerts => {
+            return res.status(200).json(alerts);
+        }).catch(err => res.status(400).json({error: err, message: "Error getting alerts", success: false}));
+    
+    }).catch(err => res.status(400).json({error: err, message: "Error finding alerts.", success: false}));
 });
 
 
