@@ -27,7 +27,7 @@ import { Link } from 'react-router-dom';
 
 function NavLinks (props) {
     const link = props.link.substring(props.link.lastIndexOf('/') + 1);
-    if (link && link !== "home" && link !== "farms" && link !== "alerts" && link !== "finance") {
+    if (link && link !== "home" && link !== "farms"  && link !== "finance") {
         return (
             <Nav className="mr-auto" navbar>
                 <Link className="nav-link" to="/home/farms">Farms</Link>

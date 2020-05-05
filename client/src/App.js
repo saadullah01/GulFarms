@@ -63,7 +63,7 @@ const App =()=>{
           <Route path="/reset-password" component={ ResetPassword } />
           <Route exact path="/forgot-password" component={ ForgotPassword } />
           <PrivateRoute exact path="/add-user" component={ AddUser } />
-          <PrivateRoute exact path="/(|home|home/farms|home/alerts|home/finances|home/farms/create-farm)" component={ Landing } />
+          <PrivateRoute exact path="/(|home|home/farms|home/farms/create-farm)" component={ Landing } />
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
             <PrivateRoute exact path="/home/farms/:id" component={Farm} />

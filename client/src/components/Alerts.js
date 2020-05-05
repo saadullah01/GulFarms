@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    Table
+    Table, Alert
 } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,11 +8,14 @@ import {
     faAngleRight
 } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom";
-
+import {getAlerts} from "../actions/alertsAction"
+import { connect } from "react-redux";
+import { saveFarm } from "../actions/farmActions";
+import { withRouter } from "react-router-dom";
 function OneAlert(props) {
     const color = (props.index % 2) ? "#e6ffee" : "#80ffaa";
     return (
-        <tr style={{ "background-color": color }}>
+        <tr style={{ backgroundColor: color }}>
             <td>{props.name}</td>
             <td>{props.id}</td>
             <td>{props.alertDesc}</td>
@@ -29,67 +32,24 @@ function OneAlert(props) {
 
 class Alerts extends Component {
     state = {
-        alerts: []
+        alerts: this.props.allAlerts
     }
     componentDidMount() {
-        this.setState({
-            alerts: [
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                },
-                {
-                    id: 1,
-                    name: "Sheep",
-                    alertDesc: "Expecting Delivery",
-                    due: 1,
-                    unit: "month"
-                }
-            ]
-        });
+        this.props.getAlerts()
+        
+    }
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.allAlerts !== prevState.alerts){
+            this.setState({
+                ...prevState,
+                alerts: this.props.allAlerts
+            })
+        }
     }
     render() {
         const url="/home/alerts/";
         const alerts = this.state.alerts.map((a, i) =>
-            <OneAlert link={url.concat(i)} index={i} name={a.name} id={a.id} alertDesc={a.alertDesc} due={a.due} unit={a.unit} />
+            <OneAlert link={url.concat(i)} index={i} key={i} name={a.name} id={a.id} alertDesc={a.alertDesc} due={a.due} unit={a.unit} />
         );
         return (
             <div style={{ width: "100%" }}>
@@ -112,5 +72,8 @@ class Alerts extends Component {
         );
     }
 }
-
-export default Alerts;
+const mapStateToProps = (state) => ({
+    allAlerts: state.alertReducer.alerts,
+    errors: state.errorReducer.errors,
+  });
+  export default connect(mapStateToProps, { getAlerts })(withRouter(Alerts));
