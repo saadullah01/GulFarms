@@ -7,16 +7,20 @@ import axios from "axios";
 
 export const getAlerts =()=> (dispatch) =>{
 
-    axios.post("/api/alerts/get")
+    axios.post("/api/alerts/get-detail")
         .then(res=>{
             console.log(res)
+            console.log(Date(res.data[0].due))
             const formattedData=res.data.map(aler=>{
+                const id =aler.model === "animal"?"-":aler.tag
                 return{
-                    id:1,
-                    name:"sheep",
+                    id:id,
+                    name:aler.linkedTo.name,
                     alertDesc:aler.name,
-                    due:1,
-                    unit:aler.durationType
+                    due:Date(aler.due),
+                    unit:aler.durationType,
+                    model:aler.linkedTo,
+
                 }
             })
             console.log(formattedData);

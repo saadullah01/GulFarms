@@ -6,56 +6,8 @@ const initialState ={
         {
             id: 1,
             duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
-            due: 1,
-            unit: "month"
-        },
-        {
-            id: 1,
-            duration: 1,
-            name: "Sheep",
-            alertDesc: "Expecting Delivery",
+            name: "loading...",
+            alertDesc: "loading...",
             due: 1,
             unit: "month"
         }
