@@ -461,10 +461,14 @@ router.post("/view-preset", (req, res) => {
         return res.status(400).json(errors);
     }
     return ViewOne(req.body.id, "animalPreset")
-        .then(animalPreset => 
-            animalPreset.populate('attributes').populate('products')
-            .populate('barns').execPopulate()
-        ).then(animalPreset => res.status(200).json(animalPreset))
+        .then(animalPreset => {
+            return animalPreset.populate('attributes').populate('products')
+            .populate('barns').execPopulate().then(animalPreset => {
+                const preset = animalPreset.toJSON();
+                preset.barns = preset.barns.map(barn => summarize(barn));
+                return preset;
+            })
+        }).then(animalPreset => res.status(200).json(animalPreset))
         .catch(response=> res.status(400).json(response));
 });
 
