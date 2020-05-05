@@ -118,7 +118,7 @@ router.post("/snooze", (req, res) => {
 // @desc Retrieve a list of all alerts
 // @access Public
 router.post("/get", (req, res) => {
-    BaseModels.Alert.find({})
+    BaseModels.Alert.find().sort({ due : 1 })
         .then(alerts => {
             return res.status(200).json(alerts)
         })
