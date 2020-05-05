@@ -9,6 +9,8 @@ const users = require('./routes/api/users');
 const farms = require('./routes/api/farms');
 const alerts = require('./routes/api/alerts');
 const animals = require('./routes/api/animals');
+// const finances = require('./routes/api/finances');
+
 
 // Initialize express
 const app = express();
@@ -41,6 +43,7 @@ app.use('/api/users', users);
 app.use('/api/farms', farms);
 app.use('/api/alerts', alerts);
 app.use('/api/animals', animals);
+// app.use('/api/finances',finances)
 //in production
 
 

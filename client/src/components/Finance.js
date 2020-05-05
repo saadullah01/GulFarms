@@ -10,7 +10,7 @@ import {
     faFilter,
     faTimes
 } from '@fortawesome/free-solid-svg-icons';
-// import { axios } from "axios";
+import axios from "axios";
 
 class Finance extends Component {
     state = {
@@ -25,17 +25,17 @@ class Finance extends Component {
     componentDidMount() {
         this.setState({
             incomeList: [
-                {name: "Milk", quantity: 20000},
-                {name: "Wool", quantity: 10000},
-                {name: "Feed", quantity: 30000}
+                {name: "Milk", amount: 20000},
+                {name: "Wool", amount: 10000},
+                {name: "Feed", amount: 30000}
             ],
             expenseList: [
-                {name: "Milk", quantity: 20000},
-                {name: "Wool", quantity: 10000},
-                {name: "Feed", quantity: 30000}
+                {name: "Milk", amount: 20000},
+                {name: "Wool", amount: 10000},
+                {name: "Feed", amount: 30000}
             ]
         });
-        // axios.post("")
+        // axios.post("/api/finances/trial",{type:"getAll"})
 
     }
     onChange = e => {
@@ -43,14 +43,14 @@ class Finance extends Component {
     }
     addEarning = () => {
         this.setState({
-            incomeList: [...this.state.incomeList, {name: this.state.earningDesc, quantity: parseFloat(this.state.earningValue)}],
+            incomeList: [...this.state.incomeList, {name: this.state.earningDesc, amount: parseFloat(this.state.earningValue)}],
             earningDesc: "",
             earningValue: null
         });
     }
     addExpense = () => {
         this.setState({
-            expenseList: [...this.state.expenseList, {name: this.state.expenseDesc, quantity: parseFloat(this.state.expenseValue)}],
+            expenseList: [...this.state.expenseList, {name: this.state.expenseDesc, amount: parseFloat(this.state.expenseValue)}],
             expenseDesc: "",
             expenseValue: null
         });
@@ -64,13 +64,13 @@ class Finance extends Component {
     render() {
         let netExpenses = 0;
         let netEarnings = 0;
-        this.state.expenseList.forEach(element => netExpenses = netExpenses + element.quantity);
-        this.state.incomeList.forEach(element => netEarnings = netEarnings + element.quantity);
+        this.state.expenseList.forEach(element => netExpenses = netExpenses + element.amount);
+        this.state.incomeList.forEach(element => netEarnings = netEarnings + element.amount);
         const earnings = this.state.incomeList.map((e, i) => 
             <div className="fin-record">
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
-                    <div className="fin-record-quantity">{ e.quantity }</div>
+                    <div className="fin-record-amount">{ e.amount }</div>
                     <FontAwesomeIcon id={i} onClick={ this.removeEarning } className="fin-inner-icon" icon={ faTimes } size="1x" />
                 </div>
             </div>
@@ -79,7 +79,7 @@ class Finance extends Component {
             <div className="fin-record">
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
-                    <div className="fin-record-quantity">{ e.quantity }</div>
+                    <div className="fin-record-amount">{ e.amount }</div>
                     <FontAwesomeIcon key={i} onClick={ this.removeExpense } className="fin-inner-icon" icon={ faTimes } size="1x" />
                 </div>
             </div>
@@ -154,18 +154,18 @@ class Finance extends Component {
                 <div className="fin-net-earnings">
                     <div className="main-container">
                         <p className="fin-net-text">Net Earnings:</p>
-                        <p className="fin-net-quantity">{ netEarnings }</p>
+                        <p className="fin-net-amount">{ netEarnings }</p>
                     </div>
                 </div>
                 <div className="fin-net-expenses">
                     <div className="main-container">
                         <p className="fin-net-text">Net Expenditures:</p>
-                        <p className="fin-net-quantity">{ netExpenses }</p>
+                        <p className="fin-net-amount">{ netExpenses }</p>
                     </div>
                 </div>
                 <div className="fin-net">
                     <p className="fin-net-text">Net Income:</p>
-                    <p className="fin-net-quantity" style={{float: 'right'}}>Rs. { netEarnings - netExpenses }</p>
+                    <p className="fin-net-amount" style={{float: 'right'}}>Rs. { netEarnings - netExpenses }</p>
                 </div>
             </div>
         );
