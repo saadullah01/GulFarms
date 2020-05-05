@@ -22,7 +22,7 @@ const AnimalSchema = new Schema({
 });
 
 const BarnSchema = new Schema({
-    id: {type: String, required: true},
+    name: {type: String, lowercase: true, required: true},
     animals: [{type: Schema.Types.ObjectId, ref: 'animal'}],
     alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}]
 });
