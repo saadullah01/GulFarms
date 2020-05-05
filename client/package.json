@@ -25,7 +25,9 @@
     "reactstrap": "^8.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "moment": "2.24.0",
+    "moment-timezone": "^0.5.28"
   },
   "scripts": {
     "start": "react-scripts start",

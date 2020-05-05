@@ -81,22 +81,32 @@ input[type="radio"] {
   font-size: large;
   margin-left: 20px;
 }
-.input-field-a {
-  width: 100%;
-  margin: auto;
-
-  /* margin-left: 3px; */
+.input-label-a {
+  clear: both;
+  width: 30%;
+  float: left;
+  margin: 0 auto;
+  text-align: left;
+  font-size: 18px;
 }
-
+.form-btn {
+  width: 20%;
+  margin: 0 10px 0 10px;
+  border-radius: 20px;
+  background-color: #4caf50;
+}
+.foot {
+  width: 90% !important;
+  margin: 0 auto;
+}
 .input-field-heading {
   width: 350px;
   margin: auto;
   margin-left: 10px;
 }
 .input-field-a {
-  width: 230px !important;
-  margin: auto;
-  /* margin-left: 3px; */
+  width: 70% !important;
+  float: right;
 }
 .input-field-add {
   height: 30px;
@@ -114,7 +124,6 @@ input[type="radio"] {
   margin: 0 auto;
   border-top-width: thick;
 }
-
 .plus-btn {
   margin: 0 auto;
   width: 60%;
@@ -126,7 +135,6 @@ input[type="radio"] {
   margin-top: 10px;
   box-shadow: 0 0 4px #999;
 }
-
 .plus-btn-small {
   margin: 05%;
   width: 36px;
@@ -585,7 +593,6 @@ input[type="password"]:hover ~ .pop-up {
   color: #4caf50;
   margin-left: 20px;
 }
-
 /* Instances */
 .instance-table {
   width: 90%;
@@ -641,10 +648,21 @@ input[type="password"]:hover ~ .pop-up {
   .farm-text {
     width: 90%;
   }
+  .form-btn {
+    width: 30%;
+    float: right;
+  }
+  .add-a {
+    text-align: center;
+    margin-top: 20px;
+  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+  .form-btn {
+    float: right;
+  }
   .brand-name {
     font-size: 400%;
   }
@@ -679,6 +697,12 @@ input[type="password"]:hover ~ .pop-up {
   .login-btn {
     width: 40%;
   }
+  .input-label-a {
+    font-size: 12px;
+  }
+  .input-field-a {
+
+  }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -706,6 +730,9 @@ input[type="password"]:hover ~ .pop-up {
   }
   .signup-btn {
     width: 30%;
+  }
+  .input-label-a {
+    font-size: 18px;
   }
 }
 

@@ -10,7 +10,12 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
+  Table
 } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Tab from "./sub_components/Tab";
+import { relativeTimeRounding } from "moment";
 
 class AddAlert extends Component {
   // Can Add Constructor
@@ -74,57 +79,47 @@ class AddAlert extends Component {
     this.resett();
   };
 
-  display=()=> {
-    return this.state.data.map((d, index) => {
-      return (
-        <Row key={index} style={{ flexWrap: "nowrap" }}>
-          <Col>
-            <Label className="text-label">{d.description}</Label>
-          </Col>
-          <Col>
-            <Label className="text-label">{d.duration}</Label>
-          </Col>
-          <FormGroup>
-            <Row style={{ flexWrap: "nowrap" }}>
-              <Col>
-                <Label className="text-label">{d.selectedOption}</Label>
-              </Col>
-              <Col>
-                <Button close onClick={() => this.remove(index)}>
-                  x
-                </Button>
-              </Col>
-              <Col></Col>
-              <Col></Col>
-            </Row>
-          </FormGroup>
-        </Row>
-      );
-    });
+  display = () => {
+    const addedAlerts = this.state.data.map((d, index) =>
+      <tr style={{textAlign: "center"}}>
+        <td>{d.description}</td>
+        <td>{d.duration}</td>
+        <td>{d.selectedOption}</td>
+        <td><FontAwesomeIcon onClick={() => this.remove(index)} style={{ color: "#4caf50" }} icon={faTimes} size="1x" /></td>
+      </tr>
+    );
+    return (
+      <Table responsive>
+        <tbody>
+          {addedAlerts}
+        </tbody>
+      </Table>
+    );
   }
 
   render() {
+    const types = ["Year", "Month", "Day", "week"]
+    const duration_type = types.map((t) =>
+      <DropdownItem id={t} onClick={this.select}>
+        {t}
+      </DropdownItem>
+    );
     const { errors } = this.state;
     return (
       <div>
-        <Row style={{ flexWrap: "nowrap" }} xs="1">
-          <Label for="fname" className="text-label"> Add {this.state.Name}:{" "}</Label>
-        </Row>
-
         {this.display()}
-        {/* {this.submitt} */}
-        <Row style={{ flexWrap: "nowrap" }}>
-          <Col>
+        <Row>
+          <div className="pr-1 col-sm-5">
             <Input
               className="input-field-ad"
               type="text"
-              placeholder="Name"
+              placeholder="Alert's Description"
               onChange={this.onChange}
               value={this.state.a_description}
               id="a_description"
             />
-          </Col>
-          <Col>
+          </div>
+          <div className="pl-1 pr-1 col-sm-3">
             <Input
               className="input-field-ad"
               type="text"
@@ -133,46 +128,26 @@ class AddAlert extends Component {
               value={this.state.a_duration}
               id="a_duration"
             />
-          </Col>
-          <FormGroup>
-            <Col>
-              <Row>
-                <UncontrolledDropdown className="edit-info">
-                  <DropdownToggle color="correct" caret>
-                    {this.state.selectedOption}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem id="Year" onClick={this.select}>
-                      Year
-                    </DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem id="Month" onClick={this.select}>
-                      Month
-                    </DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem id="Day" onClick={this.select}>
-                      Day
-                    </DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem id="week" onClick={this.select}>
-                      week
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </Row>
-            </Col>
-          </FormGroup>
-        </Row>
-        <Row>
-          <Col />
-          <Col>
-            <Row>
-              <Button className="plus-btn" onClick={this.add}>
-                +
-              </Button>
-            </Row>
-          </Col>
-          <Col />
+          </div>
+          <div className="pl-1 pr-1 col-sm-4">
+            <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
+              <DropdownToggle style={{color: "white"}} color="correct" caret>
+                {this.state.selectedOption}
+              </DropdownToggle>
+              <DropdownMenu>
+                {duration_type}
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          <div className="mt-3 col-sm-12">
+            <Button onClick={this.add} style={{
+              width: "20%",
+              height: "40px",
+              backgroundColor: "#4caf50",
+              borderRadius: "20px",
+              float: "right",
+            }}><FontAwesomeIcon icon={faPlus} size="1x" /></Button>
+          </div>
         </Row>
       </div>
     );
