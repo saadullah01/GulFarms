@@ -11,7 +11,6 @@ const presetReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_PRESETS:
             return {
-                ...state,
                 presets:action.payload
             }
         case SET_PRESET:

@@ -93,131 +93,90 @@ class CreateNewAnimal extends Component {
             <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
                 <center>
                     <ModalHeader toggle={this.toggle} >
-
                         <Row>
-
                             <Col />
                             <Col xs="13">
-                                <h3 className="h3" >
-                                    Create New Animal
-                    </h3>
+                                <h3 className="h3white" >Create New Animal</h3>
                             </Col>
-
-
                         </Row>
-
-                    </ModalHeader></center>
+                    </ModalHeader>
+                </center>
                 <ModalBody>
                     <Container>
                         <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
                             <Row>
-                                <Col>
-                                    <FormGroup><Row>
+                                <FormGroup>
+                                    <Row>
                                         <Col>
-                                            <Label>Name:</Label>
+                                            <Label className="text-label" >Name:</Label>
                                         </Col>
                                         <Col>
-                                            <Row>
-                                                <Input
-                                                    className="input-field-heading"
-                                                    type="text"
-                                                    placeholder="Enter Animal Name"
-                                                    onChange={this.onChange}
-                                                    value={this.state.AnimalName}
-                                                    error={errors.AnimalName}
-                                                    id="AnimalName"
-                                                />
-                                            </Row>
+                                            <Input
+                                                className="input-field-a row align-items-center"
+                                                type="text"
+                                                placeholder="Enter Animal Name"
+                                                onChange={this.onChange}
+                                                value={this.state.AnimalName}
+                                                error={errors.AnimalName}
+                                                id="AnimalName"
+                                            />
                                         </Col>
-                                        <Col />
-                                        <Col />
-
-                                    </Row></FormGroup>
-
-
-
-                                    <Col>
-                                        <Row>
-                                            <Label className="h4">
-                                                Attributes:
-                            </Label>
-                                        </Row>
-                                        <Row>
-                                            <Col><AddTextField Name="Attribute" update={this.onAdd_Att}></AddTextField></Col>
-
-                                        </Row>
-                                    </Col>
-
-                                    <Col>
-                                        <Row>
-                                            <Label className="h4">
-                                                Products:
-                                            </Label>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
-                                            </Col>
-                                            <Col />
-                                        </Row>
-                                    </Col>
-                                    <Col>
-                                        <Row>
-                                            <Label className="h4">
-                                                Parents
-                                            </Label>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Label className="text-label">
-                                                    Record Parents:
-                                            </Label>
-                                            </Col>
-                                            <Col>
-                                                <Input
-                                                    className="input-field-check"
-                                                    type="checkbox"
-                                                    onChange={this.onChangeCheck}
-                                                    checked={this.state.recordParents}
-                                                    id="Record Parents"
-                                                />
-                                            </Col>
-                                            <Col />
-                                            <Col />
-                                        </Row>
-                                    </Col>
-                                    
-                                    <Col>
-                                        <Row>
-                                            <Label className="h4">
-                                                Offspring
-                                            </Label>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Label className="text-label">
-                                                    Record Offspring:
-                                            </Label>
-                                            </Col>
-                                            <Col>
-                                                <Input
-                                                    className="input-field-check"
-                                                    type="checkbox"
-                                                    onChange={this.onChangeCheckO}
-                                                    checked={this.state.recordOffspring}
-                                                    id="Record Offspring"
-                                                />
-                                            </Col>
-                                            <Col />
-                                            <Col />
-                                        </Row>
-                                </Col>
-
-                            </Col>
+                                    </Row>
+                                </FormGroup>
                             </Row>
-            
-                            <Row>
 
+                            <Row/>
+
+                            <Row>   
+                                <Col>
+                                    <Row>
+                                        <Label className="h4">Attributes: </Label>
+                                    </Row>
+                                    <Row/>
+                                    <Row>
+                                        <Col>
+                                            <AddTextField Name="Attribute" update={this.onAdd_Att}></AddTextField>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Label className="h4">Products:</Label>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
+                                </Col>
+                                <Col />
+                            </Row>   
+                            <Row/> 
+                            <Row/> 
+                            <Row xs ="4">
+                                <Label className="text-label">Record Parents:</Label>
+                                <Col xs="auto">
+                                    <Input
+                                        className="input-field-check"
+                                        type="checkbox"
+                                        onChange={this.onChangeCheck}
+                                        checked={this.state.recordParents}
+                                        id="Record Parents"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row xs ="4" >
+                                <Label className="text-label">Record Offspring:</Label>
+                                <Col xs="auto">
+                                    <Input
+                                        className="input-field-check"
+                                        type="checkbox"
+                                        onChange={this.onChangeCheckO}
+                                        checked={this.state.recordOffspring}
+                                        id="Record Offspring"
+                                    />
+                                </Col>
+                            </Row>
+                            <Row>
                                 <Button className="login-btn" type="submit">Save</Button>
                             </Row>
                         </Form>

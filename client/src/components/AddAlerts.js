@@ -107,10 +107,8 @@ class AddAlert extends Component {
     const { errors } = this.state;
     return (
       <div>
-        <Row style={{ flexWrap: "nowrap" }}>
-          <Label for="fname" className="text-label">
-            Add {this.state.Name}:{" "}
-          </Label>
+        <Row style={{ flexWrap: "nowrap" }} xs="1">
+          <Label for="fname" className="text-label"> Add {this.state.Name}:{" "}</Label>
         </Row>
 
         {this.display()}

@@ -2,7 +2,8 @@ import {
     GET_ERRORS,
     SET_FARMS,
     SET_DETAIL_FARM,
-    SET_FARM
+    SET_FARM,
+    SET_PRESETS
 } from "./types";
 import axios from "axios";
 import {getPresets} from "./presetActions"
@@ -31,11 +32,14 @@ export const getFarmDetail = (data) => (dispatch, getState) => {
         .post("/api/farms/view-farm", { id: dbId })
         .then(res => {
             // console.log(res)
-            getPresets(res.data.animalPresets)
             dispatch({
                 type: SET_DETAIL_FARM,
                 payload: res.data,
                 id: data
+            })
+            dispatch({
+                type: SET_PRESETS,
+                payload:res.data.animalPresets
             })
             
         })

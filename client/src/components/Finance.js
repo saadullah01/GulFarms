@@ -10,12 +10,13 @@ import {
     faFilter,
     faTimes
 } from '@fortawesome/free-solid-svg-icons';
+// import { axios } from "axios";
 
 class Finance extends Component {
     state = {
         netIncome: null,
-        earningsList: [],
-        expensesList: [],
+        incomeList: [],
+        expenseList: [],
         earningDesc: "",
         expenseDesc: "",
         earningValue: null,
@@ -23,31 +24,33 @@ class Finance extends Component {
     }
     componentDidMount() {
         this.setState({
-            earningsList: [
+            incomeList: [
                 {name: "Milk", quantity: 20000},
                 {name: "Wool", quantity: 10000},
                 {name: "Feed", quantity: 30000}
             ],
-            expensesList: [
+            expenseList: [
                 {name: "Milk", quantity: 20000},
                 {name: "Wool", quantity: 10000},
                 {name: "Feed", quantity: 30000}
             ]
         });
+        // axios.post("")
+
     }
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
     addEarning = () => {
         this.setState({
-            earningsList: [...this.state.earningsList, {name: this.state.earningDesc, quantity: parseFloat(this.state.earningValue)}],
+            incomeList: [...this.state.incomeList, {name: this.state.earningDesc, quantity: parseFloat(this.state.earningValue)}],
             earningDesc: "",
             earningValue: null
         });
     }
     addExpense = () => {
         this.setState({
-            expensesList: [...this.state.expensesList, {name: this.state.expenseDesc, quantity: parseFloat(this.state.expenseValue)}],
+            expenseList: [...this.state.expenseList, {name: this.state.expenseDesc, quantity: parseFloat(this.state.expenseValue)}],
             expenseDesc: "",
             expenseValue: null
         });
@@ -61,9 +64,9 @@ class Finance extends Component {
     render() {
         let netExpenses = 0;
         let netEarnings = 0;
-        this.state.expensesList.forEach(element => netExpenses = netExpenses + element.quantity);
-        this.state.earningsList.forEach(element => netEarnings = netEarnings + element.quantity);
-        const earnings = this.state.earningsList.map((e, i) => 
+        this.state.expenseList.forEach(element => netExpenses = netExpenses + element.quantity);
+        this.state.incomeList.forEach(element => netEarnings = netEarnings + element.quantity);
+        const earnings = this.state.incomeList.map((e, i) => 
             <div className="fin-record">
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>
@@ -72,7 +75,7 @@ class Finance extends Component {
                 </div>
             </div>
         );
-        const expenses = this.state.expensesList.map((e, i) => 
+        const expenses = this.state.expenseList.map((e, i) => 
             <div className="fin-record">
                 <div className="fin-container">
                     <div className="fin-record-name">{ e.name }</div>

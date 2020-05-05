@@ -44,10 +44,15 @@ class Farm extends Component {
                     animalPresets: this.props.presets,
                 })
         }
+        if (this.props.presets !== prevProps.presets) {
+            this.setState({
+                    ...prevState,
+                    animalPresets: this.props.presets,
+                })
+        }
     }
     render() {
         const url = "/home/farms/"+String(this.state.id);
-        console.log(this.state.animalPresets)
         const animalPresets = this.state.animalPresets.map((preset, index) =>
             <Tab name={preset.name} key={index} link={url.concat("/"+index.toString())} type="small" />
         );
