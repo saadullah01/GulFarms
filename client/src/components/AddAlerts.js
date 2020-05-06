@@ -127,6 +127,8 @@ class AddAlert extends Component {
             <Input
               className="input-field-ad"
               type="text"
+              placeholder="Duration"
+              onChange={this.onChange}
               value={this.state.AlertDuration}
               id="AlertDuration"
             />
@@ -146,7 +148,6 @@ class AddAlert extends Component {
                 className="input-field-ad"
                 type="date"
                 placeholder={this.state.title}
-                onChange={this.onChange}
                 value={this.state.AlertDate}
                 id="AlertDate"
               />
