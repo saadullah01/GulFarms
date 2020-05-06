@@ -1,7 +1,8 @@
 import {
     SET_BARN,
     SET_BARNS,
-    SET_DETAIL_BARN
+    SET_DETAIL_BARN,
+    SET_INSTANCE
 } from "../actions/types";
 const initialState = {
     key: [],
@@ -28,6 +29,21 @@ const barnReducer = (state = initialState, action) => {
                 barns: [
                     ...state.barns,
                     action.payload
+                ]
+            }
+        case SET_INSTANCE:
+            return{
+                ...state,
+                barns: [
+                    ...state.barns.slice(0, action.bid),
+                    {
+                        ...state.barns[action.bid],
+                        animals:[
+                            ...(state.barns[action.bid]).animals,
+                            action.payload
+                        ]
+                    },
+                    ...state.barns.slice(parseInt(action.bid) + 1)
                 ]
             }
         default:

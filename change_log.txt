@@ -115,4 +115,10 @@ added routes for animalinstance and create instance on app.js
 made getbarn detail action and reducer classname
 connected animalInstance to redux store and backend added plus to add animal saad can fix
 cleaned animal preset 
+3.2 
+made save instance action and reducer and added its type
+connected create instance form to store and added routing
+added checks in create barn
+removed redunant imports in createnewanimal
+
 

@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
     Button,
     Modal,
@@ -16,7 +16,6 @@ import {
     DropdownMenu,
     DropdownItem
 } from 'reactstrap';
-import AddProduct from './AddProduct';
 import AddTextField from './AddTextField'
 import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";

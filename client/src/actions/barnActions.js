@@ -2,8 +2,10 @@ import axios from "axios";
 import {
     SET_BARN,
     GET_ERRORS,
-    SET_DETAIL_BARN
+    SET_DETAIL_BARN,
+    SET_INSTANCE
 } from "./types"
+import { useEffect } from "react";
 export const saveBarn = (data) => (dispatch, getState) => {
 
     const state = getState()
@@ -71,4 +73,7 @@ export const getBarnDetail=(data)=>(dispatch,getState)=>{
                 payload: err.response.data
             })
         })
+}
+export const saveInstance =(data)=>(dispatch,getState)=>{
+    console.log(data)
 }

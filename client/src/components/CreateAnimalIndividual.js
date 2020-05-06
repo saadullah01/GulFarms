@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
     Button,
     Modal,
@@ -16,24 +16,58 @@ import {
     Card,
     CardBody
 } from 'reactstrap';
-
+import { connect } from "react-redux"
+import { withRouter  } from 'react-router-dom';
+import { saveInstance } from "../actions/barnActions"
 class CreateAnimalIndividual extends Component {
 
     // Can Add Constructor
-    state = {
-        modal: true,
-        AnimalName: "",
-        p1: "",
-        p2: "",
-        errors: {},
-        attributes: [],//From DB
-        attributes_update: [],
-        alerts: [],//fromm DB
-        alerts_update: [],
-        quant: "",
-        date: "",
-        recordParents:false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            modal: true,
+            AnimalName: "",
+            p1: "",
+            p2: "",
+            errors: {},
+            attributes: [],//From DB
+            attributes_update: [],
+            alerts: [],//fromm DB
+            alerts_update: [],
+            quant: "",
+            date: "",
+            recordParents:false,
+        }
     }
+    componentDidMount() {
+        if (this.props.farms.length <= this.ids("farm") ||
+            this.props.presets.length <= this.ids("preset") ||
+            this.props.barns.length <=this.ids("barn") ) {
+
+            this.props.history.push("/home/farms/");
+            return
+        }
+        this.setState({
+            modal: true,
+            AnimalName: (this.props.presets[this.ids("preset")]).name,
+            p1: "",
+            p2: "",
+            errors: this.props.errors,
+            attributes: (this.props.presets[this.ids("preset")]).attributes,//From DB
+            attributes_update: [],
+            alerts: [],//fromm DB
+            alerts_update: [],
+            quant: "",
+            date: "",
+            recordParents: (this.props.presets[this.ids("preset")]).linkParents,
+        })
+    }
+    componentDidUpdate = (prevProps, prevState) => {
+        if ((prevState.modal !== this.state.modal) ||
+            (this.props.barns !== prevProps.barns)) {
+            this.props.history.push("/home/farms/"+String(this.ids("farm"))+"/"+String(this.ids("preset"))+"/"+String(this.ids("barn")));
+        }
+    };
     ids(name) {
         const dic = {
             farm: this.props.match.params.fid,
@@ -260,6 +294,7 @@ class CreateAnimalIndividual extends Component {
         }
     }
     Attributes() {
+        console.log(this.state.attributes)
         return this.state.attributes.map((d, index) => {
             return (
                 <div>
@@ -340,7 +375,7 @@ class CreateAnimalIndividual extends Component {
 
                                     <Col />
                                     <Col xs="13">
-                                        <h3 className="h3" >
+                                        <h3 className="h3white" >
                                             Create New {this.state.AnimalName}
                                         </h3>
                                     </Col>
@@ -392,4 +427,15 @@ class CreateAnimalIndividual extends Component {
         )
     }
 }
-export default CreateAnimalIndividual;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms,
+    presets:state.presetReducer.presets,
+    barns:state.barnReducer.barns
+});
+export default connect(
+    mapStateToProps,
+    { saveInstance }
+)(withRouter(CreateAnimalIndividual));
+

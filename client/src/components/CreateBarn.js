@@ -44,7 +44,8 @@ class CreateBarn extends Component {
         }
     };
     componentDidMount() {
-        if (this.props.presets.length <= this.ids("presetId")) {
+        if (this.props.allFarms.length <= this.ids("farmId") ||
+            this.props.presets.length <= this.ids("presetId")) {
             this.props.history.push("/home/farms/"+String(this.ids("farmId")));
             return
         }
