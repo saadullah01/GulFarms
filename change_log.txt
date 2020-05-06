@@ -111,5 +111,8 @@ made barn reducer and added to root reducer
 updated preset reducer
 3.1 arham
 create barn form connected barnactions and create barn edited
-
+added routes for animalinstance and create instance on app.js
+made getbarn detail action and reducer classname
+connected animalInstance to redux store and backend added plus to add animal saad can fix
+cleaned animal preset 
 
