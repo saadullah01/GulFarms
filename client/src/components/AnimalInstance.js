@@ -20,15 +20,13 @@ function Instance(props) {
     return (
         <tr style={{ "background-color": color }}>
             <td>{props.id}</td>
-            <td>{props.type}</td>
-            <td>{props.breed}</td>
-            <td>{props.weight}</td>
-            <td>{props.exProd1}</td>
-            <td>{props.exProd2}</td>
+            <td>{props.gender}</td>
+            <td>{props.att1}</td>
+            <td>{props.att2}</td>
+            <td>{props.att3}</td>
             <td>
-                {props.exProd3}
                 <Link to={props.link}>
-                    <FontAwesomeIcon className="end-link" icon={faAngleRight} size="lg" />
+                    <FontAwesomeIcon icon={faAngleRight} size="lg" />
                 </Link>
             </td>
         </tr>
@@ -164,12 +162,10 @@ class AnimalInstance extends Component {
                 link={url.concat(index)}
                 index={index}
                 id={a.id}
-                type={a.type}
-                breed={a.breed}
-                weight={a.weight}
-                exProd1={a.exProd1}
-                exProd2={a.exProd2}
-                exProd3={a.exProd3}
+                gender={a.gender}
+                att1={a.attribute[0]}
+                att2={a.attribute[1]}
+                att3={a.attribute[2]}
             />
         );
         let products = "";
