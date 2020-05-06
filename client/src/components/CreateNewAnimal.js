@@ -22,7 +22,7 @@ import AddTextField from './AddTextField'
 import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
-import AddAlert from './AddAlerts';
+import AddProduct from './AddProduct';
 
 class CreateNewAnimal extends Component {
     // Can Add Constructor
@@ -42,10 +42,10 @@ class CreateNewAnimal extends Component {
 
     }
     componentDidMount() {
-        // if (this.props.farms.length <= getId() || !this.props.farm.hasOwnProperty('animalPresets')) {
-        //     this.props.history.push("/home/farms");
-        //     return
-        // }
+        if (this.props.farms.length <= getId() || !this.props.farm.hasOwnProperty('animalPresets')) {
+            this.props.history.push("/home/farms");
+            return
+        }
     }
     onChangeCheck = e => {
         this.setState(prevState => ({
@@ -53,12 +53,12 @@ class CreateNewAnimal extends Component {
         }))
     }
     componentDidUpdate = (prevProps, prevState) => {
-        // if (
-        //     this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
-        //     prevState.modal !== this.state.modal || this.props.allPresets.length !== prevProps.allPresets.length
-        // ) {
-        //     this.props.history.push("/home/farms/" + String(getId()));
-        // }
+        if (
+            this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
+            prevState.modal !== this.state.modal || this.props.allPresets.length !== prevProps.allPresets.length
+        ) {
+            this.props.history.push("/home/farms/" + String(getId()));
+        }
     }
     onChangeCheckO = e => {
         this.setState(prevState => ({
@@ -95,6 +95,9 @@ class CreateNewAnimal extends Component {
     selectTime = (e) => {
         this.setState({ selectedOption: e.target.id });
     };
+    OnChangeDate = (e) => {
+        this.setState({ AlertDate: e.target.value });
+      };
     KeepTrack() {
         if (this.state.recordOffspring == true) {
             return (
@@ -152,16 +155,16 @@ class CreateNewAnimal extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Col>
-                                <Row>
-                                    <Input
-                                        className="input-field-ad"
-                                        type="date"
-                                        placeholder="Start Date"
-                                        onChange={this.onChange}
-                                        value={this.state.AlertDate}
-                                        id="AlertDate"
-                                    />
-                                </Row>
+                            <Row>
+                              <Input
+                                className="input-field-ad"
+                                type="date"
+                                placeholder="Start Date"
+                                onChange={this.OnChangeDate}
+                                value={this.state.AlertDate}
+                                id="AlertDate"
+                            />  
+                            </Row>
                             </Col>
                         </FormGroup>
                     </Row>
@@ -249,101 +252,6 @@ class CreateNewAnimal extends Component {
                     </div>
                 </Form>
             </Modal>
-
-            // <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
-            //     <center>
-            //         <ModalHeader toggle={this.toggle} >
-            //             <Row>
-            //                 <Col />
-            //                 <Col xs="13">
-            //                     <h3 className="h3white" >Create New Animal</h3>
-            //                 </Col>
-            //             </Row>
-            //         </ModalHeader>
-            //     </center>
-            //     <ModalBody>
-            //         <Container>
-            //             <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
-            //                 <Row>
-            //                     <FormGroup>
-            //                         <Row>
-            //                             <Col>
-            //                                 <Label className="text-label" >Name:</Label>
-            //                             </Col>
-            //                             <Col>
-            //                                 <Input
-            //                                     className="input-field-a row align-items-center"
-            //                                     type="text"
-            //                                     placeholder="Enter Animal Name"
-            //                                     onChange={this.onChange}
-            //                                     value={this.state.AnimalName}
-            //                                     error={errors.AnimalName}
-            //                                     id="AnimalName"
-            //                                 />
-            //                             </Col>
-            //                         </Row>
-            //                     </FormGroup>
-            //                 </Row>
-
-            //                 <Row />
-
-            //                 <Row>
-            //                     <Col>
-            //                         <Row>
-            //                             <Label className="h4">Attributes: </Label>
-            //                         </Row>
-            //                         <Row />
-            //                         <Row>
-            //                             <Col>
-            //                                 <AddTextFieldupdate={this.onAdd_Att}></AddTextField>
-            //                             </Col>
-            //                         </Row>
-            //                     </Col>
-            //                 </Row>
-
-            //                 <Row>
-            //                     <Label className="h4">Products:</Label>
-            //                 </Row>
-            //                 <Row>
-            //                     <Col>
-            //                         <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
-            //                     </Col>
-            //                     <Col />
-            //                 </Row>
-            //                 <Row />
-            //                 <Row />
-            //                 <Row xs="4">
-            //                     <Label className="text-label">Record Parents:</Label>
-            //                     <Col xs="auto">
-            //                         <Input
-            //                             className="input-field-check"
-            //                             type="checkbox"
-            //                             onChange={this.onChangeCheck}
-            //                             checked={this.state.recordParents}
-            //                             id="Record Parents"
-            //                         />
-            //                     </Col>
-            //                 </Row>
-            //                 <Row xs="4" >
-            //                     <Label className="text-label">Record Offspring:</Label>
-            //                     <Col xs="auto">
-            //                         <Input
-            //                             className="input-field-check"
-            //                             type="checkbox"
-            //                             onChange={this.onChangeCheckO}
-            //                             checked={this.state.recordOffspring}
-            //                             id="Record Offspring"
-            //                         />
-            //                     </Col>
-            //                 </Row>
-            //                 {this.KeepTrack()}
-            //                 <Row>
-            //                     <Button className="login-btn" type="submit">Save</Button>
-            //                 </Row>
-            //             </Form>
-            //         </Container>
-            //     </ModalBody>
-            // </Modal>
         )
     }
 }

@@ -22,6 +22,7 @@ const summarize = data => (
 
 //Multipurpose helper functions (hope they work!)
 const CreateMultiple = (dataList, dataType) => {
+    console.debug("dataList: ", JSON.stringify(dataList));
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
         const docInfo = {};
@@ -47,8 +48,7 @@ const CreateMultiple = (dataList, dataType) => {
         
         const doc = new nameToModelMap[dataType](docInfo);
         if(dataType == 'product' && docInfo.isPreset == false){
-            doc.alerts.push(doc._id);
-            doc.alerts = doc.SetCycle();
+            //Create alerts
         }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });
@@ -402,7 +402,7 @@ router.post("/create-preset", (req, res) => {
             attributeType: "string",
             keepTrack: false
         };
-        req.body.attributes.push(parentsAttribute);
+        req.body.attributes = [parentsAttribute].concat(req.body.attributes);
         // console.log("new attributes: " + JSON.stringify(req.body.attributes));
     }
     if(animalPreset.trackOffspring == true){
@@ -417,7 +417,7 @@ router.post("/create-preset", (req, res) => {
             offspringProduct.duration = req.body.duration; //ofspring duration
             offspringProduct.durationType = req.body.durationType; //duration type
         }
-        req.body.products.push(offspringProduct);
+        req.body.products = [offspringProduct].concat(req.body.products);
         // console.log("new products: " + req.body.products);
     }
 
@@ -549,6 +549,110 @@ router.post("/delete-preset", (req, res) => {
     return RemoveMultiple(req.body.id, "animalPreset")
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
+});
+
+
+//===========================================================================
+//                              ANIMAL INSTANCE
+//===========================================================================
+
+// @route POST api/animals/create
+// @desc Create one or more new product(s)
+// @access Public
+router.post("/create", (req, res) => {
+    console.log("Request @ api/animals/create : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
+    
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // console.log(req.body)
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    //Expected data:
+    //  barn (id), name, preset, tag, comment(may or may not be included)
+    //  attributeValues:
+    //  [] where each item is a value corresponding to the preset's list of attributes
+    //  if linkParents is true, first element will be a list [] of parent ids to add, may be empty
+    //  productValues:
+    //  [] where each item is a value corresponding to the preset's list of products
+    //  if trackOffspring is true, first element will be a list [] of offspring ids to add, may be empty
+
+    const animalInfo = {
+        name: req.body.name,
+        preset: req.body.preset,
+        tag: req.body.tag,
+        alive: true,
+        attributes: [],
+        products: [],
+        comment: req.body.hasOwnProperty('comment') ? req.body.comment : ""
+    };
+
+    //Get information from preset
+    BaseModels.AnimalPreset.findById(req.body.preset)
+    .then(preset => {
+        if(!preset){
+            return Promise.reject({status: 404, res: {error: "ID", message:"Preset not found"}})
+        }
+        return preset.populate('attributes').populate('products').execPopulate()
+        .catch(err => ({status: 400, res: {error: err, message: "Error populating preset."}}))
+
+    }).then(preset => {
+        preset = preset.toJSON();
+        //Add values to preset JSON before making copies
+        //Attribute values = [parents? [ids of parents if any], other attributes...]
+        //Product values = [offsping? [ids of offspring if any], other products...]
+        preset.attributes = preset.attributes.map((attribute, i) => {
+            attribute.value = req.body.attributeValues[i];
+            return attribute;
+        })
+        preset.products = preset.products.map((product, i) => {
+            product.value = req.body.productValues[i];
+            return product;
+        })
+
+        //Copy preset attributes and products
+        attributes = CreateMultiple(preset.attributes, "attribute").created
+        products =  CreateMultiple(preset.products, "product").created
+        return Promise.all([attributes, products]).then( _ => {
+
+            //Assign parents/offsprings to correct fields
+            if(preset.linkParents){
+                animalInfo.parents = attributes[0];
+                attributes = attributes.slice(1);
+            }
+            if(preset.trackOffspring){
+                animalInfo.offspring = products[0];
+                products = products.slice(1);
+            }
+            //Add attribute and product ids to animalInfo
+            animalInfo.attributes = attributes;
+            animalInfo.product = products;
+            return animalInfo;
+        }).catch(err => ({status: 400, res: {error: err, message: "Error copying attributes or products."}}))
+
+    }).then(animalInfo => {
+        //Create animal document
+        const animal = new FarmModels.Animal(animalInfo);
+        return animal.save().then(animal =>{
+            //Add animal to barn mentioned in preset
+            return new Promise((resolve, reject) => {
+                FarmModels.Barn.findByIdAndUpdate(req.body.barn, {$push: {animals: animal._id}}, (err, barn) =>{
+                    if(!barn){
+                        return reject({status: 404, res:{error: err, message: "No barn found to add animal"}});
+                    }
+                    return resolve(animal);
+                })
+            });
+        }).catch(err => ({status: err.hasOwnProperty('status') ? err.status : 400, res: err.hasOwnProperty('res') ? err.res : {error: err, message:"Error saving animal."}}));
+    
+    }).then(animal => res.status(200).json({created: animal, message: "Animal created successfully."}))
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
 module.exports = router;

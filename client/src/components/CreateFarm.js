@@ -27,7 +27,6 @@ class CreateFarm extends Component {
     Location: "",
     Description: "",
     alerts: [],
-    errors: {},
   };
   componentDidUpdate = (prevProps, prevState) => {
     if (

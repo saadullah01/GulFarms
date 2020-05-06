@@ -32,10 +32,10 @@ class ViewAlert extends Component {
     this.setState(
       (state) => {
         const data = state.data.concat({
-          description: d.a_description,
+          description: d.description,
           duration: this.state.AlertDate,
           selectedOption: d.selectedOption,
-        
+          date: d.date
         });
       },
       () => this.submitt()
@@ -59,6 +59,15 @@ class ViewAlert extends Component {
             <Row style={{ flexWrap: "nowrap" }}>
               <Col>
                 <Label className="text-label-b">{d.selectedOption}</Label>
+              </Col>
+              <Col></Col>
+              <Col></Col>
+            </Row>
+          </FormGroup>
+          <FormGroup>
+            <Row style={{ flexWrap: "nowrap" }}>
+              <Col>
+                <Label className="text-label-b">{d.date}</Label>
               </Col>
               <Col></Col>
               <Col></Col>
