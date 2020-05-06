@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from "react-redux"
 import {getBarnDetail} from "../actions/barnActions"
+
 function Instance(props) {
     const color = (props.index % 2) ? "#e6ffee" : "#80ffaa";
     return (
@@ -174,6 +175,7 @@ class AnimalInstance extends Component {
         let products = "";
         this.state.products.forEach(element => products = products.concat(element.name + " ,"));
         products = products.substring(0, products.length - 2);
+        console.log("Props:", this.props.barns);
         return (
             <div>
                 <div className="farm-main-container">
@@ -212,10 +214,8 @@ class AnimalInstance extends Component {
                 <Table className="instance-table" responsive>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Breed</th>
-                            <th>Weight</th>
+                            <th>Tag ID</th>
+                            <th>Gender</th>
                             <th>Expected Product 1</th>
                             <th>Expected Product 2</th>
                             <th>Expected Product 3</th>
