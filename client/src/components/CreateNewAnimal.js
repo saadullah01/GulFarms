@@ -216,7 +216,7 @@ class CreateNewAnimal extends Component {
                                 </div>
                                 <div className="mt-3 col-sm-12">
                                     <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
-                                    <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
+                                    <AddProduct Name="Products" title="Cycle" update={this.onAdd} />
                                 </div>
                             </div>
                         </div>
