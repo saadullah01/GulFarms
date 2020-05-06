@@ -40,6 +40,10 @@ const CreateMultiple = (dataList, dataType) => {
             docInfo.duration = data.duration;
             docInfo.durationType = data.durationType;
             docInfo.keepTrack = true;
+            docInfo.startingDate = Date.now();
+            if(data.hasOwnProperty('startingDate')){
+                docInfo.startingDate = Date(startingDate);
+            }
         }
         if(data.hasOwnProperty('unit')){
             docInfo.unit = data.unit;
@@ -50,8 +54,21 @@ const CreateMultiple = (dataList, dataType) => {
         }
         
         const doc = new nameToModelMap[dataType](docInfo);
-        if(dataType == 'product' && docInfo.isPreset == false){
-            //Create alerts
+        if(dataType == 'product' && docInfo.isPreset == false && docInfo.keepTrack){
+            //Create alert
+            const alert = new BaseModels.Alert({
+                name: doc.name.toLowerCase(),
+                due: doc.startingDate,
+                duration: doc.duration,
+                durationType: doc.durationType.toLowerCase(),
+                linkedTo: doc._id,
+                linkedModel: dataType
+            });
+            return alert.Snooze(alert.duration).save().then(alert => {
+                doc.alerts.push(alert);
+                doc.markModified('alerts');
+                return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}))
+            }).catch(err => ({ error: err, id: alert._id }));
         }
         return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
     });

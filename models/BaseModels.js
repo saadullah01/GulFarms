@@ -44,16 +44,16 @@ const AttributeSchema = new Schema({
 
 const ProductSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
+    startingDate: {type: Date, required: true},
     duration: {type: Number, min: 0, required: true},
     durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
     value: {}, //can insert anything
     unit: {type: String, lowercase: true, default: ""},
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
-    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],  //First alert to be always reserved for product duration cycle
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],// single alert for product duration cycle, named alerts for consistency
     history: [{
         name: {type: String, lowercase: true, required: true},
-        startingDate: {type: Date, required: true},
         duration: {type: Number, required: true},
         durationType: {type: String, lowercase: true, enum: ["year", "month", "week", "day"], required: true},
         value: {},
@@ -76,6 +76,17 @@ AlertSchema.methods.Snooze = function(snoozeFor) {
     const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
     this.due = moment(this.due).add(snoozeFor, type);
     this.markModified('due');
+    
+    if(this.linkedModel == 'product'){
+        const Product = mongoose.model('product', ProductSchema);
+        return Product.findById(this.linkedTo).then(product => {
+            if(product.isPreset){
+                return this;
+            }
+            return product.PushHistory().save().then(_ => this)
+            .catch(err => Promise.reject({status:400, res: {error: err, message: "Could not save product history."}}));
+        })
+    }
     return this;
 };
 
@@ -90,6 +101,8 @@ AttributeSchema.methods.PushHistory = function() {
         unit: this.unit,
         updatedAt: Date.now()
     });
+    this.markModified('history');
+    return this;
 };
 
 ProductSchema.methods.PushHistory = function() {
@@ -104,6 +117,8 @@ ProductSchema.methods.PushHistory = function() {
         unit: this.unit,
         updatedAt: Date.now()
     });
+    this.markModified('history');
+    return this;
 };
 
 ProductSchema.methods.SetCycle = function() {
