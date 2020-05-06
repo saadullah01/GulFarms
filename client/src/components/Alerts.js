@@ -12,6 +12,7 @@ import {getAlerts} from "../actions/alertsAction"
 import { connect } from "react-redux";
 import { saveFarm } from "../actions/farmActions";
 import { withRouter } from "react-router-dom";
+
 function OneAlert(props) {
     const color = (props.index % 2) ? "#e6ffee" : "#80ffaa";
     return (

@@ -32,6 +32,7 @@ import ViewFarm from './components/ViewFarm'
 import Finance from './components/Finance';
 import Alerts from './components/Alerts';
 import AnimalInstance from './components/AnimalInstance';
+import AddAlert from './components/AddAlerts';
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth

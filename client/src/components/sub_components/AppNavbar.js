@@ -34,7 +34,7 @@ function NavLinks (props) {
                 <span className="separator"></span>
                 <Link className="nav-link" to="/home/alerts">Alerts</Link>
                 <span className="separator"></span>
-                <Link className="nav-link" to="/home/finance">Finance</Link>
+                <Link className="nav-link" to="/home/finances">Finance</Link>
             </Nav>
         );
     } else {
