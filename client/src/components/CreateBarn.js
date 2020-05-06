@@ -75,9 +75,10 @@ class CreateBarn extends Component {
             };
         });
         const data = {
+            id:this.props.presets[this.ids("presetId")]._id,
             barn: {
                 barnName: this.state.barnName,
-                Description: this.state.Description,
+                description: this.state.Description,
                 alerts: [],
             },
             alerts: alertsPacket,

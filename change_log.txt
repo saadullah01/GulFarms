@@ -109,5 +109,7 @@ made new create barn and set up routing
 added loading to farm js
 made barn reducer and added to root reducer
 updated preset reducer
+3.1 arham
+create barn form connected barnactions and create barn edited
 
 
