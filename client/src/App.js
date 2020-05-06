@@ -36,6 +36,7 @@ import ResetPassword from './components/auth/ResetPassword';
 import setAuthToken from "./utils/setAuthToken";
 import store from "./store"
 import ViewFarm from './components/ViewFarm'
+
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
