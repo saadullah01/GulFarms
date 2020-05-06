@@ -142,18 +142,18 @@ class AnimalInstance extends Component {
         });
     }
     componentDidUpdate(prevProps,prevState) {
-        if (this.props.barns !== prevProps.barns) {
-            const barn = this.props.barns[this.ids("barn")]
-            const pres = this.props.presets[this.ids("preset")]
-            this.setState({
-                name: barn.name,
-                products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
-                animalInstances: prevState.animalInstances,
-                avgWeight: 0,
-                numAnimals: barn.animals.length,
-                description: barn.description
-            })
-        }
+        // if (this.props.barns !== prevProps.barns) {
+        //     const barn = this.props.barns[this.ids("barn")]
+        //     const pres = this.props.presets[this.ids("preset")]
+        //     this.setState({
+        //         name: barn.name,
+        //         products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
+        //         animalInstances: prevState.animalInstances,
+        //         avgWeight: 0,
+        //         numAnimals: barn.animals.length,
+        //         description: barn.description
+        //     })
+        // }
     }
     render() {
         const url = "/home/farms/" + String(this.ids("farm")) + "/" + String(this.ids("preset")) + "/" + String(this.ids("barn")) + "/";
@@ -163,9 +163,9 @@ class AnimalInstance extends Component {
                 index={index}
                 id={a.id}
                 gender={a.gender}
-                att1={a.attribute[0]}
-                att2={a.attribute[1]}
-                att3={a.attribute[2]}
+                // att1={a.attribute[0]}
+                // att2={a.attribute[1]}
+                // att3={a.attribute[2]}
             />
         );
         let products = "";

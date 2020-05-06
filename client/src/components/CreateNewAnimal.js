@@ -98,8 +98,14 @@ class CreateNewAnimal extends Component {
     };
     OnChangeDate = (e) => {
         this.setState({ AlertDate: e.target.value });
-      };
+    };
     KeepTrack() {
+        const types = ["Year", "Month", "Day", "week"]
+        const duration_type = types.map((t) =>
+            <DropdownItem id={t} onClick={this.selectTime}>
+                {t}
+            </DropdownItem>
+        );
         if (this.state.recordOffspring == true) {
             return (
                 <div>
@@ -118,28 +124,14 @@ class CreateNewAnimal extends Component {
                         <FormGroup>
                             <Col>
                                 <Row>
-                                    <UncontrolledDropdown className="edit-info">
-                                        <DropdownToggle color="correct" caret>
-                                            {this.state.SelectedOption}
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-                                            <DropdownItem id="Year" onClick={this.selectTime}>
-                                                Year
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="Month" onClick={this.selectTime}>
-                                                Month
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="Day" onClick={this.selectTime}>
-                                                Day
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="week" onClick={this.selectTime}>
-                                                week
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
+                                        <UncontrolledDropdown style={{ backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px" }}>
+                                            <DropdownToggle style={{ color: "white" }} color="correct" caret>
+                                                {this.state.selectedOption}
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                {duration_type}
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
                                 </Row>
 
                             </Col>
@@ -178,11 +170,11 @@ class CreateNewAnimal extends Component {
                                 <Input
                                     className="input-field-a"
                                     type="text"
-                                    id="farmName"
+                                    id="AnimalName"
                                     placeholder="Enter Animal Name"
                                     onChange={this.onChange}
-                                    value={this.state.farmName}
-                                    error={errors.farmName}
+                                    value={this.state.AnimalName}
+                                    error={errors.AnimalName}
                                 />
                             </FormGroup>
                             <div className="row">
@@ -199,11 +191,11 @@ class CreateNewAnimal extends Component {
                     </div>
                     <div className="col-sm-12 col-md-6">
                         <div style={{ width: "90%", margin: "0 auto" }}>
-                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{marginRight: "10px"}} />Record</p>
+                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{ marginRight: "10px" }} />Record</p>
                             <FormGroup>
                                 <Label>Record Parents:</Label>
                                 <Input
-                                    style={{margin: "7px"}}
+                                    style={{ margin: "7px" }}
                                     type="checkbox"
                                     onChange={this.onChangeCheck}
                                     checked={this.state.recordParents}
@@ -213,7 +205,7 @@ class CreateNewAnimal extends Component {
                             <FormGroup>
                                 <Label>Record Offspring:</Label>
                                 <Input
-                                    style={{margin: "7px"}}
+                                    style={{ margin: "7px" }}
                                     type="checkbox"
                                     onChange={this.onChangeCheckO}
                                     checked={this.state.recordOffspring}
