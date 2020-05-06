@@ -32,8 +32,8 @@ class CreateAnimalIndividual extends Component {
             errors: {},
             attributes: [],//From DB
             attributes_update: [],
-            alerts: [],//fromm DB
-            alerts_update: [],
+            Products: [],//fromm DB
+            ProductsUpdate: [],
             quant: "",
             date: "",
             recordParents:false,
@@ -55,8 +55,8 @@ class CreateAnimalIndividual extends Component {
             errors: this.props.errors,
             attributes: (this.props.presets[this.ids("preset")]).attributes,//From DB
             attributes_update: [],
-            alerts: [],//fromm DB
-            alerts_update: [],
+            Products: [],//fromm DB
+            ProductsUpdate: [],
             quant: "",
             date: "",
             recordParents: (this.props.presets[this.ids("preset")]).linkParents,
@@ -112,7 +112,7 @@ class CreateAnimalIndividual extends Component {
     }
 
     onAdd = e => {
-        this.setState({ alerts: e });
+        this.setState({ Products: e });
     }
 
     onAdd_Att = e => {
@@ -126,7 +126,7 @@ class CreateAnimalIndividual extends Component {
             p2: this.state.p2,
             errors: this.state.errors,
             attributes: this.state.attributes,
-            alerts: this.state.alerts
+            Products: this.state.Products
         }
         console.log(newUser);
     }
@@ -294,54 +294,14 @@ class CreateAnimalIndividual extends Component {
         }
     }
     Attributes() {
-        console.log(this.state.attributes)
         return this.state.attributes.map((d, index) => {
             return (
-                <div>
-
-                    <Row>
-                        <Col>
-                            <Label className="text-label-b">Name</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Type</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Units</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Value</Label>
-                        </Col>
-                    </Row>
-                    <Row>
-
-                        <Col>
-                            <Label className="text-label-b">{d.Name}</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">{d.Type}</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">{d.Unit}</Label>
-                        </Col>
-                        <Col>
-                            <Input
-                                className="input-field-heading"
-                                type="text"
-                                placeholder="Value"
-                                onChange={this.onChange(d, index)}
-                                value={this.state.quant}
-                                id="quant"
-                            />
-                        </Col>
-                    </Row>
-                </div>
-
+                this.helper(d,index)
             );
         })
     }
     Products() {
-        return this.state.alerts.map((d, index) => {
+        return this.state.Products.map((d, index) => {
             return (
                 <Row>
 
@@ -397,7 +357,7 @@ class CreateAnimalIndividual extends Component {
                             </Label>
                                     </Row>
                                     <Row>
-                                        <Col>{this.Attributes}</Col>
+                                        <Col>{this.Attributes()}</Col>
 
                                     </Row>
 
@@ -408,13 +368,13 @@ class CreateAnimalIndividual extends Component {
                                     </Row>
                                     <Row>
                                         <Col>
-                                            {this.Products}
+                                            {this.Products()}
                                         </Col>
                                         <Col />
                                     </Row>
                                 </Col>
 
-                                {this.Parents}
+                                {this.Parents()}
 
                             </Row>
                             <Row>
@@ -438,4 +398,3 @@ export default connect(
     mapStateToProps,
     { saveInstance }
 )(withRouter(CreateAnimalIndividual));
-

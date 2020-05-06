@@ -110,16 +110,6 @@ class CreateNewAnimal extends Component {
                             <Input
                                 className="input-field-ad"
                                 type="text"
-                                placeholder="Name"
-                                onChange={this.onChange}
-                                value={this.state.AlertDescription}
-                                id="AlertDescription"
-                            />
-                        </Col>
-                        <Col>
-                            <Input
-                                className="input-field-ad"
-                                type="text"
                                 placeholder="Cycle"
                                 onChange={this.onChange}
                                 value={this.state.AlertDuration}
