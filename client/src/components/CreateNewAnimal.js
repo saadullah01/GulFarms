@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faBell, faClipboard, faClipboardCheck } from "@fortawesome/free-solid-svg-icons";
 import {
     Button,
     Modal,
@@ -21,9 +23,9 @@ import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
 import AddProduct from './AddProduct';
+import AddAlert from './AddAlerts';
 
 class CreateNewAnimal extends Component {
-
     // Can Add Constructor
     state = {
         modal: true,
@@ -51,7 +53,6 @@ class CreateNewAnimal extends Component {
             recordParents: !prevState.recordParents
         }))
     }
-
     componentDidUpdate = (prevProps, prevState) => {
         if (
             this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
@@ -70,7 +71,6 @@ class CreateNewAnimal extends Component {
             modal: !prevState.modal
         }))
     }
-
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
@@ -80,7 +80,6 @@ class CreateNewAnimal extends Component {
     onAdd = e => {
         this.setState({ alerts: e });
     }
-
     onAdd_Att = e => {
         this.setState({ attributes: e });
     }
@@ -169,99 +168,80 @@ class CreateNewAnimal extends Component {
         var modal = false
         const { errors } = this.state;
         return (
-            <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
-                <center>
-                    <ModalHeader toggle={this.toggle} >
-                        <Row>
-                            <Col />
-                            <Col xs="13">
-                                <h3 className="h3white" >Create New Animal</h3>
-                            </Col>
-                        </Row>
-                    </ModalHeader>
-                </center>
-                <ModalBody>
-                    <Container>
-                        <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
-                            <Row>
-                                <FormGroup>
-                                    <Row>
-                                        <Col>
-                                            <Label className="text-label" >Name:</Label>
-                                        </Col>
-                                        <Col>
-                                            <Input
-                                                className="input-field-a row align-items-center"
-                                                type="text"
-                                                placeholder="Enter Animal Name"
-                                                onChange={this.onChange}
-                                                value={this.state.AnimalName}
-                                                error={errors.AnimalName}
-                                                id="AnimalName"
-                                            />
-                                        </Col>
-                                    </Row>
-                                </FormGroup>
-                            </Row>
-
-                            <Row />
-
-                            <Row>
-                                <Col>
-                                    <Row>
-                                        <Label className="h4">Attributes: </Label>
-                                    </Row>
-                                    <Row />
-                                    <Row>
-                                        <Col>
-                                            <AddTextField Name="Attribute" update={this.onAdd_Att}></AddTextField>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Label className="h4">Products:</Label>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <AddProduct Name="Products" title="Cycle" update={this.onAdd}></AddProduct>
-                                </Col>
-                                <Col />
-                            </Row>
-                            <Row />
-                            <Row />
-                            <Row xs="4">
-                                <Label className="text-label">Record Parents:</Label>
-                                <Col xs="auto">
-                                    <Input
-                                        className="input-field-check"
-                                        type="checkbox"
-                                        onChange={this.onChangeCheck}
-                                        checked={this.state.recordParents}
-                                        id="Record Parents"
-                                    />
-                                </Col>
-                            </Row>
-                            <Row xs="4" >
-                                <Label className="text-label">Record Offspring:</Label>
-                                <Col xs="auto">
-                                    <Input
-                                        className="input-field-check"
-                                        type="checkbox"
-                                        onChange={this.onChangeCheckO}
-                                        checked={this.state.recordOffspring}
-                                        id="Record Offspring"
-                                    />
-                                </Col>
-                            </Row>
+            <Modal
+                style={{ position: "relative" }}
+                size="lg"
+                isOpen={this.state.modal}
+                // className="modal-dialog"
+                align="centre"
+                toggle={this.toggle}
+            >
+                <p style={{
+                    fontSize: "2rem",
+                    textAlign: "center",
+                    color: "#4caf50"
+                }}>Create New Animal</p>
+                <FontAwesomeIcon
+                    onClick={this.toggle}
+                    style={{ position: "absolute", top: "0px", right: "0px", color: "#4caf50", margin: "5px" }} icon={faTimes} size="1x" />
+                <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
+                                <Label className="input-label-a">Name:</Label>
+                                <Input
+                                    className="input-field-a"
+                                    type="text"
+                                    id="farmName"
+                                    placeholder="Enter Animal Name"
+                                    onChange={this.onChange}
+                                    value={this.state.farmName}
+                                    error={errors.farmName}
+                                />
+                            </FormGroup>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Attributes</p>
+                                    <AddTextField update={this.onAdd_Att}></AddTextField>
+                                </div>
+                                <div className="mt-3 col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
+                                    <AddProduct Name="Products" title="Cycle" update={this.onAdd} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{marginRight: "10px"}} />Record</p>
+                            <FormGroup>
+                                <Label>Record Parents:</Label>
+                                <Input
+                                    style={{margin: "7px"}}
+                                    type="checkbox"
+                                    onChange={this.onChangeCheck}
+                                    checked={this.state.recordParents}
+                                    id="Record Parents"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label>Record Offspring:</Label>
+                                <Input
+                                    style={{margin: "7px"}}
+                                    type="checkbox"
+                                    onChange={this.onChangeCheckO}
+                                    checked={this.state.recordOffspring}
+                                    id="Record Offspring"
+                                />
+                            </FormGroup>
                             {this.KeepTrack()}
-                            <Row>
-                                <Button className="login-btn" type="submit">Save</Button>
-                            </Row>
-                        </Form>
-                    </Container>
-                </ModalBody>
+                        </div>
+                    </div>
+                    <div className="col-sm-12 mt-5 mb-2">
+                        <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
+                        <Button className="form-btn" type="submit">Save</Button>
+                    </div>
+                </Form>
             </Modal>
         )
     }
