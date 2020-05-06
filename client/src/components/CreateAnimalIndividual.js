@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faBell, faClipboard, faClipboardCheck } from "@fortawesome/free-solid-svg-icons";
+import {  faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import {
     Button,
     Modal,
@@ -23,6 +27,7 @@ import {
 import { connect } from "react-redux"
 import { withRouter  } from 'react-router-dom';
 import { saveInstance } from "../actions/barnActions"
+
 class CreateAnimalIndividual extends Component {
 
     // Can Add Constructor
@@ -162,27 +167,18 @@ class CreateAnimalIndividual extends Component {
     Parents() {
         if (this.state.recordParents === true) {
             return(
-            <div>
-                <Col>
-                    <Row>
-                        <Label className="h4">
-                            Parents
-                            </Label>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Label className="text-label">
-                                Record Parents:
-                            </Label>
-                        </Col>
-                    </Row>
-                </Col>
-                <Row>
-                    <Col>
-                        <div>
-                            <Button className="plus-btn-small" id="toggler" style={{ marginBottom: '2rem' }}>
-                                +
-                            </Button>
+                <div className="row">
+                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Parents</p>
+                    <Label className="input-label-a">Record Parents:</Label>               
+                    <div className="mt-3 col-sm-12">
+                    <Button id="toggler" style={{
+                    width: "20%",
+                    height: "40px",
+                    backgroundColor: "#4caf50",
+                    borderRadius: "20px",
+                    float: "right",
+                    }}><FontAwesomeIcon icon={faPlus} size="1x" /></Button>
+                
                             <UncontrolledCollapse toggler="#toggler">
                                 <Card>
                                     <CardBody>
@@ -213,10 +209,7 @@ class CreateAnimalIndividual extends Component {
                                 </Card>
                             </UncontrolledCollapse>
                         </div>
-                    </Col>
-                </Row>
-                <Row></Row>
-                </div >
+                    </div>
             )
         }
     }
@@ -236,22 +229,17 @@ class CreateAnimalIndividual extends Component {
         if(d.Type === "Numeric")
         {
             return(
-                <div>
-                <Row>
-                        <Col>
-                            <Label className="text-label-b">Name</Label>
-                            </Col>
-                        <Col>
-                            <Label className="text-label-b">Units</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Value</Label>
-                        </Col>
-                </Row>
-                <Row>
-                    <Col>{d.Name}</Col>
-                    <Col>{d.Unit}</Col>
-                    <Col><Input
+                <div className="row">
+                    <div className= "row">
+                    <td>Name</td>
+                    <td>Units</td>
+                    <td>Value</td>
+                    </div>
+
+                    <div>
+                        <td>{d.Name}</td>
+                        <td>{d.Unit}</td>
+                        <Input
                                 className="input-field-heading"
                                 type="text"
                                 placeholder="Value"
@@ -259,26 +247,24 @@ class CreateAnimalIndividual extends Component {
                                 value={d.Value}
                                 id="quant"
                             />
-                    </Col>
-                </Row>
+                    </div>
                 </div>
             );
         }
         else if(d.Type === "String")
         {
             return(
-                <div>
-                <Row>
-                        <Col>
-                            <Label className="text-label-b">Name</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Value</Label>
-                        </Col>
-                </Row>
-                <Row>
-                    <Col><Label className="text-label-b">{d.Name}</Label></Col>
-                    <Col><Input
+                <div className="row">
+                    <div className= "row">
+                    <td>Name</td>
+                    <td>Units</td>
+                    <td>Value</td>
+                    </div>
+
+                    <div>
+                        <td>{d.Name}</td>
+                        <td>{d.Unit}</td>
+                        <Input
                                 className="input-field-heading"
                                 type="text"
                                 placeholder="Value"
@@ -286,41 +272,30 @@ class CreateAnimalIndividual extends Component {
                                 value={d.Value}
                                 id="quant"
                             />
-                    </Col>
-                    <Col/>
-                </Row>
-                </div>
-                
-                
+                    </div>
+                </div>                
             );
         }
         else if(d.Type === "Options")
         {
             return(
-                <div>
-                <Row>
-                        <Col>
-                            <Label className="text-label-b">Name</Label>
-                        </Col>
-                        <Col>
-                            <Label className="text-label-b">Options</Label>
-                        </Col>
-                </Row>
-                <Row>
-                    <Col>{d.Name}</Col>
-                    <Col>
-                    <div className="pl-1 pr-1 col-sm-4">
-                    <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
-                    <DropdownToggle style={{color: "white"}} color="correct" caret>
-                        {d.Value}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {this.opt(d, index)}
-                    </DropdownMenu>
-                    </UncontrolledDropdown>
-                </div>
-                    </Col>
-                </Row>
+                <div className="row">
+                    <div className= "row">
+                    <td>Name</td>
+                    <td>Value</td>
+                    </div>
+
+                    <div>
+                        <td>{d.Name}</td>
+                        <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
+                        <DropdownToggle style={{color: "white"}} color="correct" caret>
+                            {d.Value}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {this.opt(d, index)}
+                        </DropdownMenu>
+                        </UncontrolledDropdown>
+                    </div>
                 </div>
                 
                 
@@ -334,16 +309,12 @@ class CreateAnimalIndividual extends Component {
             );
         })
     }
-    Products() {
+    Products(){
         return this.state.Products.map((d, index) => {
             return (
-                <Row>
-
-                    <Col>
-                        <Label className="text-label-b">{d.description}</Label>
-                    </Col>
-                    <Col>
-                        <Input
+                <div className= "row">
+                    <td>{d.description}</td>
+                    <Input
                             className="input-field-heading"
                             type="date"
                             placeholder="Date"
@@ -351,8 +322,8 @@ class CreateAnimalIndividual extends Component {
                             value={d.Value}
                             id="date"
                         />
-                    </Col>
-                </Row>
+                </div>
+                
             );
         })
     }
@@ -360,67 +331,54 @@ class CreateAnimalIndividual extends Component {
         var modal = false
         const { errors } = this.state;
         return (
-            <Modal size="lg" isOpen={this.state.modal} className="modal-dialog" align="centre" toggle={this.toggle} >
-                <center>
-                    <ModalHeader toggle={this.toggle} >
-                        <Row>
-                            <Col>
-                                <Row>
-
-                                    <Col />
-                                    <Col xs="13">
-                                        <h3 className="h3white" >
-                                            Create New {this.state.AnimalName}
-                                        </h3>
-                                    </Col>
-
-
-                                </Row>
-                            </Col>
-                        </Row>
-                    </ModalHeader></center>
-                <ModalBody>
-                    <Container>
-                        <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
-                            <Row>
-                                <Col>
-
-                                    <Row>
-                                        <Label className="h4">
-                                            Attributes:
-                            </Label>
-                                    </Row>
-                                    <Row>
-                                        <Col>{this.Attributes()}</Col>
-
-                                    </Row>
-
-                                    <Row>
-                                        <Label className="h4">
-                                            Products:
-                            </Label>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            {this.Products()}
-                                        </Col>
-                                        <Col />
-                                    </Row>
-                                </Col>
-
-                                {this.Parents()}
-
-                            </Row>
-                            <Row>
-                                <Button className="login-btn" onClick={this.toggle}>Save</Button>
-                            </Row>
-                        </Form>
-                    </Container>
-                </ModalBody >
-            </Modal >
+            <Modal
+                style={{ position: "relative" }}
+                size="lg"
+                isOpen={this.state.modal}
+                // className="modal-dialog"
+                align="centre"
+                toggle={this.toggle}
+            >
+                <p style={{
+                    fontSize: "2rem",
+                    textAlign: "center",
+                    color: "#4caf50"
+                }}>Create New {this.state.AnimalName}</p>
+                <FontAwesomeIcon
+                    onClick={this.toggle}
+                    style={{ position: "absolute", top: "0px", right: "0px", color: "#4caf50", margin: "5px" }} icon={faTimes} size="1x" />
+                <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Attributes</p>
+                                    {this.Attributes()}
+                                </div>
+                                <div className="mt-3 col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
+                                    {this.Products()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{marginRight: "10px"}} />Record</p>
+                            {this.Parents()}
+                        </div>
+                    </div>
+                    <div className="col-sm-12 mt-5 mb-2">
+                        <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
+                        <Button className="form-btn" type="submit">Save</Button>
+                    </div>
+                </Form>
+            </Modal>
         )
     }
-}/*
+}
+    /*
 const mapStateToProps = state => ({
     loggedIn: state.authReducer.islogged,
     errors: state.errorReducer.errors,
@@ -433,3 +391,4 @@ export default connect(
     { saveInstance }
 )(withRouter(CreateAnimalIndividual));*/
 export default CreateAnimalIndividual
+

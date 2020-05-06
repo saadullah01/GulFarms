@@ -1,32 +1,28 @@
 import React, { Component } from "react";
 import {
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    Container,
-    Row,
-    Col,
+  Button,
+  Modal,
+  Form,
+  FormGroup,
+  Label,
+  Input,
 } from "reactstrap";
 import AddAlert from "./AddAlerts";
 import { connect, connectAdvanced } from "react-redux";
 import { saveBarn } from "../actions/barnActions";
 import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faBell } from "@fortawesome/free-solid-svg-icons";
 class CreateBarn extends Component {
-    // Can Add Constructor
-    state = {
-        modal: true,
-        barnName: "",
-        Description: "",
-        alerts: [],
-        errors: {},
-    };
-    ids(name){
+  // Can Add Constructor
+  state = {
+    modal: true,
+    barnName: "",
+    Description: "",
+    alerts: [],
+    errors:{},
+  };
+  ids(name){
         const dic ={
         farmId:this.props.match.params.fid,
         presetId:this.props.match.params.pid
@@ -50,30 +46,27 @@ class CreateBarn extends Component {
             return
         }
     }
-    toggle = () => {
-        console.log(this.state.modal)
-        this.setState((prevState) => ({
-            modal: !prevState.modal,
-        }));
-    };
-
-    onChange = (e) => {
-        this.setState({ [e.target.id]: e.target.value });
-    };
-    onAdd = (e) => {
-        this.setState({ alerts: e });
-    };
-
-    onSubmit = (e) => {
-        // console.log(e);
-        e.preventDefault();
-        const alertsPacket = this.state.alerts.map((alert) => {
-            return {
-                name: alert.description,
-                duration: alert.duration,
-                durationType: alert.selectedOption,
-                linkedModel: "barn",
-            };
+  toggle = () => {
+    this.setState((prevState) => ({
+      modal: !prevState.modal,
+    }));
+  };
+  onChange = (e) => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+  onAdd = (e) => {
+    this.setState({ alerts: e });
+  };
+  onSubmit = (e) => {
+    // console.log(e);
+    e.preventDefault();
+    const alertsPacket = this.state.alerts.map((alert) => {
+        return {
+            name: alert.description,
+            duration: alert.duration,
+            durationType: alert.selectedOption,
+            linkedModel: "barn",
+        };
         });
         const data = {
             id:this.props.presets[this.ids("presetId")]._id,
@@ -84,98 +77,76 @@ class CreateBarn extends Component {
             },
             alerts: alertsPacket,
         };
-        // console.log(data);
         this.props.saveBarn(data);
     };
-    render() {
-        var modal = false;
-        const { errors } = this.props;
-        return (
-            <Modal
-                size="lg"
-                isOpen={this.state.modal}
-                className="modal-dialog"
-                align="centre"
-                toggle={this.toggle}
-            >
-                <center>
-                    <ModalHeader toggle={this.toggle}>
-                        <Row>
-                            <Col />
-                            <Col xs="13">
-                                <h3 className="h3white">Create New Barn</h3>
-                            </Col>
-                        </Row>
-                    </ModalHeader>
-                </center>
-                <ModalBody>
-                    <Container>
-                        <Form className="add-farm" noValidate onSubmit={this.onSubmit}>
-                            <Row>
-                                <FormGroup>
-                                    <Row>
-                                        <Col>
-                                            <Label for="fname" className="text-label">
-                                                Name:{" "}
-                                            </Label>
-                                        </Col>
-                                        <Col>
-                                            <Input
-                                                className="input-field-a"
-                                                type="text"
-                                                id="barnName"
-                                                placeholder="Enter name of farm"
-                                                onChange={this.onChange}
-                                                value={this.state.barnName}
-                                                error={errors.barnName}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </FormGroup>
-                            </Row>
-                            <Row>
-                                <FormGroup>
-                                    <Row>
-                                        <Col>
-                                            <Label for="Description" className="text-label">
-                                                Description:{" "}
-                                            </Label>
-                                        </Col>
-                                        <Col>
-                                            <Input
-                                                className="input-field-a"
-                                                type="textarea"
-                                                placeholder="Enter description"
-                                                onChange={this.onChange}
-                                                value={this.state.Description}
-                                                error={errors.Description}
-                                                id="Description"
-                                            />
-                                        </Col>
-                                    </Row>
-                                </FormGroup>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <AddAlert
-                                        update={this.onAdd}
-                                        Name="Alerts"
-                                        title="Duration"
-                                    ></AddAlert>
-                                </Col>
-                                <Col></Col>
-                            </Row>
-                            <Row>
-                                <Button className="login-btn" type="submit">
-                                    Save
-                </Button>
-                            </Row>
-                        </Form>
-                    </Container>
-                </ModalBody>
-            </Modal>
-        );
-    }
+  render() {
+    var modal = false;
+    const { errors } = this.props;
+    return (
+      <Modal
+        style={{position: "relative"}}
+        size="lg"
+        isOpen={this.state.modal}
+        // className="modal-dialog"
+        align="centre"
+        toggle={this.toggle}
+      >
+        <p style={{
+          fontSize: "2rem",
+          textAlign: "center",
+          color: "#4caf50"
+        }}>Create New Barn</p>
+        <FontAwesomeIcon
+          onClick={this.toggle}
+          style={{position: "absolute", top:"0px", right:"0px", color: "#4caf50", margin: "5px"}} icon={ faTimes } size="1x" />
+        <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
+          <div className="col-sm-12 col-md-6">
+            <div style={{width: "90%", margin: "0 auto"}}>
+              <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+                <Label className="input-label-a">Name:</Label>
+                <Input
+                  className="input-field-a"
+                  type="text"
+                  id="barnName"
+                  placeholder="Enter name of barn"
+                  onChange={this.onChange}
+                  value={this.state.barnName}
+                  error={errors.barnName}
+                />
+              </FormGroup>
+              <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+                <Label className="input-label-a">Description:</Label>
+                  <Input
+                  className="input-field-a"
+                  type="textarea"
+                  placeholder="Enter description"
+                  onChange={this.onChange}
+                  value={this.state.Description}
+                  error={errors.Description}
+                  id="Description"
+                  rows="5"
+                />
+              </FormGroup>
+            </div>
+          </div>
+          <div className="col-sm-12 col-md-6">
+            <div style={{width: "90%", margin: "0 auto"}}>
+              <p className="add-a" style={{fontSize: "30px", color: "#4caf50"}}><FontAwesomeIcon icon={faBell} /> Add Alerts:</p>
+              <AddAlert 
+                update={this.onAdd}
+                title="Duration"
+                Name= "Alerts"
+              />
+            </div>
+          </div>
+          <div className="col-sm-12 mt-5 mb-2">
+            <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
+            <Button className="form-btn" type="submit">Save</Button>
+          </div>
+        </Form>
+      </Modal>
+    );
+  }
 }
 const mapStateToProps = (state) => ({
     loggedIn: state.authReducer.islogged,

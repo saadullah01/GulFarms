@@ -26,7 +26,6 @@ class AddAlert extends Component {
       title: props.title,
       modal: true,
       data: [],
-      number: 1,
       AlertDescription: "",
       AlertDuration: "",
       AlertDate: "",
@@ -62,9 +61,6 @@ class AddAlert extends Component {
       AlertDate: ""
     });
   };
-  select = (e) => {
-    this.setState({ selectedOption: e.target.id });
-  };
 
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
@@ -80,9 +76,6 @@ class AddAlert extends Component {
       () => this.submitt()
     );
     this.resett();
-  };
-  OnChangeDate = (e) => {
-    this.setState({ AlertDate: e.target.value });
   };
   display = () => {
     const addedAlerts = this.state.data.map((d, index) =>
@@ -106,7 +99,7 @@ class AddAlert extends Component {
   render() {
     const types = ["Year", "Month", "Day", "week"]
     const duration_type = types.map((t) =>
-      <DropdownItem id={t} onClick={this.select}>
+      <DropdownItem value={t} id="selectedOption" onClick={this.onChange}>
         {t}
       </DropdownItem>
     );
@@ -151,7 +144,7 @@ class AddAlert extends Component {
                 type="date"
                 placeholder="Enter Start Date"
                 value={this.state.AlertDate}
-                onChange = {this.OnChangeDate}
+                onChange = {this.onChange}
                 id="AlertDate"
               />
           </div>

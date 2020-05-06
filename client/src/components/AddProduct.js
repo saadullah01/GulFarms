@@ -25,7 +25,7 @@ class AddProduct extends Component {
       Name: props.Name,
       title: props.title,
       modal: true,
-      data: [],
+      Product: [],
       number: 1,
       ProductDescription: "",
       ProductDuration: "",
@@ -35,18 +35,18 @@ class AddProduct extends Component {
   }
 
   submitt = () => {
-    this.props.update(this.state.data);
+    this.props.update(this.state.Product);
   };
   add = (e) => {
     this.setState(
       (state) => {
-        const data = state.data.concat({
+        const Product = state.Product.concat({
           description: state.ProductDescription,
           duration: state.ProductDuration,
           selectedOption: state.selectedOption,
         });
         return {
-          data,
+          Product,
         };
       },
       () => this.submitt()
@@ -60,9 +60,6 @@ class AddProduct extends Component {
       selectedOption: "Year",
     });
   };
-  select = (e) => {
-    this.setState({ selectedOption: e.target.id });
-  };
 
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
@@ -70,9 +67,9 @@ class AddProduct extends Component {
   remove = (d) => {
     this.setState(
       (state) => {
-        const data = state.data.filter((item, j) => d !== j);
+        const Product = state.Product.filter((item, j) => d !== j);
         return {
-          data,
+          Product,
         };
       },
       () => this.submitt()
@@ -80,7 +77,7 @@ class AddProduct extends Component {
     this.resett();
   };
   display = () => {
-    const addedAlerts = this.state.data.map((d, index) =>
+    const addedAlerts = this.state.Product.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
         <td>{d.duration}</td>
@@ -100,7 +97,7 @@ class AddProduct extends Component {
   render() {
     const types = ["Year", "Month", "Day", "week"]
     const duration_type = types.map((t) =>
-      <DropdownItem id={t} onClick={this.select}>
+      <DropdownItem value={t} id="selectedOption" onClick={this.onChange}>
         {t}
       </DropdownItem>
     );

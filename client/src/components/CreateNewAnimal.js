@@ -4,15 +4,11 @@ import { faTimes, faBell, faClipboard, faClipboardCheck } from "@fortawesome/fre
 import {
     Button,
     Modal,
-    ModalHeader,
-    ModalBody,
     Form,
     FormGroup,
     Label,
     Input,
-    Container,
     Row,
-    Col,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
@@ -23,7 +19,6 @@ import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
 import AddProduct from './AddProduct';
-import AddAlert from './AddAlerts';
 
 class CreateNewAnimal extends Component {
     // Can Add Constructor
@@ -74,14 +69,11 @@ class CreateNewAnimal extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    select = e => {
-        this.setState({ track: e.target.id });
-    }
-    onAdd = e => {
-        this.setState({ alerts: e });
-    }
-    onAdd_Att = e => {
+    onAddT = e => {
         this.setState({ attributes: e });
+    }
+    onAddP = e => {
+        this.setState({ alerts: e });
     }
     onSubmit = e => {
         e.preventDefault();
@@ -93,59 +85,37 @@ class CreateNewAnimal extends Component {
         console.log(data);
         this.props.savePreset(data)
     }
-    selectTime = (e) => {
-        this.setState({ selectedOption: e.target.id });
-    };
-    OnChangeDate = (e) => {
-        this.setState({ AlertDate: e.target.value });
-      };
     KeepTrack() {
+        const types = ["Year", "Month", "Day", "week"]
+        const duration_type = types.map((t) =>
+        <DropdownItem value={t} id="SelectedOption" onClick={this.onChange}>
+            {t}
+        </DropdownItem>
+        );
         if (this.state.recordOffspring == true) {
             return (
-                <div>
-
-                    <Row style={{ flexWrap: "nowrap" }}>
-                        <Col>
-                            <Input
-                                className="input-field-ad"
-                                type="text"
-                                placeholder="Cycle"
-                                onChange={this.onChange}
-                                value={this.state.AlertDuration}
-                                id="AlertDuration"
-                            />
-                        </Col>
-                        <FormGroup>
-                            <Col>
-                                <Row>
-                                    <UncontrolledDropdown className="edit-info">
-                                        <DropdownToggle color="correct" caret>
-                                            {this.state.SelectedOption}
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-                                            <DropdownItem id="Year" onClick={this.selectTime}>
-                                                Year
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="Month" onClick={this.selectTime}>
-                                                Month
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="Day" onClick={this.selectTime}>
-                                                Day
-                                            </DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem id="week" onClick={this.selectTime}>
-                                                week
-                                            </DropdownItem>
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
-                                </Row>
-
-                            </Col>
-                        </FormGroup>
-                    </Row>
+                <Row>
+                <div className="pl-1 pr-1 col-sm-3">
+                  <Input
+                    className="input-field-ad"
+                    type="text"
+                    placeholder="Cycle"
+                    onChange={this.onChange}
+                    value={this.state.AlertDuration}
+                    id="AlertDuration"
+                  />
                 </div>
+                <div className="pl-1 pr-1 col-sm-4">
+                  <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
+                    <DropdownToggle style={{color: "white"}} color="correct" caret>
+                      {this.state.SelectedOption}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {duration_type}
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </div>
+              </Row>
             )
         }
 
@@ -188,11 +158,11 @@ class CreateNewAnimal extends Component {
                             <div className="row">
                                 <div className="col-sm-12">
                                     <p style={{ fontSize: "30px", color: "#4caf50" }}>Attributes</p>
-                                    <AddTextField update={this.onAdd_Att}></AddTextField>
+                                    <AddTextField id= "attributes" update={this.onAddT}></AddTextField>
                                 </div>
                                 <div className="mt-3 col-sm-12">
                                     <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
-                                    <AddProduct Name="Products" title="Cycle" update={this.onAdd} />
+                                    <AddProduct Name="Products" title="Cycle" id = "alerts" update={this.onAddP} />
                                 </div>
                             </div>
                         </div>
@@ -207,7 +177,7 @@ class CreateNewAnimal extends Component {
                                     type="checkbox"
                                     onChange={this.onChangeCheck}
                                     checked={this.state.recordParents}
-                                    id="Record Parents"
+                                    id="recordParents"
                                 />
                             </FormGroup>
                             <FormGroup>
@@ -217,7 +187,7 @@ class CreateNewAnimal extends Component {
                                     type="checkbox"
                                     onChange={this.onChangeCheckO}
                                     checked={this.state.recordOffspring}
-                                    id="Record Offspring"
+                                    id="recordOffspring"
                                 />
                             </FormGroup>
                             {this.KeepTrack()}

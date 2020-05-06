@@ -67,9 +67,6 @@ class AddTextField extends Component {
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
-    select = e => {
-        this.setState({ FieldType: e.target.id });
-    }
     remove = d => {
 
         this.setState(state => {
@@ -82,8 +79,16 @@ class AddTextField extends Component {
         }, () => this.submitt());
         this.resett()
     };
-    unit() {
-        if (this.state.FieldType === "Numeric") {
+    onAdd = e => {
+        this.setState({ Option: e });
+    }
+    fields() {
+        if (this.state.FieldType === "Options") {
+            return (
+                <Option update={this.onAdd}></Option>
+            )
+        }
+        else if (this.state.FieldType === "Numeric") {
             return (
                 <div className="col-sm-3 pl-2">
                     <Input
@@ -94,16 +99,6 @@ class AddTextField extends Component {
                         id="Unit"
                     />
                 </div>
-            )
-        }
-    }
-    onAdd = e => {
-        this.setState({ Option: e });
-    }
-    option() {
-        if (this.state.FieldType === "Options") {
-            return (
-                <Option update={this.onAdd}></Option>
             )
         }
     }
@@ -214,16 +209,15 @@ class AddTextField extends Component {
                                 caret
                                 style={{ color: "white" }}>{this.state.FieldType}</DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem id="String" onClick={this.select}>String</DropdownItem>
+                                <DropdownItem value="String" id= "FieldType" onClick={this.onChange}>String</DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem id="Numeric" onClick={this.select}>Numeric</DropdownItem>
+                                <DropdownItem value="Numeric" id= "FieldType" onClick={this.onChange}>Numeric</DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem id="Options" onClick={this.select}>Options</DropdownItem>
+                                <DropdownItem value="Options" id= "FieldType" onClick={this.onChange}>Options</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </div>
-                    {this.unit()}
-                    {this.option()}
+                    {this.fields()}
                     <div className="col-sm-12">
                         <Button
                             onClick={this.add}
