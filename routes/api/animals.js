@@ -13,23 +13,26 @@ const nameToModelMap = {
     "animalPreset": BaseModels.AnimalPreset
 };
 
-const summarize = data => (
-    {
+const summarize = data => {
+    summary = {
         _id:data._id,
         name:data.name
+    };
+    if(data.hasOwnProperty('value')){
+        summary.value = data.value;
     }
-);
+    return summary;
+};
 
 //Multipurpose helper functions (hope they work!)
 const CreateMultiple = (dataList, dataType) => {
-    console.debug("dataList: ", JSON.stringify(dataList));
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
         const docInfo = {};
         if(dataType == 'attribute'){
             docInfo.name = data.name;
             docInfo.attributeType = data.attributeType;
-            docInfo.keepTrack = data.keepTrack;
+            docInfo.keepTrack = true;
             docInfo.options = docInfo.attributeType != 'option' ? [] : data.options
         }
         if(dataType == 'product'){
@@ -156,7 +159,7 @@ router.post("/attributes/create", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
+    
     return CreateMultiple(req.body.attributes, 'attribute')
         .then(response => res.status(200).json(response))
         .catch(response => res.status(400).json(response));
@@ -557,7 +560,7 @@ router.post("/delete-preset", (req, res) => {
 //===========================================================================
 
 // @route POST api/animals/create
-// @desc Create one or more new product(s)
+// @desc Create a new animal isntance
 // @access Public
 router.post("/create", (req, res) => {
     console.log("Request @ api/animals/create : {\n");
@@ -568,7 +571,6 @@ router.post("/create", (req, res) => {
     
     // Form validation
     const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
-    // console.log(req.body)
     // Check validation
     if (!isValid) {
         return res.status(400).json(errors);
@@ -600,7 +602,7 @@ router.post("/create", (req, res) => {
             return Promise.reject({status: 404, res: {error: "ID", message:"Preset not found"}})
         }
         return preset.populate('attributes').populate('products').execPopulate()
-        .catch(err => ({status: 400, res: {error: err, message: "Error populating preset."}}))
+        .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating preset."}}))
 
     }).then(preset => {
         preset = preset.toJSON();
@@ -617,10 +619,11 @@ router.post("/create", (req, res) => {
         })
 
         //Copy preset attributes and products
-        attributes = CreateMultiple(preset.attributes, "attribute").created
-        products =  CreateMultiple(preset.products, "product").created
-        return Promise.all([attributes, products]).then( _ => {
-
+        attributes = CreateMultiple(preset.attributes, "attribute").then(obj => obj.created);
+        products =  CreateMultiple(preset.products, "product").then(obj => obj.created);
+        return Promise.all([attributes, products]).then( arr => {
+            attributes = arr[0];
+            products = arr[1];
             //Assign parents/offsprings to correct fields
             if(preset.linkParents){
                 animalInfo.parents = attributes[0];
@@ -632,9 +635,9 @@ router.post("/create", (req, res) => {
             }
             //Add attribute and product ids to animalInfo
             animalInfo.attributes = attributes;
-            animalInfo.product = products;
+            animalInfo.products = products;
             return animalInfo;
-        }).catch(err => ({status: 400, res: {error: err, message: "Error copying attributes or products."}}))
+        }).catch(err => Promise.reject({status: 400, res: {error: err, message: "Error copying attributes or products."}}))
 
     }).then(animalInfo => {
         //Create animal document
@@ -649,9 +652,90 @@ router.post("/create", (req, res) => {
                     return resolve(animal);
                 })
             });
-        }).catch(err => ({status: err.hasOwnProperty('status') ? err.status : 400, res: err.hasOwnProperty('res') ? err.res : {error: err, message:"Error saving animal."}}));
+        }).catch(err => Promise.reject({status: err.hasOwnProperty('status') ? err.status : 400, res: err.hasOwnProperty('res') ? err.res : {error: err, message:"Error saving animal."}}));
     
     }).then(animal => res.status(200).json({created: animal, message: "Animal created successfully."}))
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+});
+
+// @route POST api/animals/view
+// @desc View an animal instance
+// @access Public
+router.post("/view", (req, res) => {
+    console.log("Request @ api/animals/create : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
+    
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    //Expected data:
+    // id
+
+    //Find animal
+    FarmModels.Animal.findById(req.body.id)
+    .then(animal => {
+        if(!animal){
+            return Promise.reject({status: 404, res: {error: "ID", message:"Animal not found"}})
+        }
+        return animal.populate('attributes').populate('products')
+        .populate('parents').populate('offspring').execPopulate()
+        .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal."}}))
+    
+    }).then(animal => res.status(200).json(animal))
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+});
+
+
+// @route POST api/animals/get
+// @desc Get list of animal instances
+// @access Public
+router.post("/get", (req, res) => {
+    console.log("Request @ api/animals/get : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
+    
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    //Find animals
+    FarmModels.Animal.find()
+    .then(animals => {
+        if(!animals){
+            return Promise.resolve({});
+        }
+        return Promise.all(animals.map(animal => {
+            return animal.populate('attributes').populate('products')
+            .populate('parents').populate('offspring').execPopulate()
+            .then(animal => {
+                return animal.populate('parents.value').populate('offspring.value').execPopulate()
+                .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal parents and offspring."}}))
+            })
+            .then(animal => {
+                //Summarize details
+                animalObject = animal.toJSON();
+                animalObject.attributes = animalObject.attributes.map(attribute => summarize(attribute));
+                animalObject.products = animalObject.products.map(product => summarize(product));
+                animalObject.parents = animalObject.parents.value.map(parent => summarize(parent));
+                animalObject.offspring = animalObject.offspring.value.map(child => summarize(child));
+                return animalObject;
+
+            }).catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal."}}))
+        })).then(populatedAnimals => populatedAnimals);
+    
+    }).then(animal => res.status(200).json(animal)).catch(err => Promise.reject({status: 404, res: {error: err, message: "Error finding animal."}}))
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
