@@ -58,8 +58,7 @@ const App =()=>{
     return (
       <Router>
         <div className="App">
-          <Route path="/" component={CreateNewAnimal} />
-          {/* <Route path="/" component={ AppNavbar } />
+          <Route path="/" component={ AppNavbar } />
           <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
           <Route path="/cf" component={ CreateAnimalIndividual } />
@@ -80,7 +79,7 @@ const App =()=>{
           <PrivateRoute exact path="/home/farms/:fid/:pid/create-barn" component={ CreateBarn } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid" component={ AnimalInstance } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/create-instance" component={ CreateAnimalIndividual } />
-          </Switch> */}
+          </Switch>
         </div>  
       </Router>   
     );
