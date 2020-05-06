@@ -144,20 +144,6 @@ class CreateNewAnimal extends Component {
 
                             </Col>
                         </FormGroup>
-                        <FormGroup>
-                            <Col>
-                            <Row>
-                              <Input
-                                className="input-field-ad"
-                                type="date"
-                                placeholder="Start Date"
-                                onChange={this.OnChangeDate}
-                                value={this.state.AlertDate}
-                                id="AlertDate"
-                            />  
-                            </Row>
-                            </Col>
-                        </FormGroup>
                     </Row>
                 </div>
             )
