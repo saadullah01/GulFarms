@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useLocation, Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from "react-redux"
 import {getPresetDetail} from "../actions/presetActions"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,7 +32,7 @@ class AnimalPreset extends Component {
         farmId:this.props.match.params.fid,
         presetId:this.props.match.params.pid
         }
-        return dic[name]
+        return parseInt(dic[name])
     }
     componentDidMount() {
         if(this.props.farms.length <= this.ids("farmId") ||this.props.presets.length <= this.ids("presetId") ){

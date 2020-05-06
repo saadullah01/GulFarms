@@ -1,7 +1,8 @@
 import axios from "axios";
 import {
     SET_BARN,
-    GET_ERRORS
+    GET_ERRORS,
+    SET_DETAIL_BARN
 } from "./types"
 export const saveBarn = (data) => (dispatch, getState) => {
 
@@ -46,6 +47,25 @@ export const saveBarn = (data) => (dispatch, getState) => {
         })
         .catch(err => {
             console.log(err)
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+export const getBarnDetail=(data)=>(dispatch,getState)=>{
+    const state=getState()
+    const dbId = state.barnReducer.barns[parseInt(data)]._id
+    axios
+        .post("/api/barns/view",{id:dbId})
+        .then(res=>{
+            dispatch({
+                type:SET_DETAIL_BARN,
+                payload:res.data,
+                id:data
+            })
+        })
+        .catch(err=>{
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data

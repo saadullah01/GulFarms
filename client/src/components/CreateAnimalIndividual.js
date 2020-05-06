@@ -34,9 +34,14 @@ class CreateAnimalIndividual extends Component {
         date: "",
         recordParents:false,
     }
-
-
-
+    ids(name) {
+        const dic = {
+            farm: this.props.match.params.fid,
+            preset: this.props.match.params.pid,
+            barn:this.props.match.params.bid
+        }
+        return parseInt(dic[name])
+    }
     toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
