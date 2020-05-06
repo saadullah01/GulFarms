@@ -27,8 +27,9 @@ class AddAlert extends Component {
       modal: true,
       data: [],
       number: 1,
-      a_description: "",
-      a_duration: "",
+      AlertDescription: "",
+      AlertDuration: "",
+      AlertDate: "",
       selectedOption: "Year",
     };
   }
@@ -40,9 +41,10 @@ class AddAlert extends Component {
     this.setState(
       (state) => {
         const data = state.data.concat({
-          description: state.a_description,
-          duration: state.a_duration,
+          description: state.AlertDescription,
+          duration: state.AlertDuration,
           selectedOption: state.selectedOption,
+          date: state.AlertDate
         });
         return {
           data,
@@ -54,9 +56,10 @@ class AddAlert extends Component {
   };
   resett = () => {
     this.setState({
-      a_duration: "",
-      a_description: "",
+      AlertDuration: "",
+      AlertDescription: "",
       selectedOption: "Year",
+      AlertDate: ""
     });
   };
   select = (e) => {
@@ -85,6 +88,7 @@ class AddAlert extends Component {
         <td>{d.description}</td>
         <td>{d.duration}</td>
         <td>{d.selectedOption}</td>
+        <td>{d.AlertDate}</td>
         <td><FontAwesomeIcon onClick={() => this.remove(index)} style={{ color: "#4caf50" }} icon={faTimes} size="1x" /></td>
       </tr>
     );
@@ -115,18 +119,16 @@ class AddAlert extends Component {
               type="text"
               placeholder="Alert's Description"
               onChange={this.onChange}
-              value={this.state.a_description}
-              id="a_description"
+              value={this.state.AlertDescription}
+              id="AlertDescription"
             />
           </div>
           <div className="pl-1 pr-1 col-sm-3">
             <Input
               className="input-field-ad"
               type="text"
-              placeholder={this.state.title}
-              onChange={this.onChange}
-              value={this.state.a_duration}
-              id="a_duration"
+              value={this.state.AlertDuration}
+              id="AlertDuration"
             />
           </div>
           <div className="pl-1 pr-1 col-sm-4">
@@ -138,6 +140,16 @@ class AddAlert extends Component {
                 {duration_type}
               </DropdownMenu>
             </UncontrolledDropdown>
+          </div>
+          <div className="pl-1 pr-1 col-sm-4">
+            <Input
+                className="input-field-ad"
+                type="date"
+                placeholder={this.state.title}
+                onChange={this.onChange}
+                value={this.state.AlertDate}
+                id="AlertDate"
+              />
           </div>
           <div className="mt-3 col-sm-12">
             <Button onClick={this.add} style={{
