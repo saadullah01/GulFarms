@@ -1,8 +1,8 @@
 import {
-    SET_PRESETS,
+    SET_BARNS,
     SET_PRESET,
     GET_ERRORS,
-    SET_DETAIL_FARM
+    SET_DETAIL_PRESET
 
 } from "./types";
 import axios from "axios";
@@ -30,6 +30,30 @@ const attributeTypes = {
     "Numeric": "number",
     "Options": "option",
     "String": "string"
+}
+export const getPresetDetail=(data)=>(dispatch,getState)=>{
+    const state = getState()
+    const dbId = state.presetReducer.presets[parseInt(data)]._id
+    axios
+        .post("/api/animals/view-preset", { id: dbId })
+        .then(res => {
+            dispatch({
+                type: SET_DETAIL_PRESET,
+                payload: res.data,
+                id: data
+            })
+            dispatch({
+                type: SET_BARNS,
+                payload:res.data.barns
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
+
 }
 export const savePreset = (data) => (dispatch, getState) => {
 

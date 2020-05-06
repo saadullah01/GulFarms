@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { useLocation, Link, withRouter } from 'react-router-dom';
 import { connect } from "react-redux"
-import {getFarmDetail} from "../actions/farmActions"
+import {getPresetDetail} from "../actions/presetActions"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBalanceScale,
@@ -19,8 +19,6 @@ class AnimalPreset extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
-            farmID: null,
             name: "",
             attributes: [],
             products: [],
@@ -29,41 +27,64 @@ class AnimalPreset extends Component {
             numAnimals: null
         }
     }
+    ids(name){
+        const dic ={
+        farmId:this.props.match.params.fid,
+        presetId:this.props.match.params.pid
+        }
+        return dic[name]
+    }
     componentDidMount() {
-        // if(this.props.farms.length <= this.state.id){
-        //     this.props.history.push("/home/farms");
-        //     return
-        // }
-        // else{
-        //     this.props.getFarmDetail(this.state.id)
-        // }
+        if(this.props.farms.length <= this.ids("farmId") ||this.props.presets.length <= this.ids("presetId") ){
+            this.props.history.push("/home/farms");
+            return
+        }
+        else{
+            this.props.getPresetDetail(this.ids("presetId"))
+        }
         /* Dummy Animal Preset */
-        this.setState({
-            farmID: 1, // ARHAM you have to send it by props to this component
-            name: "Sheep",
+        this.setState(state=>({
+            ...state,
+            name: "loading...",
             attributes: [],
             products: [
-                {name: "Milk"},
-                {name: "Wool"},
-                {name: "Offspring"}
+                {name: "loading.."},
+                {name: "loading.."},
+                {name: "loading.."}
             ],
             avgWeight: 40,
             numAnimals: 300,
             barns: [
-                {id: 1, name: "Barn1"},
-                {id: 2, name: "Barn2"}
+                {id: 1, name: "loading.."}
             ]
-        });
+        }));
     }
-    // componentDidUpdate(prevProps,prevState) {
-    //     if (this.props.farms !== prevProps.farms) {
-    //         this.setState({...(this.props.farms[prevState.id]),id:prevState.id})
-    //     }
-    // }
+    componentDidUpdate(prevProps,prevState) {
+        if (this.props.presets !== prevProps.presets) {
+            this.setState(state=>({
+                ...state,
+                name: this.props.presets[this.ids("presetId")].name,
+                attributes: [],
+                products: [
+                    {name: "Milk"},
+                    {name: "Wool"},
+                    {name: "Offspring"}
+                ],
+                avgWeight: 40,
+                numAnimals: 300,
+                barns: [
+                    {id: 1, name: "Barn1"},
+                    {id: 2, name: "Barn2"}
+                ]
+            }));
+        }
+    }
     render() {
-        const url = "/home/farms/"+String(this.state.farmID)+"/"+String(this.state.id);
+        const url = "/home/farms/"+String(this.ids("farmId"))+"/"+String(this.ids("presetId"));
+        console.log("URLSfarm: " ,this.ids("farmId"), " presetid: ",this.ids("presetId"), "urlfarm: ")
+        
         const barns = this.state.barns.map((barn, index) =>
-            <Tab name={barn.name} key={barn.id} link={url.concat("/"+index.toString())} type="small" />
+            <Tab name={barn.name}  key={barn.id} link={url.concat("/"+index.toString())} type="small" />
         );
         let products = "";
         this.state.products.forEach(element => products = products.concat(element.name+" ,"));
@@ -95,7 +116,7 @@ class AnimalPreset extends Component {
                 </div>
                 <div className="inner-main-container row pt-2 pb-2">
                     { barns }
-                    <Link to={url+"/create-barn"} className="tab-small">
+                    <Link to={url+"/create-barn"} returnTo={url} className="tab-small">
                         <p className="tab-add"><FontAwesomeIcon icon={faPlusCircle} /></p>
                     </Link>
                 </div>
@@ -107,11 +128,12 @@ class AnimalPreset extends Component {
 const mapStateToProps = state => ({
     loggedIn: state.authReducer.islogged,
     errors: state.errorReducer.errors,
-    farms: state.farmReducer.farms
+    farms: state.farmReducer.farms,
+    presets:state.presetReducer.presets
 });
 export default connect(
     mapStateToProps,
-    { getFarmDetail }
+    { getPresetDetail }
 )(withRouter(AnimalPreset));
 
 ///DONT DELETE THIS

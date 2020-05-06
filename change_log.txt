@@ -99,4 +99,15 @@ added route for create animal preset
 linked create preset with redux and back end
 updated farm js for it 
 tried making create new animal a little better if nothing else fixed formating
+3.0 arham
+added ruotes for animal preset and create barn and create new animal in app.js
+made barnactions
+made get preset details in preset actions
+added actions to types
+added loading to animalpresets and connected to redux
+made new create barn and set up routing
+added loading to farm js
+made barn reducer and added to root reducer
+updated preset reducer
+
 
