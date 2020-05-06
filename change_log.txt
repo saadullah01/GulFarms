@@ -120,5 +120,10 @@ made save instance action and reducer and added its type
 connected create instance form to store and added routing
 added checks in create barn
 removed redunant imports in createnewanimal
+3.3 arham
+create new instance working ie load ho raha uski look sahi kerni
+commented out animalinstance page
+fixed create new animal look and working
+
 
 
