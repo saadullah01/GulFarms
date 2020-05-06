@@ -81,14 +81,16 @@ class AddAlert extends Component {
     );
     this.resett();
   };
-
+  OnChangeDate = (e) => {
+    this.setState({ AlertDate: e.target.value });
+  };
   display = () => {
     const addedAlerts = this.state.data.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
         <td>{d.duration}</td>
         <td>{d.selectedOption}</td>
-        <td>{d.AlertDate}</td>
+        <td>{d.date}</td>
         <td><FontAwesomeIcon onClick={() => this.remove(index)} style={{ color: "#4caf50" }} icon={faTimes} size="1x" /></td>
       </tr>
     );
@@ -147,8 +149,9 @@ class AddAlert extends Component {
             <Input
                 className="input-field-ad"
                 type="date"
-                placeholder={this.state.title}
+                placeholder="Enter Start Date"
                 value={this.state.AlertDate}
+                onChange = {this.OnChangeDate}
                 id="AlertDate"
               />
           </div>

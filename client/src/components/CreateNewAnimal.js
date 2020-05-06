@@ -20,7 +20,7 @@ import AddTextField from './AddTextField'
 import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
-import AddAlert from './AddAlerts';
+import AddProduct from './AddProduct';
 
 class CreateNewAnimal extends Component {
 
@@ -97,6 +97,9 @@ class CreateNewAnimal extends Component {
     selectTime = (e) => {
         this.setState({ selectedOption: e.target.id });
     };
+    OnChangeDate = (e) => {
+        this.setState({ AlertDate: e.target.value });
+      };
     KeepTrack() {
         if (this.state.recordOffspring == true) {
             return (
@@ -159,7 +162,7 @@ class CreateNewAnimal extends Component {
                                 className="input-field-ad"
                                 type="date"
                                 placeholder="Start Date"
-                                onChange={this.onChange}
+                                onChange={this.OnChangeDate}
                                 value={this.state.AlertDate}
                                 id="AlertDate"
                             />  
@@ -232,7 +235,7 @@ class CreateNewAnimal extends Component {
                             </Row>
                             <Row>
                                 <Col>
-                                    <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
+                                    <AddProduct Name="Products" title="Cycle" update={this.onAdd}></AddProduct>
                                 </Col>
                                 <Col />
                             </Row>
