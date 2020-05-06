@@ -50,7 +50,7 @@ class CreateAnimalIndividual extends Component {
             recordParents:true,
         }
     }
-    /*
+    
     componentDidMount() {
         if (this.props.farms.length <= this.ids("farm") ||
             this.props.presets.length <= this.ids("preset") ||
@@ -65,9 +65,9 @@ class CreateAnimalIndividual extends Component {
             p1: "",
             p2: "",
             errors: this.props.errors,
-            attributes: (this.props.presets[this.ids("preset")]).attributes,//From DB
+            attributes: this.mapAttributes((this.props.presets[this.ids("preset")]).attributes),//From DB
             AttributesUpdate: [],
-            Products: [],//fromm DB
+            Products: this.mapProducts((this.props.presets[this.ids("preset")]).products),//fromm DB
             ProductsUpdate: [],
             quant: "",
             date: "",
@@ -80,6 +80,32 @@ class CreateAnimalIndividual extends Component {
             this.props.history.push("/home/farms/"+String(this.ids("farm"))+"/"+String(this.ids("preset"))+"/"+String(this.ids("barn")));
         }
     };
+    mapAttributes(atts){
+        const key = {
+            "number":"numeric",
+            "string":"string",
+            "option":"options"
+        }
+        return (atts.map(a=>{
+            if(a.name !== "parents")
+            return{
+                Name: a.name, 
+                Type: key[a.attributeType], 
+                Unit: a.unit, 
+                Option:a.options, 
+                Value:"",
+                id: a._id
+            }
+        })).filter(x=>x!==undefined)
+    }
+    mapProducts(prods){
+        return(prods.map(p=>{
+            return{
+            ...p,
+            description: p.name
+        }
+    }))
+    }
     ids(name) {
         const dic = {
             farm: this.props.match.params.fid,
@@ -87,7 +113,7 @@ class CreateAnimalIndividual extends Component {
             barn:this.props.match.params.bid
         }
         return parseInt(dic[name])
-    }*/
+    }
     toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
@@ -226,7 +252,7 @@ class CreateAnimalIndividual extends Component {
         
     }
     helper=(d,index)=>{
-        if(d.Type === "Numeric")
+        if(d.Type === "numeric")
         {
             return(
                 <div className="row">
@@ -251,7 +277,7 @@ class CreateAnimalIndividual extends Component {
                 </div>
             );
         }
-        else if(d.Type === "String")
+        else if(d.Type === "string")
         {
             return(
                 <div className="row">
@@ -276,7 +302,7 @@ class CreateAnimalIndividual extends Component {
                 </div>                
             );
         }
-        else if(d.Type === "Options")
+        else if(d.Type === "options")
         {
             return(
                 <div className="row">
@@ -378,7 +404,6 @@ class CreateAnimalIndividual extends Component {
         )
     }
 }
-    /*
 const mapStateToProps = state => ({
     loggedIn: state.authReducer.islogged,
     errors: state.errorReducer.errors,
@@ -389,6 +414,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { saveInstance }
-)(withRouter(CreateAnimalIndividual));*/
-export default CreateAnimalIndividual
-
+)(withRouter(CreateAnimalIndividual))

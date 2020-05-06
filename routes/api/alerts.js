@@ -44,7 +44,7 @@ router.post("/create", (req, res) => {
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
         if(req.body.hasOwnProperty('startingDate')){
-            alert.due = req.body.startingDate;
+            alert.due = Date(req.body.startingDate);
             alert.markModified('due');
         }
         return alert.Snooze(alertInfo.duration).save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));

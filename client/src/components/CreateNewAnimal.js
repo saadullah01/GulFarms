@@ -148,11 +148,11 @@ class CreateNewAnimal extends Component {
                                 <Input
                                     className="input-field-a"
                                     type="text"
-                                    id="farmName"
+                                    id="AnimalName"
                                     placeholder="Enter Animal Name"
                                     onChange={this.onChange}
-                                    value={this.state.farmName}
-                                    error={errors.farmName}
+                                    value={this.state.AnimalName}
+                                    error={errors.AnimalName}
                                 />
                             </FormGroup>
                             <div className="row">
@@ -169,11 +169,11 @@ class CreateNewAnimal extends Component {
                     </div>
                     <div className="col-sm-12 col-md-6">
                         <div style={{ width: "90%", margin: "0 auto" }}>
-                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{marginRight: "10px"}} />Record</p>
+                            <p className="add-a" style={{ fontSize: "30px", color: "#4caf50" }}><FontAwesomeIcon icon={faClipboardCheck} style={{ marginRight: "10px" }} />Record</p>
                             <FormGroup>
                                 <Label>Record Parents:</Label>
                                 <Input
-                                    style={{margin: "7px"}}
+                                    style={{ margin: "7px" }}
                                     type="checkbox"
                                     onChange={this.onChangeCheck}
                                     checked={this.state.recordParents}
@@ -183,7 +183,7 @@ class CreateNewAnimal extends Component {
                             <FormGroup>
                                 <Label>Record Offspring:</Label>
                                 <Input
-                                    style={{margin: "7px"}}
+                                    style={{ margin: "7px" }}
                                     type="checkbox"
                                     onChange={this.onChangeCheckO}
                                     checked={this.state.recordOffspring}
