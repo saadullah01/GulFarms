@@ -6,10 +6,6 @@ import {
   Button,
   FormGroup,
   Input,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
 } from "reactstrap";
 
 class ViewAlert extends Component {
@@ -21,8 +17,18 @@ class ViewAlert extends Component {
       AlertDate: ""
     };
   }
-  
+  remove = (d) => {
+    this.setState(
+      (state) => {
+        const data = state.data.filter((item, j) => d !== j);
+        return {
+          data,
+        };
+      }
+    );
+  };
   add = (d,index) => {
+    this.remove(index)
     this.setState(
       (state) => {
         const data = state.data.concat({
@@ -31,15 +37,13 @@ class ViewAlert extends Component {
           selectedOption: d.selectedOption,
         
         });
-        const data = state.data.filter((item, j) => index !== j);
-        return {
-          data,
-        };
       },
       () => this.submitt()
     );
   };
-
+  submitt = () => {
+    this.props.update(this.state.data);
+  };
 
   display() {
     return this.state.data.map((d, index) => {
@@ -73,7 +77,7 @@ class ViewAlert extends Component {
                             /> 
                 </Col>
                 <Col>
-                <Button className="login-btn" OnClick = {this.add(d,index)}>Snooze</Button>
+                <Button className="login-btn" OnClick = {this.add}>Snooze</Button>
                 </Col>
                 <Col></Col>
               </Row>

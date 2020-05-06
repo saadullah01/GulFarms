@@ -41,7 +41,9 @@ class ViewFarm extends Component {
       modal: !prevState.modal,
     }));
   };
-
+  onAdd = e => {
+    this.setState({ alerts: e });
+}
   
   render() {
     var modal = false;
@@ -111,7 +113,7 @@ class ViewFarm extends Component {
               </Row>
               <Row>
                 <Col>
-                <ViewAlert Alerts = {this.state.alerts}></ViewAlert>
+                <ViewAlert Alerts = {this.state.alerts} update={this.onAdd}></ViewAlert>
                 </Col>
                 <Col></Col>
               </Row>

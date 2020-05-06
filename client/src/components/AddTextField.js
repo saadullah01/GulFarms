@@ -53,11 +53,6 @@ class AddTextField extends Component {
             checked: !prevState.checked
         }))
     }
-    onChangeCheckNot = e => {
-        this.setState(prevState => ({
-            checked: prevState.checked
-        }))
-    }
     resett = () => {
         this.setState({
             FieldName: "",
@@ -115,17 +110,7 @@ class AddTextField extends Component {
         }
 
     }
-    none() {
-        if (this.state.FieldType !== "Options" && this.state.FieldType !== "Numeric") {
-            return (
-
-                <Col>
-                    <div
-                    />
-                </Col>
-            )
-        }
-    }
+    
     ViewOption = (d) => {
         return (
 
@@ -152,7 +137,7 @@ class AddTextField extends Component {
         else{
             return(
             <Col>
-                    <Label className="text-label-b"></Label>
+                    <Label className="text-label-b"><Col/></Label>
             </Col>
             )
         }
@@ -175,7 +160,7 @@ class AddTextField extends Component {
                             className="input-field-check"
                             type="checkbox"
                             checked={d.checked}
-                            onChange={this.onChangeCheckNot}
+                            readOnly    
                         />
                     </Col>
                     {this.displayValue(d)}
@@ -220,7 +205,6 @@ class AddTextField extends Component {
                     </Col>
                     {this.unit()}
                     {this.option()}
-                    {/* {this.none()} */}
                     <FormGroup>
                         <Col>
                             <Row>

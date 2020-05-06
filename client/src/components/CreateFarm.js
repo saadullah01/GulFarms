@@ -48,7 +48,7 @@ class CreateFarm extends Component {
   onAdd = (e) => {
     this.setState({ alerts: e });
   };
-
+  Validate()
   onSubmit = (e) => {
     // console.log(e);
     e.preventDefault();
