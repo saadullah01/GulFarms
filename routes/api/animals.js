@@ -42,8 +42,11 @@ const CreateMultiple = (dataList, dataType) => {
             docInfo.keepTrack = true;
             docInfo.startingDate = Date.now();
             if(data.hasOwnProperty('startingDate')){
-                docInfo.startingDate = Date(startingDate);
+                docInfo.startingDate = Date(data.startingDate);
             }
+        }
+        if(data.hasOwnProperty('isPreset')){
+            docInfo.isPreset = data.isPreset;
         }
         if(data.hasOwnProperty('unit')){
             docInfo.unit = data.unit;
@@ -57,20 +60,22 @@ const CreateMultiple = (dataList, dataType) => {
         if(dataType == 'product' && docInfo.isPreset == false && docInfo.keepTrack){
             //Create alert
             const alert = new BaseModels.Alert({
-                name: doc.name.toLowerCase(),
+                name: doc.name.toLowerCase() + " produce due",
                 due: doc.startingDate,
                 duration: doc.duration,
                 durationType: doc.durationType.toLowerCase(),
                 linkedTo: doc._id,
                 linkedModel: dataType
             });
-            return alert.Snooze(alert.duration).save().then(alert => {
+
                 doc.alerts.push(alert);
                 doc.markModified('alerts');
-                return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}))
-            }).catch(err => ({ error: err, id: alert._id }));
+                return doc.save().then(doc => {
+                    return alert.Snooze(alert.duration).then(alert => alert.save())
+                    .then(alert => doc).catch(err => Promise.reject({ error: err, id: alert._id, message: "error saving product's alert."}));
+                }).catch(err => Promise.reject({ error: err, id: alert._id, message: "error saving product."}))
         }
-        return doc.save().then(doc => doc).catch(err => ({error: err, id: doc._id}));
+        return doc.save().then(doc => doc).catch(err => Promise.reject({error: err, id: doc._id}));
     });
     return Promise.all(allData).then(docs => {
         console.log("documents created: ", docs.map(doc => doc.toJSON()));
@@ -628,10 +633,12 @@ router.post("/create", (req, res) => {
         //Product values = [offsping? [ids of offspring if any], other products...]
         preset.attributes = preset.attributes.map((attribute, i) => {
             attribute.value = req.body.attributeValues[i];
+            attribute.isPreset = false;
             return attribute;
         })
         preset.products = preset.products.map((product, i) => {
             product.value = req.body.productValues[i];
+            product.isPreset = false;
             return product;
         })
 
@@ -672,7 +679,7 @@ router.post("/create", (req, res) => {
         }).catch(err => Promise.reject({status: err.hasOwnProperty('status') ? err.status : 400, res: err.hasOwnProperty('res') ? err.res : {error: err, message:"Error saving animal."}}));
     
     }).then(animal => res.status(200).json({created: animal, message: "Animal created successfully."}))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : {error: err, message: "Unknown error"}));
 });
 
 // @route POST api/animals/view
