@@ -4,6 +4,7 @@ import {
     SET_PRESETS,
 } from "./types";
 import axios from "axios";
+const moment = require('moment');
 
 export const getAlerts =()=> (dispatch) =>{
 
@@ -17,7 +18,7 @@ export const getAlerts =()=> (dispatch) =>{
                     id:id,
                     name:aler.linkedTo.name,
                     alertDesc:aler.name,
-                    due:Date(aler.due),
+                    due:moment(aler.due).format('dddd, Do MMMM YYYY'),
                     unit:aler.durationType,
                     model:aler.linkedTo,
 

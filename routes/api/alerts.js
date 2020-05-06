@@ -43,7 +43,11 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
-        return alert.save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
+        if(req.body.hasOwnProperty('startingDate')){
+            alert.due = req.body.startingDate;
+            alert.markModified('due');
+        }
+        return alert.Snooze(alertInfo.duration).save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
     });
     Promise.all(allAlerts).then(alerts => {
         // console.log("alerts created: " + alerts);
@@ -118,19 +122,19 @@ router.post("/snooze", (req, res) => {
 // @desc Retrieve a list of all alerts
 // @access Public
 router.post("/get", (req, res) => {
-    BaseModels.Alert.find({})
+    BaseModels.Alert.find().sort({ due : 1 })
         .then(alerts => {
             return res.status(200).json(alerts)
         })
         .catch(err => res.status(400).json({ error: err, message: "Error retrieving alerts", success: false }));
 });
 
-// @route POST api/alerts/get-summary
+// @route POST api/alerts/get-detail
 // @desc Retrieve a list of all alerts with summary of linked objects
 // @access Public
 router.post("/get-detail", async (req, res) => {
     
-    return BaseModels.Alert.find({}).then(alerts => {
+    return BaseModels.Alert.find({}).sort({ due : 1 }).then(alerts => {
         if(!alerts){
             return res.status(404).json({error: err, message: "No alerts found", success: false});
         }

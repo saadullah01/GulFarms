@@ -92,14 +92,14 @@ class Option extends Component {
                 <Row>
 
                     <Col>
-                        <Input
-                            className="input-field-ad"
-                            type="text"
-                            placeholder="Option"
-                            onChange={this.onChange}
-                            value={this.state.Opt}
-                            id="Opt"
-                        />
+                    <Input
+                                className="input-field-ad"
+                                type="text"
+                                placeholder="Option"
+                                onChange={this.onChange}
+                                value={this.state.Opt}
+                                id="Opt"
+                            />
                     </Col>
                 </Row>
                 <Row>

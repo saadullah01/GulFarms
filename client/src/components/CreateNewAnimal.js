@@ -11,6 +11,10 @@ import {
     Container,
     Row,
     Col,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap';
 import AddProduct from './AddProduct';
 import AddTextField from './AddTextField'
@@ -18,6 +22,7 @@ import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
 import AddAlert from './AddAlerts';
+
 class CreateNewAnimal extends Component {
 
     // Can Add Constructor
@@ -29,7 +34,11 @@ class CreateNewAnimal extends Component {
         attributes: [],
         alerts: [],
         recordParents: false,
-        recordOffspring: false
+        recordOffspring: false,
+        AlertDate: "",
+        SelectedOption: "Year",
+        AlertDuration: "",
+        AlertDescription: "",
 
     }
     componentDidMount() {
@@ -43,11 +52,11 @@ class CreateNewAnimal extends Component {
             recordParents: !prevState.recordParents
         }))
     }
-    
+
     componentDidUpdate = (prevProps, prevState) => {
         if (
             this.props.farm.animalPresets.length !== prevProps.farm.animalPresets.length ||
-            prevState.modal !== this.state.modal ||this.props.allPresets.length !== prevProps.allPresets.length
+            prevState.modal !== this.state.modal || this.props.allPresets.length !== prevProps.allPresets.length
         ) {
             this.props.history.push("/home/farms/" + String(getId()));
         }
@@ -85,6 +94,84 @@ class CreateNewAnimal extends Component {
         }
         console.log(data);
         this.props.savePreset(data)
+    }
+    selectTime = (e) => {
+        this.setState({ selectedOption: e.target.id });
+    };
+    KeepTrack() {
+        if (this.state.recordOffspring == true) {
+            return (
+                <div>
+
+                    <Row style={{ flexWrap: "nowrap" }}>
+                        <Col>
+                            <Input
+                                className="input-field-ad"
+                                type="text"
+                                placeholder="Name"
+                                onChange={this.onChange}
+                                value={this.state.AlertDescription}
+                                id="AlertDescription"
+                            />
+                        </Col>
+                        <Col>
+                            <Input
+                                className="input-field-ad"
+                                type="text"
+                                placeholder="Cycle"
+                                onChange={this.onChange}
+                                value={this.state.AlertDuration}
+                                id="AlertDuration"
+                            />
+                        </Col>
+                        <FormGroup>
+                            <Col>
+                                <Row>
+                                    <UncontrolledDropdown className="edit-info">
+                                        <DropdownToggle color="correct" caret>
+                                            {this.state.SelectedOption}
+                                        </DropdownToggle>
+                                        <DropdownMenu>
+                                            <DropdownItem id="Year" onClick={this.selectTime}>
+                                                Year
+                                            </DropdownItem>
+                                            <DropdownItem divider />
+                                            <DropdownItem id="Month" onClick={this.selectTime}>
+                                                Month
+                                            </DropdownItem>
+                                            <DropdownItem divider />
+                                            <DropdownItem id="Day" onClick={this.selectTime}>
+                                                Day
+                                            </DropdownItem>
+                                            <DropdownItem divider />
+                                            <DropdownItem id="week" onClick={this.selectTime}>
+                                                week
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledDropdown>
+                                </Row>
+
+                            </Col>
+                        </FormGroup>
+                        <FormGroup>
+                            <Col>
+                            <Row>
+                              <Input
+                                className="input-field-ad"
+                                type="date"
+                                placeholder="Start Date"
+                                onChange={this.onChange}
+                                value={this.state.AlertDate}
+                                id="AlertDate"
+                            />  
+                            </Row>
+                            </Col>
+                        </FormGroup>
+                    </Row>
+                </div>
+            )
+        }
+
     }
     render() {
         var modal = false
@@ -125,14 +212,14 @@ class CreateNewAnimal extends Component {
                                 </FormGroup>
                             </Row>
 
-                            <Row/>
+                            <Row />
 
-                            <Row>   
+                            <Row>
                                 <Col>
                                     <Row>
                                         <Label className="h4">Attributes: </Label>
                                     </Row>
-                                    <Row/>
+                                    <Row />
                                     <Row>
                                         <Col>
                                             <AddTextField Name="Attribute" update={this.onAdd_Att}></AddTextField>
@@ -149,10 +236,10 @@ class CreateNewAnimal extends Component {
                                     <AddAlert Name="Products" title="Cycle" update={this.onAdd}></AddAlert>
                                 </Col>
                                 <Col />
-                            </Row>   
-                            <Row/> 
-                            <Row/> 
-                            <Row xs ="4">
+                            </Row>
+                            <Row />
+                            <Row />
+                            <Row xs="4">
                                 <Label className="text-label">Record Parents:</Label>
                                 <Col xs="auto">
                                     <Input
@@ -164,7 +251,7 @@ class CreateNewAnimal extends Component {
                                     />
                                 </Col>
                             </Row>
-                            <Row xs ="4" >
+                            <Row xs="4" >
                                 <Label className="text-label">Record Offspring:</Label>
                                 <Col xs="auto">
                                     <Input
@@ -176,6 +263,7 @@ class CreateNewAnimal extends Component {
                                     />
                                 </Col>
                             </Row>
+                            {this.KeepTrack()}
                             <Row>
                                 <Button className="login-btn" type="submit">Save</Button>
                             </Row>
