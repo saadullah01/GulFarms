@@ -9,7 +9,8 @@ import {
     faPen,
     faBars,
     faAngleRight,
-    faPlusCircle
+    faPlusCircle,
+    faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from "react-redux"
 import {getBarnDetail} from "../actions/barnActions"
@@ -177,6 +178,9 @@ class AnimalInstance extends Component {
             <div>
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
+                        <Link to="#">
+                            <FontAwesomeIcon className="top-icon" icon={faTrashAlt} size="2x" />
+                        </Link>
                         <Link to="#">
                             <FontAwesomeIcon className="top-icon" icon={faBars} size="2x" />
                         </Link>
