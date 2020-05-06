@@ -23,6 +23,7 @@ import { connect } from "react-redux";
 import { savePreset } from "../actions/presetActions";
 import { withRouter } from "react-router-dom";
 import AddProduct from './AddProduct';
+import AddAlert from './AddAlerts';
 
 class CreateNewAnimal extends Component {
     // Can Add Constructor
