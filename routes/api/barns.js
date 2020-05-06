@@ -62,10 +62,10 @@ router.post("/create", (req, res) => {
                     return resolve({status: 200, res: {message: "Barn created successfully.", success: true, created: barn}});
                 })
             });
-        })//.catch(err => ({status: 400, res:{ message: "Error saving barn.", success: false, error: err }}))
+        }).catch(err => ({status: 400, res:{ message: "Error saving barn.", success: false, error: err }}))
     })
     .then(response => res.status(response.status).json(response.res))
-    //.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
                                         
 // @route POST api/barns/view
