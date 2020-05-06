@@ -43,6 +43,10 @@ router.post("/create", (req, res) => {
             linkedTo: alertInfo.linkedTo,
             linkedModel: alertInfo.linkedModel.toLowerCase()
         });
+        if(req.body.hasOwnProperty('startingDate')){
+            alert.due = req.body.startingDate;
+            alert.markModified('due');
+        }
         return alert.Snooze(alertInfo.duration).save().then(alert => alert).catch(err => ({ error: err, id: alert._id }));
     });
     Promise.all(allAlerts).then(alerts => {
