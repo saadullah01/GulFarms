@@ -19,9 +19,9 @@ class Farm extends Component {
         super(props);
         this.state = {
             id: window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
-            name: "",
-            location: "",
-            description: "",
+            name: "loading...",
+            location: "loading...",
+            description: "loading...",
             animalPresets: this.props.presets,
             alerts: []
         }

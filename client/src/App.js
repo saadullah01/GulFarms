@@ -4,35 +4,38 @@ import {
   Route,
   Switch
 } from "react-router-dom";
+import { 
+  setCurrentUser, 
+  logoutUser } 
+from "./actions/authActions";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 
-import AppNavbar from './components/sub_components/AppNavbar';
-import Register from './components/auth/Register';
-import AddUser from './components/auth/AddUser';
-import Login from './components/auth/Login';
-import ForgotPassword from './components/auth/ForgotPassword';
-import ResetPassword from './components/auth/ResetPassword';
-import FarmsList from './components/FarmsList';
-import Farm from "./components/Farm";
-import Landing from './components/Landing';
-import CreateFarm from './components/CreateFarm';
-import CreateAnimalIndividual from './components/CreateAnimalIndividual'
-import CreateNewAnimal from "./components/CreateNewAnimal"
-import CreateBarn from "./components/CreateBarn"
-import jwt_decode from "jwt-decode";
-import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser } from "./actions/authActions";
-import PrivateRoute from "./components/PrivateRoute"
-import store from "./store"
-import AnimalPreset from './components/AnimalPreset';
-import ViewFarm from './components/ViewFarm'
-import Finance from './components/Finance';
-import Alerts from './components/Alerts';
-import AnimalInstance from './components/AnimalInstance';
-import AddAlert from './components/AddAlerts';
+import AddAlert from './components/AddAlerts';
+import AddUser from './components/auth/AddUser';
+import Alerts from './components/Alerts';
+import AnimalInstance from './components/AnimalInstance';
+import AnimalPreset from './components/AnimalPreset';
+import AppNavbar from './components/sub_components/AppNavbar';
+import CreateAnimalIndividual from './components/CreateAnimalIndividual'
+import CreateBarn from "./components/CreateBarn"
+import CreateFarm from './components/CreateFarm';
+import CreateNewAnimal from "./components/CreateNewAnimal"
+import Farm from "./components/Farm";
+import FarmsList from './components/FarmsList';
+import Finance from './components/Finance';
+import ForgotPassword from './components/auth/ForgotPassword';
+import jwt_decode from "jwt-decode";
+import Landing from './components/Landing';
+import Login from './components/auth/Login';
+import PrivateRoute from "./components/PrivateRoute"
+import Register from './components/auth/Register';
+import ResetPassword from './components/auth/ResetPassword';
+import setAuthToken from "./utils/setAuthToken";
+import store from "./store"
+import ViewFarm from './components/ViewFarm'
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -58,7 +61,7 @@ const App =()=>{
           <Route path="/" component={ AppNavbar } />
           <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
-          <Route path="/cf" component={ ViewFarm } />
+          <Route path="/cf" component={ CreateAnimalIndividual } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
@@ -68,11 +71,15 @@ const App =()=>{
           <Switch>
             <PrivateRoute exact path="/(home/farms|home/farms/create-farm)" component={ FarmsList } />
             <PrivateRoute exact path="/home/farms/:id" component={Farm} />
-            {/* <PrivateRoute exact path="/home/alerts" />
-            <PrivateRoute exact path="/home/finances" /> */}
           </Switch>
+          <Switch>
           <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
-          <PrivateRoute exact path="/home/farms/:id/create-preset" component={ CreateNewAnimal } />
+          <PrivateRoute exact path="/home/farms/:fid/create-preset" component={ CreateNewAnimal } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid" component={ AnimalPreset } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/create-barn" component={ CreateBarn } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/:bid" component={ AnimalInstance } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/create-instance" component={ CreateAnimalIndividual } />
+          </Switch>
         </div>  
       </Router>   
     );

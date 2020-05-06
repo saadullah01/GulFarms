@@ -74,7 +74,7 @@ const AnimalPresetSchema = new Schema({
 //=========================Schema methods
 AlertSchema.methods.Snooze = function(snoozeFor) {
     const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
-    this.due = moment().add(snoozeFor, type);
+    this.due = moment(this.due).add(snoozeFor, type);
     this.markModified('due');
     return this;
 };

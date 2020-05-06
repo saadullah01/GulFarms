@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    Table
-} from "reactstrap";
+import { Link, withRouter  } from 'react-router-dom';
+import { Table } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBalanceScale,
@@ -10,9 +8,11 @@ import {
     faBoxOpen,
     faPen,
     faBars,
-    faAngleRight
+    faAngleRight,
+    faPlusCircle
 } from '@fortawesome/free-solid-svg-icons';
-
+import { connect } from "react-redux"
+import {getBarnDetail} from "../actions/barnActions"
 function Instance(props) {
     const color = (props.index % 2) ? "#e6ffee" : "#80ffaa";
     return (
@@ -27,7 +27,7 @@ function Instance(props) {
                 {props.exProd3}
                 <Link to={props.link}>
                     <FontAwesomeIcon className="end-link" icon={faAngleRight} size="lg" />
-                </Link>    
+                </Link>
             </td>
         </tr>
     );
@@ -37,38 +37,42 @@ class AnimalInstance extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            barnID: window.location.href.substring(window.location.href.lastIndexOf('/') + 1),
-            farmID: null,
-            presetID: null,
             name: "",
             products: [],
             animalInstances: [],
             avgWeight: null,
             numAnimals: null,
-            typesOfAnimals: null
+            description: null
         }
     }
+    ids(name) {
+        const dic = {
+            farm: this.props.match.params.fid,
+            preset: this.props.match.params.pid,
+            barn:this.props.match.params.bid
+        }
+        return parseInt(dic[name])
+    }
     componentDidMount() {
-        // if(this.props.farms.length <= this.state.id){
-        //     this.props.history.push("/home/farms");
-        //     return
-        // }
-        // else{
-        //     this.props.getFarmDetail(this.state.id)
-        // }
+        if(this.props.farms.length <= this.ids("farm") ||
+        this.props.presets.length <= this.ids("preset") ||
+        this.props.barns.length <=this.ids("barn") ){
+            this.props.history.push("/home/farms");
+            return
+        }
+        else{
+            this.props.getBarnDetail(this.ids("barn"))
+        }
         /* Dummy Animal Instance */
         this.setState({
-            farmID: 1, // ARHAM you have to send it by props to this component
-            presetID: 1,
-            barnID: 1,
-            name: "Barn 1",
+            name: "loading...",
             products: [
-                { name: "Milk" },
-                { name: "Wool" },
-                { name: "Offspring" }
+                { name: "loading" },
+                { name: "loading" },
+                { name: "loading" }
             ],
-            avgWeight: 40,
-            typesOfAnimals: 1,
+            avgWeight: "loading",
+            description: "loading",
             animalInstances: [
                 {
                     id: 1,
@@ -134,22 +138,36 @@ class AnimalInstance extends Component {
                     exProd3: "..."
                 }
             ],
-            numAnimals: 0
+            numAnimals: "loading"
         });
     }
+    componentDidUpdate(prevProps,prevState) {
+        if (this.props.barns !== prevProps.barns) {
+            const barn = this.props.barns[this.ids("barn")]
+            const pres = this.props.presets[this.ids("preset")]
+            this.setState({
+                name: barn.name,
+                products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
+                animalInstances: prevState.animalInstances,
+                avgWeight: 0,
+                numAnimals: barn.animals.length,
+                description: barn.description
+            })
+        }
+    }
     render() {
-        const url = "/home/farms/" + String(this.state.farmID) + "/" + String(this.state.presetID) + "/" + String(this.state.barnID) + "/";
+        const url = "/home/farms/" + String(this.ids("farm")) + "/" + String(this.ids("preset")) + "/" + String(this.ids("barn")) + "/";
         const animalInstances = this.state.animalInstances.map((a, index) =>
-            <Instance 
-                link={ url.concat(index) }
-                index={ index }
-                id={ a.id }
-                type={ a.type }
-                breed={ a.breed }
-                weight={ a.weight }
-                exProd1={ a.exProd1 }   
-                exProd2={ a.exProd2 }   
-                exProd3={ a.exProd3 }  
+            <Instance
+                link={url.concat(index)}
+                index={index}
+                id={a.id}
+                type={a.type}
+                breed={a.breed}
+                weight={a.weight}
+                exProd1={a.exProd1}
+                exProd2={a.exProd2}
+                exProd3={a.exProd3}
             />
         );
         let products = "";
@@ -165,6 +183,9 @@ class AnimalInstance extends Component {
                         <Link to="#">
                             <FontAwesomeIcon className="top-icon" icon={faPen} size="2x" />
                         </Link>
+                        <Link to={url+"create-instance"}>
+                            <FontAwesomeIcon className="top-icon" icon={faPlusCircle} size="2x" />
+                        </Link>
                         <p className="farm-name">{this.state.name}</p>
                         <div>
                             <FontAwesomeIcon className="farm-icon" icon={faBalanceScale} size="2x" />
@@ -176,7 +197,7 @@ class AnimalInstance extends Component {
                         </div>
                         <div>
                             <FontAwesomeIcon className="farm-icon-ex" icon={faHandPointRight} />
-                            <p className="farm-text">{this.state.typesOfAnimals}</p>
+                            <p className="farm-text">{this.state.description}</p>
                         </div>
                         <div>
                             <FontAwesomeIcon className="farm-icon" icon={faBoxOpen} size="2x" />
@@ -197,7 +218,7 @@ class AnimalInstance extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { animalInstances }
+                        {animalInstances}
                     </tbody>
                 </Table>
             </div>
@@ -205,4 +226,14 @@ class AnimalInstance extends Component {
     }
 }
 
-export default AnimalInstance;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms,
+    presets:state.presetReducer.presets,
+    barns:state.barnReducer.barns
+});
+export default connect(
+    mapStateToProps,
+    { getBarnDetail }
+)(withRouter(AnimalInstance));

@@ -5,6 +5,7 @@ import authReducer from "./authReducer"
 import presetReducer from "./presetReducer"
 import errorReducer from "./errorReducer"
 import alertReducer from "./alertsReducer"
+import barnReducer from './barnReducer'
 
 
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     authReducer,
     errorReducer,
     presetReducer,
-    alertReducer
+    alertReducer,
+    barnReducer
 })
 
 

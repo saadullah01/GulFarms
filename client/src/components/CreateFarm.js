@@ -142,7 +142,7 @@ class CreateFarm extends Component {
             </div>
           </div>
           <div className="col-sm-12 mt-5 mb-2">
-            <Button className="form-btn">Cancel</Button>
+            <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
             <Button className="form-btn" type="submit">Save</Button>
           </div>
         </Form>
