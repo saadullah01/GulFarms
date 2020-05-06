@@ -14,7 +14,11 @@ import {
     Col,
     UncontrolledCollapse,
     Card,
-    CardBody
+    CardBody,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem
 } from 'reactstrap';
 import { connect } from "react-redux"
 import { withRouter  } from 'react-router-dom';
@@ -30,15 +34,18 @@ class CreateAnimalIndividual extends Component {
             p1: "",
             p2: "",
             errors: {},
-            attributes: [],//From DB
-            attributes_update: [],
-            Products: [],//fromm DB
+            attributes: [{Name: "l", Type: "Options", Unit: "kg", Option:   [1,2,3], Value:""}],//From DB
+            AttributesUpdate: [],
+            Products: [{description: "des",
+                duration: "dur" ,
+                selectedOption: "Year" }],//fromm DB
             ProductsUpdate: [],
             quant: "",
             date: "",
-            recordParents:false,
+            recordParents:true,
         }
     }
+    /*
     componentDidMount() {
         if (this.props.farms.length <= this.ids("farm") ||
             this.props.presets.length <= this.ids("preset") ||
@@ -54,7 +61,7 @@ class CreateAnimalIndividual extends Component {
             p2: "",
             errors: this.props.errors,
             attributes: (this.props.presets[this.ids("preset")]).attributes,//From DB
-            attributes_update: [],
+            AttributesUpdate: [],
             Products: [],//fromm DB
             ProductsUpdate: [],
             quant: "",
@@ -75,40 +82,40 @@ class CreateAnimalIndividual extends Component {
             barn:this.props.match.params.bid
         }
         return parseInt(dic[name])
-    }
+    }*/
     toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
         }))
     }
 
-    onChange = (e, d, index) => {
-        this.remove(index)
+    onChange = ( d, index) => {
+        // this.remove(index)
 
-        this.setState(state => {
+        // this.setState(state => {
 
-            const data = state.data.concat({ Name: d.FieldName, Type: d.FieldType, Unit: d.Unit, Option: d.Option, quant: this.state.quant });
-            return {
-                data,
-            };
-        }
-        );
-        this.setState({ [e.target.id]: e.target.value });
+        //     const attributes = state.attributes.concat({ Name: d.Name, Type: d.Type, Unit: d.Unit, 
+        //         Option: d.Option  });
+        //     return {
+        //         attributes,
+        //     };
+        // }
+        // );
     }
-    onChange_Product = (e, d, index) => {
-        this.remove(index)
 
-        this.setState(state => {
+    onChangeProduct = ( d, index) => {
+        // this.removeProduct(index)
 
-            const data = state.data.concat({ description: state.a_description, duration: state.a_duration, selectedOption: state.selectedOption, date: this.state.date });
-            return {
-                data,
-            };
-        }
-        );
-        this.setState({
-            [e.target.id]: e.target.value, date: ''
-        });
+        // this.setState(state => {
+
+        //     const Products = state.Products.concat({ description:d.ProductDescription,
+        //         duration:d.duration,
+        //         selectedOption:d.selectedOption,  });
+        //     return {
+        //         Products,
+        //     };
+        // }
+        // );
     }
 
     onAdd = e => {
@@ -134,15 +141,26 @@ class CreateAnimalIndividual extends Component {
 
         this.setState(state => {
 
-            const data = state.data.filter((item, j) => d !== j)
+            const attributes = state.attributes.filter((item, j) => d !== j)
             return {
-                data,
+                attributes,
 
             };
-        }, () => this.submitt());
+        });
+    }
+    removeProduct = d => {
+
+        this.setState(state => {
+
+            const Products = state.Products.filter((item, j) => d !== j)
+            return {
+                Products,
+
+            };
+        });
     }
     Parents() {
-        if (this.state.Parents === true) {
+        if (this.state.recordParents === true) {
             return(
             <div>
                 <Col>
@@ -202,6 +220,18 @@ class CreateAnimalIndividual extends Component {
             )
         }
     }
+    opt= (d,index) =>{
+        
+        return(
+            d.Option.map((t) =>
+            <DropdownItem Value={t} onClick={this.onChange(d,index)}>
+                {t}
+            </DropdownItem>
+            )    
+        )
+            
+        
+    }
     helper=(d,index)=>{
         if(d.Type === "Numeric")
         {
@@ -226,7 +256,7 @@ class CreateAnimalIndividual extends Component {
                                 type="text"
                                 placeholder="Value"
                                 onChange={this.onChange(d, index)}
-                                value={this.state.quant}
+                                value={d.Value}
                                 id="quant"
                             />
                     </Col>
@@ -247,16 +277,17 @@ class CreateAnimalIndividual extends Component {
                         </Col>
                 </Row>
                 <Row>
-                    <Col>{d.Name}</Col>
+                    <Col><Label className="text-label-b">{d.Name}</Label></Col>
                     <Col><Input
                                 className="input-field-heading"
                                 type="text"
                                 placeholder="Value"
                                 onChange={this.onChange(d, index)}
-                                value={this.state.quant}
+                                value={d.Value}
                                 id="quant"
                             />
                     </Col>
+                    <Col/>
                 </Row>
                 </div>
                 
@@ -277,14 +308,17 @@ class CreateAnimalIndividual extends Component {
                 </Row>
                 <Row>
                     <Col>{d.Name}</Col>
-                    <Col><Input
-                                className="input-field-heading"
-                                type="text"
-                                placeholder="Value"
-                                onChange={this.onChange(d, index)}
-                                value={this.state.quant}
-                                id="quant"
-                            />
+                    <Col>
+                    <div className="pl-1 pr-1 col-sm-4">
+                    <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
+                    <DropdownToggle style={{color: "white"}} color="correct" caret>
+                        {d.Value}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        {this.opt(d, index)}
+                    </DropdownMenu>
+                    </UncontrolledDropdown>
+                </div>
                     </Col>
                 </Row>
                 </div>
@@ -311,10 +345,10 @@ class CreateAnimalIndividual extends Component {
                     <Col>
                         <Input
                             className="input-field-heading"
-                            type="data"
+                            type="date"
                             placeholder="Date"
-                            onChange={this.onChange(d, index)}
-                            value={this.state.date}
+                          //  onChange={this.onChangeProduct(d, index)}
+                            value={d.Value}
                             id="date"
                         />
                     </Col>
@@ -386,7 +420,7 @@ class CreateAnimalIndividual extends Component {
             </Modal >
         )
     }
-}
+}/*
 const mapStateToProps = state => ({
     loggedIn: state.authReducer.islogged,
     errors: state.errorReducer.errors,
@@ -397,4 +431,5 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { saveInstance }
-)(withRouter(CreateAnimalIndividual));
+)(withRouter(CreateAnimalIndividual));*/
+export default CreateAnimalIndividual
