@@ -44,7 +44,6 @@ class AnimalPreset extends Component {
         }
         /* Dummy Animal Preset */
         this.setState(state=>({
-            ...state,
             name: "loading...",
             attributes: [],
             products: [
@@ -61,21 +60,15 @@ class AnimalPreset extends Component {
     }
     componentDidUpdate(prevProps,prevState) {
         if (this.props.presets !== prevProps.presets) {
+            const pres = this.props.presets[this.ids("presetId")]
+
             this.setState(state=>({
-                ...state,
-                name: this.props.presets[this.ids("presetId")].name,
+                name: pres.name,
                 attributes: [],
-                products: [
-                    {name: "Milk"},
-                    {name: "Wool"},
-                    {name: "Offspring"}
-                ],
+                products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
                 avgWeight: 40,
                 numAnimals: 300,
-                barns: [
-                    {id: 1, name: "Barn1"},
-                    {id: 2, name: "Barn2"}
-                ]
+                barns: pres.barns
             }));
         }
     }
