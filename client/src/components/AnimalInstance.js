@@ -23,10 +23,10 @@ function Instance(props) {
             <td>{props.gender}</td>
             <td>{props.att1}</td>
             <td>{props.att2}</td>
-            <td>{props.att3}</td>
+            <td>{props.alert}</td>
             <td>
                 <Link to={props.link}>
-                    <FontAwesomeIcon icon={faAngleRight} size="lg" />
+                    <FontAwesomeIcon color="#4caf50" icon={faAngleRight} size="lg" />
                 </Link>
             </td>
         </tr>
@@ -46,12 +46,12 @@ class AnimalInstance extends Component {
         }
     }
     ids(name) {
-        const dic = {
-            farm: this.props.match.params.fid,
-            preset: this.props.match.params.pid,
-            barn:this.props.match.params.bid
-        }
-        return parseInt(dic[name])
+        // const dic = {
+        //     farm: this.props.match.params.fid,
+        //     preset: this.props.match.params.pid,
+        //     barn:this.props.match.params.bid
+        // }
+        // return parseInt(dic[name])
     }
     componentDidMount() {
         if(this.props.farms.length <= this.ids("farm") ||
@@ -75,85 +75,127 @@ class AnimalInstance extends Component {
             description: "loading",
             animalInstances: [
                 {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
+                    alive: true,
+                    attributes: [
+                        {name: "id", value: 1},
+                        {name: "gender", value: "M"},
+                        {name: "weight", value: 70},
+                        {name: "lol1", value: "idk"},
+                        {name: "lol2", value: "idk"},
+                        {name: "lol3", value: "idk"}
+                    ],
+                    products: [],
+                    alerts: [],
+                    _id: "5eb2e8308b7bc517817af50b",
+                    name: "first animal",
+                    preset: "5eb2ddd28c0c5a0f3f61b26a",
+                    tag: 1,
+                    comment: "this is a test to see if parent att and offspring products are added",
+                    parents: "5eb2e82f8b7bc517817af507",
+                    offspring: "5eb2e82f8b7bc517817af509",
+                    __v: 0
                 },
                 {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
+                    alive: true,
+                    attributes: [
+                        {name: "id", value: 1},
+                        {name: "gender", value: "M"},
+                        {name: "weight", value: 70},
+                        {name: "lol1", value: "idk"},
+                        {name: "lol2", value: "idk"},
+                        {name: "lol3", value: "idk"}
+                    ],
+                    alerts: [],
+                    products: [],
+                    _id: "5eb2e8308b7bc517817af50b",
+                    name: "first animal",
+                    preset: "5eb2ddd28c0c5a0f3f61b26a",
+                    tag: 1,
+                    comment: "this is a test to see if parent att and offspring products are added",
+                    parents: "5eb2e82f8b7bc517817af507",
+                    offspring: "5eb2e82f8b7bc517817af509",
+                    __v: 0
                 },
                 {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
+                    alive: true,
+                    attributes: [
+                        {name: "id", value: 1},
+                        {name: "gender", value: "M"},
+                        {name: "weight", value: 70},
+                        {name: "lol1", value: "idk"},
+                        {name: "lol2", value: "idk"},
+                        {name: "lol3", value: "idk"}
+                    ],
+                    alerts: [],
+                    products: [],
+                    _id: "5eb2e8308b7bc517817af50b",
+                    name: "first animal",
+                    preset: "5eb2ddd28c0c5a0f3f61b26a",
+                    tag: 1,
+                    comment: "this is a test to see if parent att and offspring products are added",
+                    parents: "5eb2e82f8b7bc517817af507",
+                    offspring: "5eb2e82f8b7bc517817af509",
+                    __v: 0
                 },
                 {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
+                    alive: true,
+                    attributes: [
+                        {name: "id", value: 1},
+                        {name: "gender", value: "M"},
+                        {name: "weight", value: 70},
+                        {name: "lol1", value: "idk"},
+                        {name: "lol2", value: "idk"},
+                        {name: "lol3", value: "idk"}
+                    ],
+                    alerts: [],
+                    products: [],
+                    _id: "5eb2e8308b7bc517817af50b",
+                    name: "first animal",
+                    preset: "5eb2ddd28c0c5a0f3f61b26a",
+                    tag: 1,
+                    comment: "this is a test to see if parent att and offspring products are added",
+                    parents: "5eb2e82f8b7bc517817af507",
+                    offspring: "5eb2e82f8b7bc517817af509",
+                    __v: 0
                 },
                 {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
-                },
-                {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
-                },
-                {
-                    id: 1,
-                    type: "Cow",
-                    breed: "Unknown",
-                    weight: 70,
-                    exProd1: "Milk",
-                    exProd2: "Offspring",
-                    exProd3: "..."
+                    alive: true,
+                    attributes: [
+                        {name: "id", value: 1},
+                        {name: "gender", value: "M"},
+                        {name: "weight", value: 70},
+                        {name: "lol1", value: "idk"},
+                        {name: "lol2", value: "idk"},
+                        {name: "lol3", value: "idk"}
+                    ],
+                    alerts: [],
+                    products: [],
+                    _id: "5eb2e8308b7bc517817af50b",
+                    name: "first animal",
+                    preset: "5eb2ddd28c0c5a0f3f61b26a",
+                    tag: 1,
+                    comment: "this is a test to see if parent att and offspring products are added",
+                    parents: "5eb2e82f8b7bc517817af507",
+                    offspring: "5eb2e82f8b7bc517817af509",
+                    __v: 0
                 }
             ],
             numAnimals: "loading"
         });
     }
     componentDidUpdate(prevProps,prevState) {
-        // if (this.props.barns !== prevProps.barns) {
-        //     const barn = this.props.barns[this.ids("barn")]
-        //     const pres = this.props.presets[this.ids("preset")]
-        //     this.setState({
-        //         name: barn.name,
-        //         products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
-        //         animalInstances: prevState.animalInstances,
-        //         avgWeight: 0,
-        //         numAnimals: barn.animals.length,
-        //         description: barn.description
-        //     })
-        // }
+        if (this.props.barns !== prevProps.barns) {
+            const barn = this.props.barns[this.ids("barn")]
+            const pres = this.props.presets[this.ids("preset")]
+            this.setState({
+                name: barn.name,
+                products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
+                animalInstances: prevState.animalInstances,
+                avgWeight: 0,
+                numAnimals: barn.animals.length,
+                description: barn.description
+            })
+        }
     }
     render() {
         const url = "/home/farms/" + String(this.ids("farm")) + "/" + String(this.ids("preset")) + "/" + String(this.ids("barn")) + "/";
@@ -161,11 +203,11 @@ class AnimalInstance extends Component {
             <Instance
                 link={url.concat(index)}
                 index={index}
-                id={a.id}
-                gender={a.gender}
-                // att1={a.attribute[0]}
-                // att2={a.attribute[1]}
-                // att3={a.attribute[2]}
+                id={a.attributes.find(el => el.name === "id").value}
+                gender={a.attributes.find(el => el.name === "gender").value}
+                att1={(a.attributes.length >= 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].value: "..."}
+                att2={(a.attributes.length > 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].value: "..."}
+                alert={a.alerts.length ? "Yes" : "No"}
             />
         );
         let products = "";
@@ -212,9 +254,9 @@ class AnimalInstance extends Component {
                         <tr>
                             <th>Tag ID</th>
                             <th>Gender</th>
-                            <th>Expected Product 1</th>
-                            <th>Expected Product 2</th>
-                            <th>Expected Product 3</th>
+                            <th>Attribute 1</th>
+                            <th>Attribute 2</th>
+                            <th>Any Alerts</th>
                         </tr>
                     </thead>
                     <tbody>
