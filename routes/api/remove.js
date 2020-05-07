@@ -179,5 +179,11 @@ router.post("/animal", (req, res) => {
     .then(animal => res.status(200).json(animal))
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
-
+router.post("/get", (req, res) => {
+    BaseModels.RemovedItem.find({})
+        .then(items => { 
+            res.status(200).json(items) 
+        })
+        //.catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
+});
 module.exports = router;
