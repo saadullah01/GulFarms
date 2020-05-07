@@ -6,16 +6,18 @@ import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 function Footer() {
   return (
       <footer
+        className="app-footer"
         style={{
-          width: "90%",
+          width: "100%",
           margin: "0 auto", 
           padding: "10px",
           position: "fixed",
           bottom: "0",
-          left: "45px"
+          backgroundColor: "white",
+          opacity: "0.7"
         }}
       >
-        <div className="row">
+        <div style={{width: "90%", margin: "0 auto"}} className="row">
           <div className="col-sm-3">
             <a href="https://www.facebook.com/">
               <p style={{fontSize:"20px", color: "black"}}><FontAwesomeIcon icon={faFacebook} color="#4caf50" /> Facebook</p>

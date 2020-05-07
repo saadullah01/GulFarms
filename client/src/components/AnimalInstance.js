@@ -232,7 +232,7 @@ class AnimalInstance extends Component {
         products = products.substring(0, products.length - 2);
         console.log("Props:", this.props.barns);
         return (
-            <div>
+            <div className="mb-5">
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
                         <Link to={url+"remove-barn"}>

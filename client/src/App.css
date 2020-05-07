@@ -663,6 +663,9 @@ a:hover{
     text-align: center;
     margin-top: 20px;
   }
+  .app-footer {
+    display: none;
+  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
