@@ -256,11 +256,6 @@ class CreateAnimalIndividual extends Component {
         {
             return(
                 <div className="row">
-                    <div className= "row">
-                    <td>Name</td>
-                    <td>Units</td>
-                    <td>Value</td>
-                    </div>
 
                     <div>
                         <td>{d.Name}</td>
@@ -281,11 +276,6 @@ class CreateAnimalIndividual extends Component {
         {
             return(
                 <div className="row">
-                    <div className= "row">
-                    <td>Name</td>
-                    <td>Units</td>
-                    <td>Value</td>
-                    </div>
 
                     <div>
                         <td>{d.Name}</td>
@@ -306,10 +296,6 @@ class CreateAnimalIndividual extends Component {
         {
             return(
                 <div className="row">
-                    <div className= "row">
-                    <td>Name</td>
-                    <td>Value</td>
-                    </div>
 
                     <div>
                         <td>{d.Name}</td>
