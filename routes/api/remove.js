@@ -14,7 +14,7 @@ const nameToModelMap = {
 };
 
 const ChangeRemoved = (id, removed, reason, comment, dataType) => {
-    const validRemovalTypes = ["farm", "barn", "animal"];
+    const validRemovalTypes = ["farm", "barn", "animal","animalPreset"];
     if(validRemovalTypes.includes(dataType) == false){
         return Promise.reject({status: 400, res:{error: "Incorrect dataType", message: "Removing " + dataType + " is not allowed"}})
     }
@@ -103,6 +103,32 @@ router.post("/farm", (req, res) => {
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
+// @route POST api/remove/animal-preset
+// @desc mark a animalPreset as removed or unremoved
+// @access Public
+router.post("/animal-preset", (req, res) => {
+
+    console.log("Request @ api/remove/animal-preset : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
+    
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    
+    //Expected data
+    // id, removed, reason, comment
+
+    //Mark or unmark removed
+    ChangeRemoved(req.body.id, req.body.removed, req.body.reason, req.body.removalComment, "animalPreset")
+    .then(animalPreset => res.status(200).json(animalPreset))
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+});
 // @route POST api/remove/barn
 // @desc mark a barn as removed or unremoved
 // @access Public

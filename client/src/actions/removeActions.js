@@ -21,7 +21,7 @@ export const removeItem = (data,typ)=>(dispatch,getState)=>{
                 })
         }
         case "Animal Preset":{
-            axios.post("/api/remove/animal",data)
+            axios.post("/api/remove/animal-preset",data)
                 .then(res=>{
                     console.log("here",res)
                     dispatch({
