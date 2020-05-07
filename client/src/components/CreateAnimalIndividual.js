@@ -272,11 +272,6 @@ class CreateAnimalIndividual extends Component {
             return (
                 <tbody>
                     <tr>
-                        <th style={{ fontWeight: "bolder" }}>Name</th>
-                        <th style={{ fontWeight: "bolder" }}>Units</th>
-                        <th style={{ fontWeight: "bolder" }}>Value</th>
-                    </tr>
-                    <tr>
                         <td>{d.Name}</td>
                         <td>{d.Unit}</td>
                         <td><Input
@@ -293,11 +288,6 @@ class CreateAnimalIndividual extends Component {
             return (
                 <tbody>
                     <tr>
-                        <th style={{ fontWeight: "bolder" }}>Name</th>
-                        <th style={{ fontWeight: "bolder" }}>Units</th>
-                        <th style={{ fontWeight: "bolder" }}>Value</th>
-                    </tr>
-                    <tr>
                         <td>{d.Name}</td>
                         <td>{d.Unit}</td>
                         <td><Input
@@ -313,11 +303,6 @@ class CreateAnimalIndividual extends Component {
         } else if (d.Type === "options") {
             return (
                 <tbody>
-                    <tr>
-                        <th style={{ fontWeight: "bolder" }}>Name</th>
-                        <th></th>
-                        <th style={{ fontWeight: "bolder" }}>Value</th>
-                    </tr>
                     <tr>
                         <td>{d.Name}</td>
                         <td></td>
