@@ -56,6 +56,7 @@ class CreateFarm extends Component {
         duration: alert.duration,
         durationType: alert.selectedOption,
         linkedModel: "farm",
+        startingDate: alert.AlertDate
       };
     });
     const data = {
