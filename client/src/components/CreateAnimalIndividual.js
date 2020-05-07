@@ -99,11 +99,11 @@ class CreateAnimalIndividual extends Component {
     ) {
       this.props.history.push(
         "/home/farms/" +
-          String(this.ids("farm")) +
-          "/" +
-          String(this.ids("preset")) +
-          "/" +
-          String(this.ids("barn"))
+        String(this.ids("farm")) +
+        "/" +
+        String(this.ids("preset")) +
+        "/" +
+        String(this.ids("barn"))
       );
     }
   };
@@ -268,61 +268,58 @@ class CreateAnimalIndividual extends Component {
   helper = (d, index) => {
     if (d.Type === "numeric") {
       return (
-        <div className="row">
-          <div className="row">
-            <td>Name</td>
-            <td>Units</td>
-            <td>Value</td>
-          </div>
-
-          <div>
+        <tbody>
+          <tr>
+            <th style={{ fontWeight: "bolder" }}>Name</th>
+            <th style={{ fontWeight: "bolder" }}>Units</th>
+            <th style={{ fontWeight: "bolder" }}>Value</th>
+          </tr>
+          <tr>
             <td>{d.Name}</td>
             <td>{d.Unit}</td>
-            <Input
-              className="input-field-heading"
+            <td><Input
               type="text"
               placeholder="Value"
               onChange={this.onChange(d, index)}
               value={d.Value}
               id="quant"
-            />
-          </div>
-        </div>
+            /></td>
+          </tr>
+        </tbody>
       );
     } else if (d.Type === "string") {
       return (
-        <div className="row">
-          <div className="row">
-            <td>Name</td>
-            <td>Units</td>
-            <td>Value</td>
-          </div>
-
-          <div>
+        <tbody>
+          <tr>
+            <th style={{ fontWeight: "bolder" }}>Name</th>
+            <th style={{ fontWeight: "bolder" }}>Units</th>
+            <th style={{ fontWeight: "bolder" }}>Value</th>
+          </tr>
+          <tr>
             <td>{d.Name}</td>
             <td>{d.Unit}</td>
-            <Input
-              className="input-field-heading"
+            <td><Input
               type="text"
               placeholder="Value"
               onChange={this.onChange(d, index)}
               value={d.Value}
               id="quant"
-            />
-          </div>
-        </div>
+            /></td>
+          </tr>
+        </tbody>
       );
     } else if (d.Type === "options") {
       return (
-        <div className="row">
-          <div className="row">
-            <td>Name</td>
-            <td>Value</td>
-          </div>
-
-          <div>
+        <tbody>
+          <tr>
+            <th style={{ fontWeight: "bolder" }}>Name</th>
+            <th></th>
+            <th style={{ fontWeight: "bolder" }}>Value</th>
+          </tr>
+          <tr>
             <td>{d.Name}</td>
-            <UncontrolledDropdown
+            <td></td>
+            <td><UncontrolledDropdown
               style={{
                 backgroundColor: "#4caf50",
                 textAlign: "center",
@@ -330,43 +327,45 @@ class CreateAnimalIndividual extends Component {
               }}
             >
               <DropdownToggle style={{ color: "white" }} color="correct" caret>
-                {d.Value}
+                Options {d.Value}
               </DropdownToggle>
               <DropdownMenu>{this.opt(d, index)}</DropdownMenu>
-            </UncontrolledDropdown>
-          </div>
-        </div>
+            </UncontrolledDropdown></td>
+          </tr>
+        </tbody>
       );
     }
   };
   Attributes() {
-    const attributes = this.state.attributes.map((d, index) => 
+    const attributes = this.state.attributes.map((d, index) =>
       this.helper(d, index)
     );
     return (
       <Table responsive>
-        <tbody>
-          { attributes }
-        </tbody>
+        {attributes}
       </Table>
     );
   }
   Products() {
-    return this.state.Products.map((d, index) => {
-      return (
-        <div className="row">
-          <td>{d.description}</td>
+    const products = this.state.Products.map((d, index) =>
+      <tr>
+        <td>{d.description}</td>
+        <td>
           <Input
-            className="input-field-heading"
             type="date"
-            placeholder="Date"
+            placeholder="Enter Starting Date (mm/dd/yyyy)"
             //  onChange={this.onChangeProduct(d, index)}
             value={d.Value}
             id="date"
           />
-        </div>
-      );
-    });
+        </td>
+      </tr>
+    );
+    return (
+      <tbody>
+        { products }
+      </tbody>
+    );
   }
   render() {
     var modal = false;
