@@ -10,19 +10,22 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import {
     Button,
-    Modal,
-    Form,
-    Label,
-    Input,
-    Row,
-    UncontrolledCollapse,
     Card,
     CardBody,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
+    Col,
+    Container,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    Row,
     Table,
+    UncontrolledCollapse,
+    UncontrolledDropdown
 } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -174,10 +177,10 @@ class CreateAnimalIndividual extends Component {
             tag: this.state.tag,
             name: this.state.tag,
             stopOffspring: ((this.state.attributes.find(att => att.name === "gender").Value) === "male"),
-            attributeValues:attvals,
-            productValues:prodvals
+            attributeValues: attvals,
+            productValues: prodvals
         };
-        this.props.saveInstance(newInstance,this.ids("barn"))
+        this.props.saveInstance(newInstance, this.ids("barn"))
     };
     remove = (d) => {
         this.setState((state) => {
