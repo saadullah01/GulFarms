@@ -27,8 +27,10 @@ class ViewFarm extends Component {
     farmName: "",
     Location: "",
     Description: "",
-    alerts: [],
+    alerts: [{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"}],
     errors: {},
+    Data:[],
+    Update:[]
   };
   componentDidUpdate = (prevProps, prevState) => {
     if (
@@ -45,7 +47,10 @@ class ViewFarm extends Component {
     }));
   };
   onAdd = e => {
-    this.setState({ alerts: e });
+    this.setState({ Update: e });
+  }
+  onDone = e => {
+    this.setState({ Done: e });
   }
   onSubmit = (e) => {
     // console.log(e);
@@ -68,9 +73,6 @@ class ViewFarm extends Component {
       alerts: alertsPacket,
     };
   }
-    onAdd = (e) => {
-      this.setState({ alerts: e });
-    };
     render() {
       var modal = false;
       const { errors } = this.props;
@@ -97,7 +99,6 @@ class ViewFarm extends Component {
                 <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
                   <Label className="input-label-a">Name:</Label>
                   <td>{this.state.farmName}</td>
-                  />
                 </FormGroup>
                 <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
                   <Label className="input-label-a">Location:</Label>
@@ -110,9 +111,8 @@ class ViewFarm extends Component {
             </div>
             <div className="col-sm-12 col-md-6">
               <div style={{width: "90%", margin: "0 auto"}}>
-                <p className="add-a" style={{fontSize: "30px", color: "#4caf50"}}><FontAwesomeIcon icon={faBell} /> Add Alerts:</p>
-                <ViewAlert update={this.onAdd}
-                title="Duration"
+                <p className="add-a" style={{fontSize: "30px", color: "#4caf50"}}><FontAwesomeIcon icon={faBell} /> View Alerts:</p>
+                <ViewAlert update={this.onAdd} done= {this.onDone} Alerts = {this.state.alerts}
                 />
               </div>
             </div>
