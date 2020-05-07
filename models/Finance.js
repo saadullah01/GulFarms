@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const FinanceSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
     metric: {type: String, required: true},
-    netIncome: {type: Number, min: 0},
-    netExpense: {type: Number, min: 0},
+    netIncome: {type: Number},
+    netExpense: {type: Number},
     incomeList: [{type: Schema.Types.ObjectId, ref: 'record'}],
     expenseList: [{type: Schema.Types.ObjectId, ref: 'record'}]
 });

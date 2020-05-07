@@ -21,7 +21,7 @@ function Record(props) {
             <td>{props.quantity}</td>
             <td>{props.unit}</td>
             <td style={{ textAlign: "" }}>
-                <FontAwesomeIcon style={{ color: "#4caf50" }} icon={faTimes} size="1x" />
+                <FontAwesomeIcon onClick={()=>props.remove(props.id,props.exp)}  style={{ color: "#4caf50" }} icon={faTimes} size="1x" />
             </td>
         </tr>
     );
@@ -42,41 +42,49 @@ class Finance extends Component {
         exUnit: null
     }
     componentDidMount() {
-        this.setState({
-            incomeList: [
-                { name: "Milk", amount: 20000, quantity: 20, unit: "litre" },
-                { name: "Wool", amount: 10000, quantity: 20, unit: "kg" },
-                { name: "Feed", amount: 30000, quantity: 20, unit: "kg" }
-            ],
-            expenseList: [
-                { name: "Milk", amount: 20000, quantity: 20, unit: "litre" },
-                { name: "Wool", amount: 10000, quantity: 20, unit: "kg" },
-                { name: "Feed", amount: 30000, quantity: 20, unit: "kg" }
-            ]
-        });
-        // axios.post("/api/finances/trial",{type:"getAll"})
-
+        this.get()
+    }
+    get = () => {
+        axios.post("/api/finances/get")
+        .then(res => {
+            console.log(res.data.finance)
+            this.setState((state)=>{
+                return{
+                ...state,
+                ...res.data.finance
+                }
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+    remove=(id,exp)=>{
+        console.log(id," ",exp)
+        const data=exp?{expense: [this.state.expenseList[id]]}:{income: [this.state.incomeList[id]]}
+        console.log(data)
+        this.save(data,0)
     }
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     }
+    save=(data,mode)=>{
+        const path=mode?"/api/finances/records/create":"/api/finances/records/delete"
+        axios.post(path,data)
+        .then(res => {
+            this.get()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
     addEarning = () => {
-        this.setState({
-            incomeList: [...this.state.incomeList, { name: this.state.eDesc, amount: parseFloat(this.state.eAmount), quantity: parseFloat(this.state.eQuantity), unit: this.state.eUnit }],
-            eDesc: "",
-            eAmount: null,
-            eQuantity: null,
-            eUnit: ""
-        });
+        const data={income: [{description:"",amountMetric:this.state.eUnit, name: this.state.eDesc, amount: parseFloat(this.state.eAmount), quantity: parseFloat(this.state.eQuantity), quantityMetric:"Rs"  }]}
+        this.save(data,0)
     }
     addExpense = () => {
-        this.setState({
-            expenseList: [...this.state.expenseList, { name: this.state.exDesc, amount: parseFloat(this.state.exAmount), quantity: parseFloat(this.state.exQuantity), unit: this.state.unit }],
-            exDesc: "",
-            exAmount: null,
-            exQuantity: null,
-            exUnit: ""
-        });
+        const data={expense: [{description:"",amountMetric:this.state.exUnit, name: this.state.exDesc, amount: parseFloat(this.state.exAmount), quantity: parseFloat(this.state.exQuantity), quantityMetric:"Rs"  }]}
+        this.save(data,1)
     }
     render() {
         let netExpenses = 0;
@@ -84,10 +92,10 @@ class Finance extends Component {
         this.state.expenseList.forEach(element => netExpenses = netExpenses + element.amount);
         this.state.incomeList.forEach(element => netEarnings = netEarnings + element.amount);
         const earnings = this.state.incomeList.map((e, i) =>
-            <Record name={e.name} quantity={e.quantity} unit={e.unit} amount={e.amount} />
+            <Record name={e.name} exp={0} remove={this.remove} key={i} id={i}  quantity={e.quantity} unit={e.amountMetric} amount={e.amount} />
         );
         const expenses = this.state.expenseList.map((e, i) =>
-            <Record name={e.name} quantity={e.quantity} unit={e.unit} amount={e.amount} />
+            <Record name={e.name} exp={1} remove={this.remove} key={i} id={i}  quantity={e.quantity} unit={e.amountMetric} amount={e.amount} />
         );
         return (
             <div>
@@ -95,9 +103,9 @@ class Finance extends Component {
                 <div className="fin-earnings">
                     <div className="fin-top">
                         <p className="fin-text">Earnings</p>
-                        <Link>
+                        {/* <Link>
                             <FontAwesomeIcon className="fin-icon" icon={faFilter} size="2x" />
-                        </Link>
+                        </Link> */}
                     </div>
                     <Table responsive>
                         <tbody style={{ textAlign: "center" }}>
@@ -149,9 +157,9 @@ class Finance extends Component {
                 <div className="fin-expenses">
                     <div className="fin-top">
                         <p className="fin-text">Expenditure</p>
-                        <Link>
+                        {/* <Link>
                             <FontAwesomeIcon className="fin-icon" icon={faFilter} size="2x" />
-                        </Link>
+                        </Link> */}
                     </div>
                     <Table responsive>
                         <tbody style={{ textAlign: "center" }}>
