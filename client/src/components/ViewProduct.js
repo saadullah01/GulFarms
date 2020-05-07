@@ -5,13 +5,13 @@ import {
   Input,
 } from "reactstrap";
 
-class ViewAlert extends Component {
+class ViewProduct extends Component {
   // Can Add Constructor
   constructor(props) {
     super(props);
     this.state = {
-      alert: [{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"},{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"} ],
-      AlertDate: "",
+      product: [{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"},{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"} ],
+      productDate: "",
       Done: [],
       Update:[],
     };
@@ -22,9 +22,9 @@ class ViewAlert extends Component {
   remove = (d) => {
     this.setState(
       (state) => {
-        const alert = state.alert.filter((item, j) => d !== j);
+        const product = state.product.filter((item, j) => d !== j);
         return {
-          alert,
+          product,
         };
       }, ()=> this.submittdone()
     );
@@ -54,7 +54,7 @@ class ViewAlert extends Component {
   );
   }
   displayupdate = () => {
-    const addedAlerts = this.state.Update.map((d, index) =>
+    const addedproducts = this.state.Update.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
         <td>{d.duration}</td>
@@ -68,13 +68,14 @@ class ViewAlert extends Component {
         <td>{d.duration}</td>
         <td>{d.selectedOption}</td>
         <td>{d.date}</td>
+        <td>{d.quantity}</td>
       </tr>
     );
 
     return (
       <Table responsive>
         <tbody>
-          {addedAlerts}
+          {addedproducts}
           {addedDone}
         </tbody>
       </Table>
@@ -83,22 +84,22 @@ class ViewAlert extends Component {
   valueChange = (d,index,e) =>{
     const update = {
         ...d,
-        date: e.target.value
+        [e.target.id]: e.target.value
     }
     this.setState((state, props) => {
         return {
-            alert: [
-                ...(state.alert.slice(0, index)),
+            product: [
+                ...(state.product.slice(0, index)),
                 update,
-                ...(state.alert.slice(index + 1))
+                ...(state.product.slice(index + 1))
             ]
         }
     })
   }
   display() {
-    console.log(this.state.alert)
+    console.log(this.state.product)
     console.log(this.state.Update, "d")
-    return this.state.alert.map((d, index) => {
+    return this.state.product.map((d, index) => {
       var val = ""
       return (
       <div>
@@ -115,7 +116,7 @@ class ViewAlert extends Component {
               placeholder="Enter Start Date"
               value= {d.Value}
               onChange = {(e) => this.valueChange(d,index,e)}
-              id="AlertDate"
+              id="date"
             />
           </div>
           <div className="mt-3 col-sm-12">
@@ -126,6 +127,16 @@ class ViewAlert extends Component {
               borderRadius: "20px",
               float: "right",
             }}>Snooze</Button>
+          </div>
+          <div className="pl-1 pr-1 col-sm-4">
+            <Input
+              className="input-field-ad"
+              type="text"
+              placeholder="Enter Start Date"
+              value= {d.Value}
+              onChange = {(e) => this.valueChange(d,index,e)}
+              id="quantity"
+            />
           </div>
           <div className="mt-3 col-sm-12">
           <Button onClick={()=>this.donefunc(d,index)} style={{
@@ -151,5 +162,5 @@ class ViewAlert extends Component {
   }
 }
 
-export default ViewAlert;
+export default ViewProduct;
 

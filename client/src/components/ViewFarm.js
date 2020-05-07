@@ -17,6 +17,9 @@ import ViewAlert from "./ViewAlert";
 import { connect } from "react-redux";
 import { saveFarm } from "../actions/farmActions";
 import { withRouter } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faBell } from "@fortawesome/free-solid-svg-icons";
+
 class ViewFarm extends Component {
   // Can Add Constructor
   state = {
@@ -24,8 +27,10 @@ class ViewFarm extends Component {
     farmName: "",
     Location: "",
     Description: "",
-    alerts: [],
+    alerts: [{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"}],
     errors: {},
+    Data:[],
+    Update:[]
   };
   componentDidUpdate = (prevProps, prevState) => {
     if (
@@ -42,88 +47,84 @@ class ViewFarm extends Component {
     }));
   };
   onAdd = e => {
-    this.setState({ alerts: e });
-}
-  
-  render() {
-    var modal = false;
-    const { errors } = this.props;
-    return (
-      <Modal
-        size="lg"
-        isOpen={this.state.modal}
-        className="modal-dialog"
-        align="centre"
-        toggle={this.toggle}
-      >
-        <center>
-          <ModalHeader toggle={this.toggle}>
-            <Row>
-              <Col />
-              <Col xs="13">
-                <h3 className="h3white">Create New Farm</h3>
-              </Col>
-            </Row>
-          </ModalHeader>
-        </center>
-        <ModalBody>
-          <Container>
-            <Form className="add-farm" noValidate onSubmit={this.toggle}>
-              <Row>
-                <FormGroup>
-                  <Row>
-                    <Col>
-                      <Label for="fname" className="text-label">
-                        Name:{" "}
-                      </Label>
-                    </Col>
-                    <Col>
-                      {this.state.farmName}
-                    </Col>
-                  </Row>
-                </FormGroup>
-              </Row>
-              <Row>
-                <FormGroup>
-                  <Row>
-                    <Col>
-                      <Label for="flocation" className="text-label">
-                        Location:{" "}
-                      </Label>
-                    </Col>
-                    <Col>
-                      {this.state.Location}
-                    </Col>
-                  </Row>
-                </FormGroup>
-              </Row>
-              <Row>
-                <FormGroup>
-                  <Row>
-                    <Col>
-                      <Label for="Description" className="text-label">
-                        Description:{" "}
-                      </Label>
-                    </Col>
-                    <Col>
-                      {this.state.Description}
-                    </Col>
-                  </Row>
-                </FormGroup>
-              </Row>
-              <Row>
-                <Col>
-                <ViewAlert Alerts = {this.state.alerts} update={this.onAdd}></ViewAlert>
-                </Col>
-                <Col></Col>
-              </Row>
-            </Form>
-          </Container>
-        </ModalBody>
-      </Modal>
-    );
+    this.setState({ Update: e });
   }
-}
+  onDone = e => {
+    this.setState({ Done: e });
+  }
+  onSubmit = (e) => {
+    // console.log(e);
+    e.preventDefault();
+    const alertsPacket = this.state.alerts.map((alert) => {
+      return {
+        name: alert.description,
+        duration: alert.duration,
+        durationType: alert.selectedOption,
+        linkedModel: "farm",
+      };
+    });
+    const data = {
+      farm: {
+        farmName: this.state.farmName,
+        Location: this.state.Location,
+        Description: this.state.Description,
+        alerts: [],
+      },
+      alerts: alertsPacket,
+    };
+  }
+    render() {
+      var modal = false;
+      const { errors } = this.props;
+      return (
+        <Modal
+          style={{position: "relative"}}
+          size="lg"
+          isOpen={this.state.modal}
+          // className="modal-dialog"
+          align="centre"
+          toggle={this.toggle}
+        >
+          <p style={{
+            fontSize: "2rem",
+            textAlign: "center",
+            color: "#4caf50"
+          }}>View Farm</p>
+          <FontAwesomeIcon
+            onClick={this.toggle}
+            style={{position: "absolute", top:"0px", right:"0px", color: "#4caf50", margin: "5px"}} icon={ faTimes } size="1x" />
+          <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
+            <div className="col-sm-12 col-md-6">
+              <div style={{width: "90%", margin: "0 auto"}}>
+                <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+                  <Label className="input-label-a">Name:</Label>
+                  <td>{this.state.farmName}</td>
+                </FormGroup>
+                <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+                  <Label className="input-label-a">Location:</Label>
+                  <td>{this.state.Location}</td>
+                </FormGroup>
+                <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+                <td>{this.state.Description}</td>
+                </FormGroup>
+              </div>
+            </div>
+            <div className="col-sm-12 col-md-6">
+              <div style={{width: "90%", margin: "0 auto"}}>
+                <p className="add-a" style={{fontSize: "30px", color: "#4caf50"}}><FontAwesomeIcon icon={faBell} /> View Alerts:</p>
+                <ViewAlert update={this.onAdd} done= {this.onDone} Alerts = {this.state.alerts}
+                />
+              </div>
+            </div>
+            <div className="col-sm-12 mt-5 mb-2">
+              <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
+              <Button className="form-btn" type="submit">Save</Button>
+            </div>
+          </Form>
+        </Modal>
+      );
+    }
+  }
 const mapStateToProps = (state) => ({
   loggedIn: state.authReducer.islogged,
   errors: state.errorReducer.errors,

@@ -10,28 +10,27 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import {
     Button,
+    Modal,
+    Form,
+    Label,
+    Input,
+    Row,
+    UncontrolledCollapse,
     Card,
     CardBody,
-    Col,
-    Container,
-    DropdownItem,
-    DropdownMenu,
+    UncontrolledDropdown,
     DropdownToggle,
-    Form,
+    DropdownMenu,
+    DropdownItem,
     FormGroup,
-    Input,
-    Label,
-    Modal,
-    Row,
     Table,
-    UncontrolledCollapse,
-    UncontrolledDropdown
 } from "reactstrap";
+import ViewProduct from "./ViewProduct";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { saveInstance } from "../actions/barnActions";
 
-class CreateAnimalIndividual extends Component {
+class ViewAnimalIndividual extends Component {
     // Can Add Constructor
     constructor(props) {
         super(props);
@@ -177,10 +176,10 @@ class CreateAnimalIndividual extends Component {
             tag: this.state.tag,
             name: this.state.tag,
             stopOffspring: ((this.state.attributes.find(att => att.name === "gender").Value) === "male"),
-            attributeValues: attvals,
-            productValues: prodvals
+            attributeValues:attvals,
+            productValues:prodvals
         };
-        this.props.saveInstance(newInstance, this.ids("barn"))
+        this.props.saveInstance(newInstance,this.ids("barn"))
     };
     remove = (d) => {
         this.setState((state) => {
@@ -355,28 +354,7 @@ class CreateAnimalIndividual extends Component {
             }
         })
     }
-    Products() {
-        const products = this.state.Products.map((d, index) =>
-            <tr>
-                <td>{d.description}</td>
-                <td>
-                    <Input
-                        type="date"
-                        placeholder="Enter Starting Date (mm/dd/yyyy)"
-                        onChange={(e) => this.onChangeProduct(d, index, e)}
-                        value={d.Value}
-                        t={d.Value}
-                        id="date"
-                    />
-                </td>
-            </tr>
-        );
-        return (
-            <tbody>
-                {products}
-            </tbody>
-        );
-    }
+    
     render() {
         var modal = false;
         const { errors } = this.state;
@@ -430,10 +408,6 @@ class CreateAnimalIndividual extends Component {
                   </p>
                                     {this.Attributes()}
                                 </div>
-                                <div className="mt-3 col-sm-12">
-                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
-                                    {this.Products()}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -451,6 +425,10 @@ class CreateAnimalIndividual extends Component {
               </p>
                             {this.Parents()}
                         </div>
+                    </div>
+                    <div>
+                        <ViewProduct update={this.onAdd} done= {this.onDone} Alerts = {this.state.attributes}
+                    />
                     </div>
                     <div className="col-sm-12 mt-5 mb-2">
                         <Button className="form-btn" type="submit">
@@ -484,4 +462,4 @@ const mapStateToProps = (state) => ({
 export default connect(
     mapStateToProps,
     { saveInstance }
-)(withRouter(CreateAnimalIndividual));
+)(withRouter(ViewAnimalIndividual));

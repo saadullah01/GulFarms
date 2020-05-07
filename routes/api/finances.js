@@ -43,7 +43,7 @@ const CreateMultiple = (dataList, dataType) => {
         }
         const doc = new nameToModelMap[dataType](docInfo);
         // console.debug("Created doc: ", doc.toJSON());
-        return doc.save().then(doc => doc).catch(err => ({status: 400, res:{error: err, message: "Error saving " + dataType, success: false}}));
+        return doc.save().then(doc => doc)//.catch(err => ({status: 400, res:{error: err, message: "Error saving " + dataType, success: false}}));
     })
     return Promise.all(allDocs).then(docs => {
         const created = {
@@ -63,7 +63,7 @@ const CreateMultiple = (dataList, dataType) => {
             // console.debug("reduced net: ", created.net);
         }
         return created;
-    }).catch(err => ({status: 400, res:{error: err, message: "Error creating " + dataType, success: false}}));
+    })//.catch(err => ({status: 400, res:{error: err, message: "Error creating " + dataType, success: false}}));
 };
 
 const DeleteRecord = (recordId) => {
@@ -80,7 +80,7 @@ const DeleteRecord = (recordId) => {
             // console.debug("deleted: ", record)
             return resolve(record.amount);
         })
-    }).catch(err => ({status: 400, res:{error: err, message: "Error deleting record", success: false}}))
+    })//.catch(err => ({status: 400, res:{error: err, message: "Error deleting record", success: false}}))
 }
 
 // @route POST api/finances/create
@@ -112,7 +112,7 @@ router.post("/create", (req, res) => {
             }
         }
     )).then(response => res.status(response.status).json(response.res))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    //.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
 // @route POST api/finances/get
@@ -145,9 +145,9 @@ router.post("/get", (req, res) => {
         .then(finance => ({
             status: 200,
             res:{ finance }
-        })).catch(err => ({status: 400, res:{error: err, message: "Error populating finance sheet", success: false}}))
+        }))//.catch(err => ({status: 400, res:{error: err, message: "Error populating finance sheet", success: false}}))
     }).then(response => res.status(response.status).json(response.res))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    //.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
 // @route POST api/finances/records/create
@@ -194,8 +194,8 @@ router.post("/records/create", (req, res) => {
                 }
                 // console.debug("incomeCreated: ", JSON.stringify(incomeCreated));
                 // console.debug("expenseCreated: ", JSON.stringify(expenseCreated));
-                finance.netIncome += incomeCreated.net;
-                finance.netExpense += expenseCreated.net;
+                // finance.netIncome += incomeCreated.net;
+                // finance.netExpense += expenseCreated.net;
                 finance.incomeList = finance.incomeList.concat(incomeCreated.id);
                 finance.expenseList = finance.expenseList.concat(expenseCreated.id);
                 return finance.save().then(_ => ({
@@ -205,12 +205,12 @@ router.post("/records/create", (req, res) => {
                         message:"Successfully added new records to finance sheet.",
                         success: true
                     }
-                }).catch(err => ({status: 400, res:{error: err, message: "Error saving finance sheet", success: false}}))
+                })//.catch(err => ({status: 400, res:{error: err, message: "Error saving finance sheet", success: false}}))
             )})
-        }).catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err))
+        })//.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err))
     
     ).then(response => res.status(response.status).json(response.res))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    //.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
 // @route POST api/finances/records/delete
@@ -282,10 +282,10 @@ router.post("/records/delete", (req, res) => {
                     message:"Successfully deleted records from finance sheet.",
                     success: true
                 }
-            })).catch(err => ({status: 400, res:{error: err, message: "Error saving finance sheet", success: false}}))
+            }))//.catch(err => ({status: 400, res:{error: err, message: "Error saving finance sheet", success: false}}))
         })
     }).then(response => res.status(response.status).json(response.res))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    //.catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
 
 module.exports = router;
