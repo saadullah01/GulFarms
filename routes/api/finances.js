@@ -132,8 +132,11 @@ router.post("/get", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
+
+    const financeId = req.body.hasOwnProperty('id') ? req.body.id : "5eb360b252465f2f4ba04084";
+
     //Expecting field id for finance sheet
-    Finance.Finance.findById(req.body.id).then(finance => {
+    Finance.Finance.findById(financeId).then(finance => {
         if(!finance){
             return Promise.reject({status: 404, res:{error: "ID", message: "Invalid ID, no finance sheet found.", success: false}})
         }
@@ -174,6 +177,7 @@ router.post("/records/create", (req, res) => {
     if(req.body.hasOwnProperty('expense')){
         recordsInfo.expense = req.body.expense;
     }
+    const financeId = req.body.hasOwnProperty('id') ? req.body.id : "5eb360b252465f2f4ba04084";
 
     //Create records
     return CreateMultiple(recordsInfo.income, 'record')
@@ -184,7 +188,7 @@ router.post("/records/create", (req, res) => {
             recordsInfo.income = incomeCreated.id;
             recordsInfo.expense = expenseCreated.id;
             //Add records and delta to finance
-            return Finance.Finance.findById(req.body.id).then(finance => {
+            return Finance.Finance.findById(financeId).then(finance => {
                 if(!finance){
                     return Promise.reject({status: 404, res:{error: "ID", message: "Invalid ID, no finance sheet found.", success: false}})
                 }
@@ -236,8 +240,10 @@ router.post("/records/delete", (req, res) => {
     if(req.body.hasOwnProperty('expense')){
         recordsInfo.expense = req.body.expense;
     }
+    const financeId = req.body.hasOwnProperty('id') ? req.body.id : "5eb360b252465f2f4ba04084";
+
     //Find finance sheet to delete records of
-    Finance.Finance.findById(req.body.id).then(finance => {
+    Finance.Finance.findById(financeId).then(finance => {
         if(!finance){
             return Promise.reject({status: 404, res:{error: "ID", message: "Invalid ID, no finance sheet found to delete records.", success: false}})
         }
