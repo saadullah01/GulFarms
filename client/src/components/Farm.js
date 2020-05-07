@@ -61,7 +61,7 @@ class Farm extends Component {
             <div className="farm-back">
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
-                        <Link to="#">
+                        <Link to={url+"/remove-farm"}>
                             <FontAwesomeIcon className="top-icon" icon={faTrashAlt} size="2x" />
                         </Link>
                         <Link to="#">

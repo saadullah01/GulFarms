@@ -37,6 +37,7 @@ import setAuthToken from "./utils/setAuthToken";
 import store from "./store"
 import ViewFarm from './components/ViewFarm'
 import Delete from './components/Delete';
+import RemoveFarm from "./components/RemoveFarm"
 
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
@@ -77,10 +78,12 @@ const App =()=>{
           <Switch>
           <PrivateRoute exact path="/home/farms/create-farm" component={ CreateFarm } />
           <PrivateRoute exact path="/home/farms/:fid/create-preset" component={ CreateNewAnimal } />
+          <PrivateRoute exact path="/home/farms/:fid/remove-farm" component={ RemoveFarm } />
           <PrivateRoute exact path="/home/farms/:fid/:pid" component={ AnimalPreset } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/create-barn" component={ CreateBarn } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid" component={ AnimalInstance } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/create-instance" component={ CreateAnimalIndividual } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/:iid" component={ViewFarm} />
           </Switch>
         </div>  
       </Router>   

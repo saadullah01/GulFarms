@@ -13,7 +13,7 @@ const nameToModelMap = {
     "animalPreset": BaseModels.AnimalPreset
 };
 
-const ToggleRemoved = (id, removed, reason, comment, dataType) => {
+const ChangeRemoved = (id, removed, reason, comment, dataType) => {
     const validRemovalTypes = ["farm", "barn", "animal"];
     if(validRemovalTypes.includes(dataType) == false){
         return Promise.reject({status: 400, res:{error: "Incorrect dataType", message: "Removing " + dataType + " is not allowed"}})
@@ -25,7 +25,7 @@ const ToggleRemoved = (id, removed, reason, comment, dataType) => {
     reason = ["death", "sold", "entry-error"].includes(reason) ? reason : "other";
     comment = comment == "" ? "Dil kya tha" : comment;
     const updatedValues = {$set: {removed: removed}};
-
+    console.log("came till here", updatedValues)
     return new Promise((resolve, reject) => {
         //Mark document as removed
         return nameToModelMap[dataType].findByIdAndUpdate({_id: id}, updatedValues, {new: true} ,(err, doc) => {
@@ -39,7 +39,7 @@ const ToggleRemoved = (id, removed, reason, comment, dataType) => {
         })
     }).then(removedDoc => {
         //Add removed doc to removed list if remove is true otherwise delete it from list
-        if(remove == true){
+        if(removed == true){
             const removedItem = new BaseModels.RemovedItem({
                 name: removedDoc.name,
                 removedLink: removedDoc._id,
@@ -65,7 +65,8 @@ const ToggleRemoved = (id, removed, reason, comment, dataType) => {
                 })
             })
         }
-    }).catch(err => Promise.reject(
+    })
+    .catch(err => Promise.reject(
         {
             status: err.hasOwnProperty('status') ? err.status : 400,
             res: err.hasOwnProperty('res') ? err.res : {error: err, message: "Uknown error occured. Could not remove " + dataType}
@@ -74,38 +75,12 @@ const ToggleRemoved = (id, removed, reason, comment, dataType) => {
 }
 
 
-// @route POST api/remove/get
-// @desc get a list of all removed items
-// @access Public
-router.post("/farm", (req, res) => {
-    console.log("Request @ api/remove/farm : {\n");
-    for(key in req.body){
-        console.log(key, ": ", req.body[key]);
-    }
-    console.log("}");
-    
-    // Form validation
-    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
-    // Check validation
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
-    //Mark or unmark removed
-    BaseModels.RemovedItem.find(),then(documents => {
-        if(!documents){
-            return Promise.resolve([]);
-        }
-        return documents;
-    })
-    .then(farm => res.status(200).json(farm))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
-});
 
 // @route POST api/remove/farm
 // @desc mark a farm as removed or unremoved
 // @access Public
 router.post("/farm", (req, res) => {
+
     console.log("Request @ api/remove/farm : {\n");
     for(key in req.body){
         console.log(key, ": ", req.body[key]);
@@ -118,7 +93,7 @@ router.post("/farm", (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
+    
     //Expected data
     // id, removed, reason, comment
 
@@ -147,7 +122,6 @@ router.post("/barn", (req, res) => {
 
     //Expected data
     // id, removed, reason, comment
-
     //Mark or unmark removed
     ChangeRemoved(req.body.id, req.body.removed, req.body.reason, req.body.removalComment, "barn")
     .then(barn => res.status(200).json(barn))
@@ -175,7 +149,7 @@ router.post("/animal", (req, res) => {
     // id, removed, reason, comment
 
     //Mark or unmark removed
-    ToggleRemoved(req.body.id, req.body.removed, req.body.reason, req.body.comment, "animal")
+    ChangedRemoved(req.body.id, req.body.removed, req.body.reason, req.body.comment, "animal")
     .then(animal => res.status(200).json(animal))
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
