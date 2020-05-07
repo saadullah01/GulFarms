@@ -37,7 +37,9 @@ import setAuthToken from "./utils/setAuthToken";
 import store from "./store"
 import ViewFarm from './components/ViewFarm'
 import Delete from './components/Delete';
+import RemoveBarn from "./components/RemoveBarn"
 import RemoveFarm from "./components/RemoveFarm"
+import RemovePreset from "./components/RemoveAnimal"
 import ViewAnimalIndividual from './components/ViewAnimalIndividual';
 
 //will keep user logged in even if refreshes too from a react tutorial
@@ -63,8 +65,7 @@ const App =()=>{
       <Router>
         <div className="App">
           <Route path="/" component={ AppNavbar } />
-          <Route path="/" component={ ViewFarm } />
-          {/* <Route path="/home/alerts" component={ Alerts } />
+          <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
           <Route path="/cf" component={ ViewAnimalIndividual } />
           <Route path="/register" component={ Register } />
@@ -83,9 +84,12 @@ const App =()=>{
           <PrivateRoute exact path="/home/farms/:fid/remove-farm" component={ RemoveFarm } />
           <PrivateRoute exact path="/home/farms/:fid/:pid" component={ AnimalPreset } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/create-barn" component={ CreateBarn } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/remove-preset" component={ RemovePreset } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid" component={ AnimalInstance } />
+          <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/remove-barn" component={ RemoveBarn } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/create-instance" component={ CreateAnimalIndividual } />
-          </Switch> */}
+          <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/:iid" component={ ViewAnimalIndividual } />
+          </Switch>
         </div>  
       </Router>   
     );
