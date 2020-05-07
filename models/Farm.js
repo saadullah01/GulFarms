@@ -14,7 +14,7 @@ const FarmSchema = new Schema({
 const AnimalSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
     preset: {type: Schema.Types.ObjectId, ref: 'animalPreset', required: true},
-    tag: {type: Number, unique: true, required: true},
+    tag: {type: Number, required: true},
     alive: {type: Boolean, default: true},
     attributes: [{type: Schema.Types.ObjectId, ref: 'attribute'}],
     products: [{type: Schema.Types.ObjectId, ref: 'product'}],    

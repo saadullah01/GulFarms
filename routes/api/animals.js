@@ -419,6 +419,25 @@ router.post("/create-preset", (req, res) => {
     //otherwise create new ones below
     //
     // to be implemented
+
+    //Create weight and gender attributes
+    const weightAttribute = {
+        name: "weight",
+        attributeType: "number",
+        keepTrack: true,
+        unit: "kg"
+    };
+    
+    const genderAttribute = {
+        name: "gender",
+        attributeType: "option",
+        options: ["male", "female", "other"],
+        keepTrack: false,
+        unit: ""
+    };
+
+    req.body.attributes.push(weightAttribute);
+    req.body.attributes.push(genderAttribute);
     
     //Create product/attribute to link parents or track offspring
     if(animalPreset.linkParents == true){
@@ -632,12 +651,12 @@ router.post("/create", (req, res) => {
         //Attribute values = [parents? [ids of parents if any], other attributes...]
         //Product values = [offsping? [ids of offspring if any], other products...]
         preset.attributes = preset.attributes.map((attribute, i) => {
-            attribute.value = req.body.attributeValues[i];
+            attribute.value =  req.body.attributeValues.length > i ? req.body.attributeValues[i] : "not set";
             attribute.isPreset = false;
             return attribute;
         })
         preset.products = preset.products.map((product, i) => {
-            product.value = req.body.productValues[i];
+            product.value =  req.body.productValues.length > i ? req.body.productValues[i] : "not set";
             product.isPreset = false;
             return product;
         })
@@ -710,7 +729,7 @@ router.post("/view", (req, res) => {
         }
         return animal.populate('attributes').populate('products')
         .populate('parents').populate('offspring').execPopulate()
-        .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal."}}))
+        .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal " + animal._id}}))
     
     }).then(animal => res.status(200).json(animal))
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
@@ -752,11 +771,15 @@ router.post("/get", (req, res) => {
                 animalObject = animal.toJSON();
                 animalObject.attributes = animalObject.attributes.map(attribute => summarize(attribute));
                 animalObject.products = animalObject.products.map(product => summarize(product));
-                animalObject.parents = animalObject.parents.value.map(parent => summarize(parent));
-                animalObject.offspring = animalObject.offspring.value.map(child => summarize(child));
+                if(animalObject.hasOwnProperty('parents')){
+                    animalObject.parents = animalObject.parents.value.map(parent => summarize(parent));
+                }
+                if(animalObject.hasOwnProperty('offspring')){
+                    animalObject.offspring = animalObject.offspring.value.map(child => summarize(child));
+                }
                 return animalObject;
 
-            }).catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal."}}))
+            }).catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal " + animal._id}}))
         })).then(populatedAnimals => populatedAnimals);
     
     }).then(animal => res.status(200).json(animal)).catch(err => Promise.reject({status: 404, res: {error: err, message: "Error finding animal."}}))
