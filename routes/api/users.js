@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const sgMail = require("@sendgrid/mail");
 
-const host = "localhost:3000";
+const host = "https://gulfarms.herokuapp.com/";
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
