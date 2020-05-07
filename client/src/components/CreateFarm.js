@@ -75,25 +75,38 @@ class CreateFarm extends Component {
     const { errors } = this.props;
     return (
       <Modal
-        style={{position: "relative"}}
+        style={{ position: "relative" }}
         size="lg"
         isOpen={this.state.modal}
         // className="modal-dialog"
         align="centre"
         toggle={this.toggle}
       >
-        <p style={{
-          fontSize: "2rem",
-          textAlign: "center",
-          color: "#4caf50"
-        }}>Create New Farm</p>
+        <p
+          style={{
+            fontSize: "2rem",
+            textAlign: "center",
+            color: "#4caf50",
+          }}
+        >
+          Create New Farm
+        </p>
         <FontAwesomeIcon
           onClick={this.toggle}
-          style={{position: "absolute", top:"0px", right:"0px", color: "#4caf50", margin: "5px"}} icon={ faTimes } size="1x" />
+          style={{
+            position: "absolute",
+            top: "0px",
+            right: "0px",
+            color: "#4caf50",
+            margin: "5px",
+          }}
+          icon={faTimes}
+          size="1x"
+        />
         <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
           <div className="col-sm-12 col-md-6">
-            <div style={{width: "90%", margin: "0 auto"}}>
-              <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+            <div style={{ width: "90%", margin: "0 auto" }}>
+              <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
                 <Label className="input-label-a">Name:</Label>
                 <Input
                   className="input-field-a"
@@ -105,7 +118,7 @@ class CreateFarm extends Component {
                   error={errors.farmName}
                 />
               </FormGroup>
-              <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+              <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
                 <Label className="input-label-a">Location:</Label>
                 <Input
                   className="input-field-a"
@@ -117,9 +130,9 @@ class CreateFarm extends Component {
                   error={errors.Location}
                 />
               </FormGroup>
-              <FormGroup style={{width: "100%", paddingBottom: "30px"}}>
+              <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
                 <Label className="input-label-a">Description:</Label>
-                  <Input
+                <Input
                   className="input-field-a"
                   type="textarea"
                   placeholder="Enter description"
@@ -133,17 +146,32 @@ class CreateFarm extends Component {
             </div>
           </div>
           <div className="col-sm-12 col-md-6">
-            <div style={{width: "90%", margin: "0 auto"}}>
-              <p className="add-a" style={{fontSize: "30px", color: "#4caf50"}}><FontAwesomeIcon icon={faBell} /> Add Alerts:</p>
-              <AddAlert 
-                update={this.onAdd}
-                title="Duration"
-              />
+            <div style={{ width: "90%", margin: "0 auto" }}>
+              <p
+                className="add-a"
+                style={{ fontSize: "30px", color: "#4caf50" }}
+              >
+                <FontAwesomeIcon icon={faBell} /> Add Alerts:
+              </p>
+              <AddAlert update={this.onAdd} title="Duration" />
             </div>
           </div>
           <div className="col-sm-12 mt-5 mb-2">
-            <Button className="form-btn" type="reset" onClick={this.toggle}>Cancel</Button>
-            <Button className="form-btn" type="submit">Save</Button>
+            <Button className="form-btn" type="submit">
+              SAVE
+            </Button>
+            <Button
+              className="form-btn"
+              type="reset"
+              onClick={this.toggle}
+              style={{
+                backgroundColor: "White",
+                border: "1px solid gray",
+                color: "#4caf50",
+              }}
+            >
+              CANCEL
+            </Button>
           </div>
         </Form>
       </Modal>
