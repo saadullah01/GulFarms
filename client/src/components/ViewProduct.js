@@ -10,10 +10,10 @@ class ViewProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: [{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"},{description: "awae", duration:"3", selectedOption:"Year", date: "12/02/1999"} ],
+      product: [{ description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }, { description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }],
       productDate: "",
       Done: [],
-      Update:[],
+      Update: [],
     };
   }
   submittdone = () => {
@@ -26,43 +26,49 @@ class ViewProduct extends Component {
         return {
           product,
         };
-      }, ()=> this.submittdone()
+      }, () => this.submittdone()
     );
   };
   submittupdate = () => {
     this.props.update(this.state.Update);
   };
-  snoozefunc=(d,index)=>{
+  snoozefunc = (d, index) => {
     this.remove(index)
     this.setState(state => {
 
       const Update = state.Update.concat(d);
       return {
-          Update,
-        };
-      }, this.submittupdate()
-  );
+        Update,
+      };
+    }, this.submittupdate()
+    );
   }
-  donefunc = (d,index)=>{
-   this.remove(index)
+  donefunc = (d, index) => {
+    this.remove(index)
     this.setState(state => {
 
       const Done = state.Done.concat(d);
       return {
-          Done,}
-  }
-  );
+        Done,
+      }
+    }
+    );
   }
   displayupdate = () => {
     const addedproducts = this.state.Update.map((d, index) =>
-      <tr style={{textAlign: "center"}}>
+      <tr style={{ textAlign: "center" }}>
         <td>{d.description}</td>
+        <td>{d.duration}</td>
+        <td>{d.selectedOption}</td>
         <td>{d.date}</td>
       </tr>
     );
     const addedDone = this.state.Done.map((d, index) =>
-      <tr style={{textAlign: "center"}}>
+      <tr style={{ textAlign: "center" }}>
         <td>{d.description}</td>
+        <td>{d.duration}</td>
+        <td>{d.selectedOption}</td>
+        <td>{d.date}</td>
         <td>{d.quantity}</td>
       </tr>
     );
@@ -76,75 +82,116 @@ class ViewProduct extends Component {
       </Table>
     );
   }
-  valueChange = (d,index,e) =>{
+  valueChange = (d, index, e) => {
     const update = {
-        ...d,
-        [e.target.id]: e.target.value
+      ...d,
+      [e.target.id]: e.target.value
     }
     this.setState((state, props) => {
-        return {
-            product: [
-                ...(state.product.slice(0, index)),
-                update,
-                ...(state.product.slice(index + 1))
-            ]
-        }
+      return {
+        product: [
+          ...(state.product.slice(0, index)),
+          update,
+          ...(state.product.slice(index + 1))
+        ]
+      }
     })
   }
   display() {
     console.log(this.state.product)
     console.log(this.state.Update, "d")
-    return this.state.product.map((d, index) => {
-      var val = ""
-      return (
-      <div>
-        {this.displayupdate()}  
-        <tr style={{textAlign: "center"}}>
-        <td>{d.description}</td>
-        <td>{d.date}</td>
-      </tr>    
-
-          <div className="pl-1 pr-1 col-sm-4">
-            <Input
-              className="input-field-ad"
-              type="date"
-              placeholder="Enter Start Date"
-              value= {d.Value}
-              onChange = {(e) => this.valueChange(d,index,e)}
-              id="date"
-            />
-          </div>
-          <div className="mt-3 col-sm-12">
-            <Button onClick={() =>this.snoozefunc(d,index)} style={{
-              width: "25%",
-              height: "40px",
-              backgroundColor: "#4caf50",
-              borderRadius: "20px",
-              float: "right",
-            }}>Snooze</Button>
-          </div>
-          <div className="pl-1 pr-1 col-sm-4">
-            <Input
-              className="input-field-ad"
-              type="text"
-              placeholder="Enter Start Date"
-              value= {d.quantity}
-              onChange = {(e) => this.valueChange(d,index,e)}
-              id="quantity"
-            />
-          </div>
-          <div className="mt-3 col-sm-12">
-          <Button onClick={()=>this.donefunc(d,index)} style={{
-            width: "20%",
-            height: "40px",
+    const products = this.state.product.map((d, index) =>
+      <div className="row">
+        <div className="mb-2 mt-2 col-sm-6">{d.description}</div>
+        <div className="mb-2 mt-2 col-sm-6">{d.date}</div>
+        <div className="mb-2 col-sm-8">
+          <Input
+            className="input-field-ad"
+            type="date"
+            placeholder="Enter Start Date"
+            value={d.Value}
+            onChange={(e) => this.valueChange(d, index, e)}
+            id="AlertDate"
+          />
+        </div>
+        <div className="mb-2 col-sm-4">
+          <Button onClick={() => this.snoozefunc(d, index)} style={{
+            width: "100%",
             backgroundColor: "#4caf50",
             borderRadius: "20px",
-            float: "right",
-          }}>Done</Button>
-          </div>
+          }}>Snooze</Button>
         </div>
-      );
-    });
+        <div className="col-sm-8">
+          <Input
+            className="input-field-ad"
+            type="text"
+            placeholder="Enter Start Date"
+            value={d.Value}
+            onChange={(e) => this.valueChange(d, index, e)}
+            id="quantity"
+          />
+        </div>
+        <div className="col-sm-4">
+          <Button onClick={() => this.donefunc(d, index)} style={{
+            width: "100%",
+            backgroundColor: "#4caf50",
+            borderRadius: "20px",
+          }}>Done</Button>
+        </div>
+      </div>
+    );
+    return (
+      <div className="col-sm-12">
+        {this.displayupdate()}
+        {products}
+      </div>
+      // <div>
+      //   {this.displayupdate()}
+      //   <tr style={{ textAlign: "center" }}>
+      //     <td>{d.description}</td>
+      //     <td>{d.date}</td>
+      //   </tr>
+
+      //   <div className="pl-1 pr-1 col-sm-4">
+      //     <Input
+      //       className="input-field-ad"
+      //       type="date"
+      //       placeholder="Enter Start Date"
+      //       value={d.Value}
+      //       onChange={(e) => this.valueChange(d, index, e)}
+      //       id="date"
+      //     />
+      //   </div>
+      //   <div className="mt-3 col-sm-12">
+      //     <Button onClick={() => this.snoozefunc(d, index)} style={{
+      //       width: "25%",
+      //       height: "40px",
+      //       backgroundColor: "#4caf50",
+      //       borderRadius: "20px",
+      //       float: "right",
+      //     }}>Snooze</Button>
+      //   </div>
+      //   <div className="pl-1 pr-1 col-sm-4">
+      //     <Input
+      //       className="input-field-ad"
+      //       type="text"
+      //       placeholder="Enter Start Date"
+      //       value={d.Value}
+      //       onChange={(e) => this.valueChange(d, index, e)}
+      //       id="quantity"
+      //     />
+      //   </div>
+      //   <div className="mt-3 col-sm-12">
+      //     <Button onClick={() => this.donefunc(d, index)} style={{
+      //       width: "20%",
+      //       height: "40px",
+      //       backgroundColor: "#4caf50",
+      //       borderRadius: "20px",
+      //       float: "right",
+      //     }}>Done</Button>
+      //   </div>
+      // </div>
+    );
   }
 
   render() {

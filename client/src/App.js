@@ -41,6 +41,7 @@ import RemoveBarn from "./components/RemoveBarn"
 import RemoveFarm from "./components/RemoveFarm"
 import RemovePreset from "./components/RemoveAnimal"
 import ViewAnimalIndividual from './components/ViewAnimalIndividual';
+import Footer from './components/sub_components/Footer';
 
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
@@ -90,6 +91,7 @@ const App =()=>{
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/create-instance" component={ CreateAnimalIndividual } />
           <PrivateRoute exact path="/home/farms/:fid/:pid/:bid/:iid" component={ ViewAnimalIndividual } />
           </Switch>
+          <Route path="/home" component={ Footer } />
         </div>  
       </Router>   
     );
