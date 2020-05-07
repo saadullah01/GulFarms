@@ -117,6 +117,7 @@ class CreateAnimalIndividual extends Component {
             .map((a) => {
                 if (a.name !== "parents")
                     return {
+                        ...a,
                         Name: a.name,
                         Type: key[a.attributeType],
                         Unit: a.unit,
@@ -163,7 +164,7 @@ class CreateAnimalIndividual extends Component {
     };
     onSubmit = (e) => {
         e.preventDefault();
-        const newUser = {
+        const newInstance = {
             AnimalName: this.state.AnimalName,
             p1: this.state.p1,
             p2: this.state.p2,
@@ -171,7 +172,8 @@ class CreateAnimalIndividual extends Component {
             attributes: this.state.attributes,
             Products: this.state.Products,
         };
-        console.log(newUser);
+        console.log(newInstance);
+        this.props.saveInstance(newInstance)
     };
     remove = (d) => {
         this.setState((state) => {
@@ -251,8 +253,6 @@ class CreateAnimalIndividual extends Component {
         ));
     };
     onChangeAttributes = (d, index, e) => {
-        console.log(d)
-        console.log(e.target.value)
         const update = {
             ...d,
             Value: e.target.value
@@ -472,6 +472,7 @@ const mapStateToProps = (state) => ({
     presets: state.presetReducer.presets,
     barns: state.barnReducer.barns,
 });
-export default connect(mapStateToProps, { saveInstance })(
-    withRouter(CreateAnimalIndividual)
-);
+export default connect(
+    mapStateToProps,
+    { saveInstance }
+)(withRouter(CreateAnimalIndividual));
