@@ -95,6 +95,10 @@ input[type="radio"] {
   border-radius: 20px;
   background-color: #4caf50;
 }
+.form-btn:hover {
+  box-shadow: 0 0 4px #999;
+  transform: scale(1.01);
+}
 .foot {
   width: 90% !important;
   margin: 0 auto;
@@ -133,7 +137,6 @@ input[type="radio"] {
   border: solid 1px #4caf50;
   font-size: 150%;
   margin-top: 10px;
-  box-shadow: 0 0 4px #999;
 }
 .plus-btn-small {
   margin: 05%;
@@ -144,8 +147,8 @@ input[type="radio"] {
   border: solid 1px #4caf50;
   font-size: 70%;
   margin-top: 0px;
-  box-shadow: 0 0 4px #999;
 }
+
 .undo-btn {
   margin: 05%;
   width: 70px;
@@ -701,7 +704,6 @@ input[type="password"]:hover ~ .pop-up {
     font-size: 12px;
   }
   .input-field-a {
-
   }
 }
 

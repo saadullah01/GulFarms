@@ -60,6 +60,8 @@ export const savePreset = (data) => (dispatch, getState) => {
     const preset = {}
     const state = getState()
     const farm = state.farmReducer.farms[data.farmId]
+    preset.duration=data.AlertDuration
+    preset.durationType=data.SelectedOption
     preset.name = data.AnimalName
     preset.trackOffspring = data.recordOffspring
     preset.linkParents = data.recordParents

@@ -12,6 +12,13 @@ const summarize = data => (
     }
 );
 
+const nameToModelMap = {
+    'farm': FarmModels.Farm, 
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset
+};
 
 // @route POST api/barns/create
 // @desc Create a new barn
@@ -62,10 +69,11 @@ router.post("/create", (req, res) => {
                     return resolve({status: 200, res: {message: "Barn created successfully.", success: true, created: barn}});
                 })
             });
-        }).catch(err => ({status: 400, res:{ message: "Error saving barn.", success: false, error: err }}))
+        })
+        // .catch(err => ({status: 400, res:{ message: "Error saving barn.", success: false, error: err }}))
     })
     .then(response => res.status(response.status).json(response.res))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+    // .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
 });
                                         
 // @route POST api/barns/view
@@ -91,9 +99,21 @@ router.post("/view", (req, res) => {
             Promise.reject({status: 404, res: { message: "Error finding barn.", success: false, error: err }})
         }
         return barn.populate('animals').populate('alerts').execPopulate()
-        .catch(err => ({status: 400, res:{ message: "Error populating barn.", success: false, error: err }}))
+        .then(barn => {
+            const notRemoved = [];
+            const animals = barn.animals.map((animal, i) => {
+                if(animal.removed == false)
+                    notRemoved.push(i);
+                return animal.populate('attributes').populate('products').execPopulate()
+            });
+            return Promise.all(animals).then(animals => {
+                const barn2 = barn.toJSON();
+                barn2.animals = notRemoved.map(i => animals[i]);
+                return barn2;
+            })})
+        // .catch(err => ({status: 400, res:{ message: "Error populating barn.", success: false, error: err }}))
     }).then(barn => res.status(200).json(barn))
-    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 404).json(err.hasOwnProperty('res') ? err.res : err)); 
+    // .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 404).json(err.hasOwnProperty('res') ? err.res : err)); 
 });
 
 module.exports = router;
