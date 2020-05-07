@@ -1,5 +1,6 @@
 import {
-    SET_REMOVED
+    SET_REMOVED,
+    SET_REMOVES
 } from "../actions/types";
 
 const initialState = {
@@ -8,6 +9,11 @@ const initialState = {
 }
 const removeReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SET_REMOVES:
+            return{
+                ...state,
+                removed:action.payload
+            }
         case SET_REMOVED:
             return {
                 ...state,

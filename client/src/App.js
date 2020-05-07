@@ -68,6 +68,7 @@ const App =()=>{
           <Route path="/" component={ AppNavbar } />
           <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
+          <Route exact path="/home/Deleted" component={ Delete } />
           <Route path="/cf" component={ ViewAnimalIndividual } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />

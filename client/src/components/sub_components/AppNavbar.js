@@ -83,6 +83,10 @@ class AppNavbar extends Component{
                                             <DropdownItem>Add User</DropdownItem>
                                         </Link>
                                         <DropdownItem divider />
+                                        <Link to="/home/Deleted">
+                                            <DropdownItem>SEE DELETED ITEMS</DropdownItem>
+                                        </Link>
+                                        <DropdownItem divider />
                                         <DropdownItem onClick={this.props.logoutUser}>Log Out</DropdownItem>
                                     </DropdownMenu>
                                 </UncontrolledDropdown>

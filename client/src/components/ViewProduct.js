@@ -10,7 +10,7 @@ class ViewProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: [{ description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }, { description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }],
+      product: this.props.product,
       productDate: "",
       Done: [],
       Update: [],

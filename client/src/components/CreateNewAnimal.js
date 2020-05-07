@@ -74,6 +74,7 @@ class CreateNewAnimal extends Component {
     this.setState((prevState) => ({
       modal: !prevState.modal,
     }));
+    this.props.errors.message = ""
   };
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
@@ -94,6 +95,13 @@ class CreateNewAnimal extends Component {
     console.log(data);
     this.props.savePreset(data);
   };
+  validate = (errors) =>{
+    if(this.props.errors.message =="Error saving animal preset." ){
+      return(
+        "Name is required"
+      );
+    }
+  }
   KeepTrack() {
     const types = ["Year", "Month", "Day", "week"];
     const duration_type = types.map((t) => (
@@ -167,6 +175,9 @@ class CreateNewAnimal extends Component {
         />
         <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
           <div className="col-sm-12 col-md-6">
+            <div style={{ width: "90%", margin: "0 auto" ,color:"red"}}>
+              {this.validate(errors)}
+            </div>
             <div style={{ width: "90%", margin: "0 auto" }}>
               <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
                 <Label className="input-label-a">Name:</Label>

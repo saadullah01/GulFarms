@@ -14,9 +14,9 @@ import {
     Col,
     Table,
 } from "reactstrap";
-import ViewAlert from "./ViewAlert";
+import {undoDelete,getDeleted} from "../actions/removeActions"
 import { connect } from "react-redux";
-
+import { Link, withRouter  } from 'react-router-dom';
 class Delete extends Component {
     constructor(props) {
         super(props);
@@ -25,31 +25,31 @@ class Delete extends Component {
         }
     }
     componentDidMount() {
+        this.props.getDeleted()
         this.setState({
             delArr: [
                 {
-                    name: "item",
-                    desc: "It is deleted for no reason"
-                },
-                {
-                    name: "item",
-                    desc: "It is deleted for no reason"
-                },
-                {
-                    name: "item",
-                    desc: "It is deleted for no reason"
+                    name: "loading",
+                    removalComment: "loading"
                 }
             ]
         });
     }
+    componentDidUpdate(prevProps,prevState) {
+        if (this.props.removed !== prevProps.removed) {
+            this.setState({
+               delArr:[...this.props.removed]
+            })
+        }
+    }
     remove = index => {
-        console.log(index) // Arham Implement Accordingly
+        this.props.undoDelete(index)
     }
     render() {
         const delElements = this.state.delArr.map((e, i) =>
             <tr>
                 <td>{e.name}</td>
-                <td>{e.desc}</td>
+                <td>{e.removalComment}</td>
                 <td>
                     <Button 
                     onClick={() => this.remove(i)}
@@ -68,7 +68,7 @@ class Delete extends Component {
                 <Table>
                     <thead>
                         <th>Name</th>
-                        <th>Description</th>
+                        <th>description</th>
                         <th></th>
                     </thead>
                     <tbody>
@@ -79,5 +79,15 @@ class Delete extends Component {
         );
     }
 }
-
-export default Delete;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms,
+    presets:state.presetReducer.presets,
+    barns:state.barnReducer.barns,
+    removed:state.removeReducer.removed
+});
+export default connect(
+    mapStateToProps,
+    { undoDelete,getDeleted }
+)(withRouter(Delete));
