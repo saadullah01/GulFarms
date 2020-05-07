@@ -148,6 +148,7 @@ class CreateAnimalIndividual extends Component {
         this.setState((prevState) => ({
             modal: !prevState.modal,
         }));
+        this.props.errors.message = ""
     };
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
@@ -198,6 +199,13 @@ class CreateAnimalIndividual extends Component {
             };
         });
     };
+    validate = (errors) =>{
+        if(this.props.errors.message =="Error saving animal." ){
+          return(
+            "All fields are required"
+          );
+        }
+      }
     Parents() {
         if (this.state.recordParents === true) {
             return (
@@ -410,6 +418,9 @@ class CreateAnimalIndividual extends Component {
                 />
                 <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
                     <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" ,color:"red"}}>
+                        {this.validate(errors)}
+                        </div>
                         <div style={{ width: "90%", margin: "0 auto" }}>
                             <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
                                 <Label className="input-label-a">Tag:</Label>
