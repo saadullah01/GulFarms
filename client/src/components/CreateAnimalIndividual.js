@@ -1,464 +1,477 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faTimes,
-  faBell,
-  faClipboard,
-  faClipboardCheck,
+    faTimes,
+    faBell,
+    faClipboard,
+    faClipboardCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Container,
-  Row,
-  Col,
-  UncontrolledCollapse,
-  Card,
-  CardBody,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Table,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Form,
+    FormGroup,
+    Label,
+    Input,
+    Container,
+    Row,
+    Col,
+    UncontrolledCollapse,
+    Card,
+    CardBody,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Table,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { saveInstance } from "../actions/barnActions";
 
 class CreateAnimalIndividual extends Component {
-  // Can Add Constructor
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: true,
-      AnimalName: "",
-      p1: "",
-      p2: "",
-      errors: {},
-      attributes: [
-        {
-          Name: "l",
-          Type: "Options",
-          Unit: "kg",
-          Option: [1, 2, 3],
-          Value: "",
-        },
-      ], //From DB
-      AttributesUpdate: [],
-      Products: [
-        { description: "des", duration: "dur", selectedOption: "Year" },
-      ], //fromm DB
-      ProductsUpdate: [],
-      quant: "",
-      date: "",
-      recordParents: true,
-    };
-  }
-  componentDidMount() {
-    if (
-      this.props.farms.length <= this.ids("farm") ||
-      this.props.presets.length <= this.ids("preset") ||
-      this.props.barns.length <= this.ids("barn")
-    ) {
-      this.props.history.push("/home/farms/");
-      return;
+    // Can Add Constructor
+    constructor(props) {
+        super(props);
+        this.state = {
+            modal: true,
+            AnimalName: "",
+            p1: "",
+            p2: "",
+            errors: {},
+            attributes: [
+                {
+                    Name: "l",
+                    Type: "Options",
+                    Unit: "kg",
+                    Option: [1, 2, 3],
+                    Value: "",
+                },
+            ], //From DB
+            AttributesUpdate: [],
+            Products: [
+                { description: "des", duration: "dur", selectedOption: "Year" },
+            ], //fromm DB
+            ProductsUpdate: [],
+            quant: "",
+            date: "",
+            recordParents: true,
+        };
     }
-    this.setState({
-      modal: true,
-      AnimalName: this.props.presets[this.ids("preset")].name,
-      p1: "",
-      p2: "",
-      errors: this.props.errors,
-      attributes: this.mapAttributes(
-        this.props.presets[this.ids("preset")].attributes
-      ), //From DB
-      AttributesUpdate: [],
-      Products: [],
-      Products: this.mapProducts(
-        this.props.presets[this.ids("preset")].products
-      ), //fromm DB
-      ProductsUpdate: [],
-      quant: "",
-      date: "",
-      recordParents: this.props.presets[this.ids("preset")].linkParents,
-    });
-  }
-  componentDidUpdate = (prevProps, prevState) => {
-    if (
-      prevState.modal !== this.state.modal ||
-      this.props.barns !== prevProps.barns
-    ) {
-      this.props.history.push(
-        "/home/farms/" +
-        String(this.ids("farm")) +
-        "/" +
-        String(this.ids("preset")) +
-        "/" +
-        String(this.ids("barn"))
-      );
+    componentDidMount() {
+        if (
+            this.props.farms.length <= this.ids("farm") ||
+            this.props.presets.length <= this.ids("preset") ||
+            this.props.barns.length <= this.ids("barn")
+        ) {
+            this.props.history.push("/home/farms/");
+            return;
+        }
+        this.setState({
+            modal: true,
+            AnimalName: this.props.presets[this.ids("preset")].name,
+            p1: "",
+            p2: "",
+            errors: this.props.errors,
+            attributes: this.mapAttributes(
+                this.props.presets[this.ids("preset")].attributes
+            ), //From DB
+            AttributesUpdate: [],
+            Products: [],
+            Products: this.mapProducts(
+                this.props.presets[this.ids("preset")].products
+            ), //fromm DB
+            ProductsUpdate: [],
+            quant: "",
+            date: "",
+            recordParents: this.props.presets[this.ids("preset")].linkParents,
+        });
     }
-  };
-  mapAttributes(atts) {
-    const key = {
-      number: "numeric",
-      string: "string",
-      option: "options",
+    componentDidUpdate = (prevProps, prevState) => {
+        if (
+            prevState.modal !== this.state.modal ||
+            this.props.barns !== prevProps.barns
+        ) {
+            this.props.history.push(
+                "/home/farms/" +
+                String(this.ids("farm")) +
+                "/" +
+                String(this.ids("preset")) +
+                "/" +
+                String(this.ids("barn"))
+            );
+        }
     };
-    return atts
-      .map((a) => {
-        if (a.name !== "parents")
-          return {
-            Name: a.name,
-            Type: key[a.attributeType],
-            Unit: a.unit,
-            Option: a.options,
-            Value: "",
-            id: a._id,
-          };
-      })
-      .filter((x) => x !== undefined);
-  }
-  mapProducts(prods) {
-    return prods.map((p) => {
-      return {
-        ...p,
-        description: p.name,
-      };
-    });
-  }
-  ids(name) {
-    const dic = {
-      farm: this.props.match.params.fid,
-      preset: this.props.match.params.pid,
-      barn: this.props.match.params.bid,
+    mapAttributes(atts) {
+        const key = {
+            number: "numeric",
+            string: "string",
+            option: "options",
+        };
+        return atts
+            .map((a) => {
+                if (a.name !== "parents")
+                    return {
+                        Name: a.name,
+                        Type: key[a.attributeType],
+                        Unit: a.unit,
+                        Option: a.options,
+                        Value: "",
+                        id: a._id,
+                    };
+            })
+            .filter((x) => x !== undefined);
+    }
+    mapProducts(prods) {
+        return prods.map((p) => {
+            return {
+                ...p,
+                description: p.name,
+            };
+        });
+    }
+    ids(name) {
+        const dic = {
+            farm: this.props.match.params.fid,
+            preset: this.props.match.params.pid,
+            barn: this.props.match.params.bid,
+        };
+        return parseInt(dic[name]);
+    }
+    toggle = () => {
+        this.setState((prevState) => ({
+            modal: !prevState.modal,
+        }));
     };
-    return parseInt(dic[name]);
-  }
-  toggle = () => {
-    this.setState((prevState) => ({
-      modal: !prevState.modal,
-    }));
-  };
-  onChange = (d, index) => {
-    // this.remove(index)
-    // this.setState(state => {
-    //     const attributes = state.attributes.concat({ Name: d.Name, Type: d.Type, Unit: d.Unit,
-    //         Option: d.Option  });
-    //     return {
-    //         attributes,
-    //     };
-    // }
-    // );
-  };
-  onChangeProduct = (d, index) => {
-    // this.removeProduct(index)
-    // this.setState(state => {
-    //     const Products = state.Products.concat({ description:d.ProductDescription,
-    //         duration:d.duration,
-    //         selectedOption:d.selectedOption,  });
-    //     return {
-    //         Products,
-    //     };
-    // }
-    // );
-  };
-  onAdd = (e) => {
-    this.setState({ Products: e });
-  };
-  onAdd_Att = (e) => {
-    this.setState({ attributes: e });
-  };
-  onSubmit = (e) => {
-    e.preventDefault();
-    const newUser = {
-      AnimalName: this.state.AnimalName,
-      p1: this.state.p1,
-      p2: this.state.p2,
-      errors: this.state.errors,
-      attributes: this.state.attributes,
-      Products: this.state.Products,
+    onChange = e => {
+        // this.setState({ [e.target.id]: e.target.value });
     };
-    console.log(newUser);
-  };
-  remove = (d) => {
-    this.setState((state) => {
-      const attributes = state.attributes.filter((item, j) => d !== j);
-      return {
-        attributes,
-      };
-    });
-  };
-  removeProduct = (d) => {
-    this.setState((state) => {
-      const Products = state.Products.filter((item, j) => d !== j);
-      return {
-        Products,
-      };
-    });
-  };
-  Parents() {
-    if (this.state.recordParents === true) {
-      return (
-        <div className="row">
-          <p style={{ fontSize: "30px", color: "#4caf50" }}>Parents</p>
-          <Label className="input-label-a">Record Parents:</Label>
-          <div className="mt-3 col-sm-12">
-            <Button
-              id="toggler"
-              style={{
-                width: "20%",
-                height: "40px",
-                backgroundColor: "#4caf50",
-                borderRadius: "20px",
-                float: "right",
-              }}
-            >
-              <FontAwesomeIcon icon={faPlus} size="1x" />
-            </Button>
+    onChange1 = e => {
+        this.setState({ [e.target.id]: e.target.value });
+    };
 
-            <UncontrolledCollapse toggler="#toggler">
-              <Card>
-                <CardBody>
-                  <Row>
-                    <Input
-                      className="input-field-add"
-                      type="text"
-                      placeholder="Enter Parent 1"
-                      onChange={this.onChange}
-                      value={this.state.p1}
-                      error={this.state.errors.p1}
-                      id="p1"
-                    />
-                  </Row>
-                  <Row>
-                    <Input
-                      className="input-field-add"
-                      type="text"
-                      placeholder="Enter Parent 2"
-                      onChange={this.onChange}
-                      value={this.state.p2}
-                      error={this.state.errors.p2}
-                      id="p2"
-                    />
-                  </Row>
-                </CardBody>
-              </Card>
-            </UncontrolledCollapse>
-          </div>
-        </div>
-      );
+    onAdd = (e) => {
+        this.setState({ Products: e });
+    };
+    onAdd_Att = (e) => {
+        this.setState({ attributes: e });
+    };
+    onSubmit = (e) => {
+        e.preventDefault();
+        const newUser = {
+            AnimalName: this.state.AnimalName,
+            p1: this.state.p1,
+            p2: this.state.p2,
+            errors: this.state.errors,
+            attributes: this.state.attributes,
+            Products: this.state.Products,
+        };
+        console.log(newUser);
+    };
+    remove = (d) => {
+        this.setState((state) => {
+            const attributes = state.attributes.filter((item, j) => d !== j);
+            return {
+                attributes,
+            };
+        });
+    };
+    removeProduct = (d) => {
+        this.setState((state) => {
+            const Products = state.Products.filter((item, j) => d !== j);
+            return {
+                Products,
+            };
+        });
+    };
+    Parents() {
+        if (this.state.recordParents === true) {
+            return (
+                <div className="row">
+                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Parents</p>
+                    <Label className="input-label-a">Record Parents:</Label>
+                    <div className="mt-3 col-sm-12">
+                        <Button
+                            id="toggler"
+                            style={{
+                                width: "20%",
+                                height: "40px",
+                                backgroundColor: "#4caf50",
+                                borderRadius: "20px",
+                                float: "right",
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faPlus} size="1x" />
+                        </Button>
+
+                        <UncontrolledCollapse toggler="#toggler">
+                            <Card>
+                                <CardBody>
+                                    <Row>
+                                        <Input
+                                            className="input-field-add"
+                                            type="text"
+                                            placeholder="Enter Parent 1"
+                                            onChange={this.onChange1}
+                                            value={this.state.p1}
+                                            error={this.state.errors.p1}
+                                            id="p1"
+                                        />
+                                    </Row>
+                                    <Row>
+                                        <Input
+                                            className="input-field-add"
+                                            type="text"
+                                            placeholder="Enter Parent 2"
+                                            onChange={this.onChange1}
+                                            value={this.state.p2}
+                                            error={this.state.errors.p2}
+                                            id="p2"
+                                        />
+                                    </Row>
+                                </CardBody>
+                            </Card>
+                        </UncontrolledCollapse>
+                    </div>
+                </div>
+            );
+        }
     }
-  }
-  opt = (d, index) => {
-    return d.Option.map((t) => (
-      <DropdownItem Value={t} onClick={this.onChange(d, index)}>
-        {t}
-      </DropdownItem>
-    ));
-  };
-  helper = (d, index) => {
-    if (d.Type === "numeric") {
-      return (
-        <tbody>
-          <tr>
-            <th style={{ fontWeight: "bolder" }}>Name</th>
-            <th style={{ fontWeight: "bolder" }}>Units</th>
-            <th style={{ fontWeight: "bolder" }}>Value</th>
-          </tr>
-          <tr>
-            <td>{d.Name}</td>
-            <td>{d.Unit}</td>
-            <td><Input
-              type="text"
-              placeholder="Value"
-              onChange={this.onChange(d, index)}
-              value={d.Value}
-              id="quant"
-            /></td>
-          </tr>
-        </tbody>
-      );
-    } else if (d.Type === "string") {
-      return (
-        <tbody>
-          <tr>
-            <th style={{ fontWeight: "bolder" }}>Name</th>
-            <th style={{ fontWeight: "bolder" }}>Units</th>
-            <th style={{ fontWeight: "bolder" }}>Value</th>
-          </tr>
-          <tr>
-            <td>{d.Name}</td>
-            <td>{d.Unit}</td>
-            <td><Input
-              type="text"
-              placeholder="Value"
-              onChange={this.onChange(d, index)}
-              value={d.Value}
-              id="quant"
-            /></td>
-          </tr>
-        </tbody>
-      );
-    } else if (d.Type === "options") {
-      return (
-        <tbody>
-          <tr>
-            <th style={{ fontWeight: "bolder" }}>Name</th>
-            <th></th>
-            <th style={{ fontWeight: "bolder" }}>Value</th>
-          </tr>
-          <tr>
-            <td>{d.Name}</td>
-            <td></td>
-            <td><UncontrolledDropdown
-              style={{
-                backgroundColor: "#4caf50",
-                textAlign: "center",
-                borderRadius: "20px",
-              }}
+
+    opt = (d, index) => {
+        return d.Option.map((t) => (
+            <DropdownItem Value={t} onClick={(e) => this.onChangeAttributes(d, index, e)}>
+                {t}
+            </DropdownItem>
+        ));
+    };
+    onChangeAttributes = (d, index, e) => {
+        console.log(d)
+        console.log(e.target.value)
+        const update = {
+            ...d,
+            Value: e.target.value
+        }
+        this.setState((state, props) => {
+            return {
+                attributes: [
+                    ...(state.attributes.slice(0, index)),
+                    update,
+                    ...(state.attributes.slice(index + 1))
+                ]
+            }
+        })
+    }
+    helper = (d, index) => {
+        if (d.Type === "numeric") {
+            return (
+                <tbody>
+                    <tr>
+                        <th style={{ fontWeight: "bolder" }}>Name</th>
+                        <th style={{ fontWeight: "bolder" }}>Units</th>
+                        <th style={{ fontWeight: "bolder" }}>Value</th>
+                    </tr>
+                    <tr>
+                        <td>{d.Name}</td>
+                        <td>{d.Unit}</td>
+                        <td><Input
+                            type="text"
+                            placeholder="Value"
+                            onChange={(e) => this.onChangeAttributes(d, index, e)}
+                            value={d.Value}
+                            id="quant"
+                        /></td>
+                    </tr>
+                </tbody>
+            );
+        } else if (d.Type === "string") {
+            return (
+                <tbody>
+                    <tr>
+                        <th style={{ fontWeight: "bolder" }}>Name</th>
+                        <th style={{ fontWeight: "bolder" }}>Units</th>
+                        <th style={{ fontWeight: "bolder" }}>Value</th>
+                    </tr>
+                    <tr>
+                        <td>{d.Name}</td>
+                        <td>{d.Unit}</td>
+                        <td><Input
+                            type="text"
+                            placeholder="Value"
+                            onChange={(e) => this.onChangeAttributes(d, index, e)}
+                            value={d.Value}
+                            id="quant"
+                        /></td>
+                    </tr>
+                </tbody>
+            );
+        } else if (d.Type === "options") {
+            return (
+                <tbody>
+                    <tr>
+                        <th style={{ fontWeight: "bolder" }}>Name</th>
+                        <th></th>
+                        <th style={{ fontWeight: "bolder" }}>Value</th>
+                    </tr>
+                    <tr>
+                        <td>{d.Name}</td>
+                        <td></td>
+                        <td><UncontrolledDropdown
+                            style={{
+                                backgroundColor: "#4caf50",
+                                textAlign: "center",
+                                borderRadius: "20px",
+                            }}
+                        >
+                            <DropdownToggle style={{ color: "white" }} color="correct" caret>
+                                {d.Value}
+                            </DropdownToggle>
+                            <DropdownMenu>{this.opt(d, index)}</DropdownMenu>
+                        </UncontrolledDropdown></td>
+                    </tr>
+                </tbody>
+            );
+        }
+    };
+    Attributes() {
+        const attributes = this.state.attributes.map((d, index) =>
+            this.helper(d, index)
+        );
+        return (
+            <Table responsive>
+                {attributes}
+            </Table>
+        );
+    }
+    onChangeProduct = (d, index) => {
+        this.setState((state, props) => {
+            return {
+                Products: [
+                    ...(state.Products.slice(0, index)),
+                    d,
+                    ...(state.Products.slice(index + 1))
+                ]
+            }
+        })
+    }
+    Products() {
+        const products = this.state.Products.map((d, index) =>
+            <tr>
+                <td>{d.description}</td>
+                <td>
+                    <Input
+                        type="date"
+                        placeholder="Enter Starting Date (mm/dd/yyyy)"
+                        onChange={() => this.onChangeProduct(d, index)}
+                        value={d.Value}
+                        id="date"
+                    />
+                </td>
+            </tr>
+        );
+        return (
+            <tbody>
+                {products}
+            </tbody>
+        );
+    }
+    render() {
+        var modal = false;
+        const { errors } = this.state;
+        return (
+            <Modal
+                size="lg"
+                isOpen={this.state.modal}
+                align="centre"
+                toggle={this.toggle}
             >
-              <DropdownToggle style={{ color: "white" }} color="correct" caret>
-                Options {d.Value}
-              </DropdownToggle>
-              <DropdownMenu>{this.opt(d, index)}</DropdownMenu>
-            </UncontrolledDropdown></td>
-          </tr>
-        </tbody>
-      );
-    }
-  };
-  Attributes() {
-    const attributes = this.state.attributes.map((d, index) =>
-      this.helper(d, index)
-    );
-    return (
-      <Table responsive>
-        {attributes}
-      </Table>
-    );
-  }
-  Products() {
-    const products = this.state.Products.map((d, index) =>
-      <tr>
-        <td>{d.description}</td>
-        <td>
-          <Input
-            type="date"
-            placeholder="Enter Starting Date (mm/dd/yyyy)"
-            //  onChange={this.onChangeProduct(d, index)}
-            value={d.Value}
-            id="date"
-          />
-        </td>
-      </tr>
-    );
-    return (
-      <tbody>
-        { products }
-      </tbody>
-    );
-  }
-  render() {
-    var modal = false;
-    const { errors } = this.state;
-    return (
-      <Modal
-        size="lg"
-        isOpen={this.state.modal}
-        align="centre"
-        toggle={this.toggle}
-      >
-        <p
-          style={{
-            fontSize: "2rem",
-            textAlign: "center",
-            color: "#4caf50",
-          }}
-        >
-          Create New {this.state.AnimalName}
-        </p>
-        <FontAwesomeIcon
-          onClick={this.toggle}
-          style={{
-            position: "absolute",
-            top: "0px",
-            right: "0px",
-            color: "#4caf50",
-            margin: "5px",
-          }}
-          icon={faTimes}
-          size="1x"
-        />
-        <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
-          <div className="col-sm-12 col-md-6">
-            <div style={{ width: "90%", margin: "0 auto" }}>
-              <div className="row">
-                <div className="col-sm-12">
-                  <p style={{ fontSize: "30px", color: "#4caf50" }}>
-                    Attributes
-                  </p>
-                  {this.Attributes()}
-                </div>
-                <div className="mt-3 col-sm-12">
-                  <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
-                  {this.Products()}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-12 col-md-6">
-            <div style={{ width: "90%", margin: "0 auto" }}>
-              <p
-                className="add-a"
-                style={{ fontSize: "30px", color: "#4caf50" }}
-              >
+                <p
+                    style={{
+                        fontSize: "2rem",
+                        textAlign: "center",
+                        color: "#4caf50",
+                    }}
+                >
+                    Create New {this.state.AnimalName}
+                </p>
                 <FontAwesomeIcon
-                  icon={faClipboardCheck}
-                  style={{ marginRight: "10px" }}
+                    onClick={this.toggle}
+                    style={{
+                        position: "absolute",
+                        top: "0px",
+                        right: "0px",
+                        color: "#4caf50",
+                        margin: "5px",
+                    }}
+                    icon={faTimes}
+                    size="1x"
                 />
+                <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>
+                                        Attributes
+                  </p>
+                                    {this.Attributes()}
+                                </div>
+                                <div className="mt-3 col-sm-12">
+                                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Products</p>
+                                    {this.Products()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-sm-12 col-md-6">
+                        <div style={{ width: "90%", margin: "0 auto" }}>
+                            <p
+                                className="add-a"
+                                style={{ fontSize: "30px", color: "#4caf50" }}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faClipboardCheck}
+                                    style={{ marginRight: "10px" }}
+                                />
                 Record
               </p>
-              {this.Parents()}
-            </div>
-          </div>
-          <div className="col-sm-12 mt-5 mb-2">
-            <Button className="form-btn" type="submit">
-              SAVE
+                            {this.Parents()}
+                        </div>
+                    </div>
+                    <div className="col-sm-12 mt-5 mb-2">
+                        <Button className="form-btn" type="submit">
+                            SAVE
             </Button>
-            <Button
-              className="form-btn"
-              type="reset"
-              onClick={this.toggle}
-              style={{
-                backgroundColor: "White",
-                border: "1px solid gray",
-                color: "#4caf50",
-              }}
-            >
-              CANCEL
+                        <Button
+                            className="form-btn"
+                            type="reset"
+                            onClick={this.toggle}
+                            style={{
+                                backgroundColor: "White",
+                                border: "1px solid gray",
+                                color: "#4caf50",
+                            }}
+                        >
+                            CANCEL
             </Button>
-          </div>
-        </Form>
-      </Modal>
-    );
-  }
+                    </div>
+                </Form>
+            </Modal>
+        );
+    }
 }
 const mapStateToProps = (state) => ({
-  loggedIn: state.authReducer.islogged,
-  errors: state.errorReducer.errors,
-  farms: state.farmReducer.farms,
-  presets: state.presetReducer.presets,
-  barns: state.barnReducer.barns,
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms,
+    presets: state.presetReducer.presets,
+    barns: state.barnReducer.barns,
 });
 export default connect(mapStateToProps, { saveInstance })(
-  withRouter(CreateAnimalIndividual)
+    withRouter(CreateAnimalIndividual)
 );
