@@ -55,12 +55,20 @@ class RemoveFarmTemplates extends Component{
         switch(this.state.name){
             case "Farm":
                 return this.props.farms[this.ids("farm")]._id
+            case "Animal Preset":
+                return this.props.presets[this.ids("preset")]._id
+            case "Barn":
+                return this.props.barns[this.ids("barn")]._id
         }
     }
     removed=()=>{
         switch(this.state.name){
             case "Farm":
                 return this.props.farms[this.ids("farm")].removed
+            case "Animal Preset":
+                return this.props.presets[this.ids("preset")].removed
+            case "Barn":
+                return this.props.barns[this.ids("barn")].removed
         }
     }
     handleOptionChange = changeEvent => {
