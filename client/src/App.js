@@ -38,6 +38,7 @@ import store from "./store"
 import ViewFarm from './components/ViewFarm'
 import Delete from './components/Delete';
 import RemoveFarm from "./components/RemoveFarm"
+import ViewAnimalIndividual from './components/ViewAnimalIndividual';
 
 //will keep user logged in even if refreshes too from a react tutorial
 if (localStorage.jwtToken) {
@@ -64,7 +65,7 @@ const App =()=>{
           <Route path="/" component={ AppNavbar } />
           <Route path="/home/alerts" component={ Alerts } />
           <Route exact path="/home/finances" component={ Finance } />
-          <Route path="/cf" component={ ViewFarm } />
+          <Route path="/cf" component={ ViewAnimalIndividual } />
           <Route path="/register" component={ Register } />
           <Route exact path="/login" component={ Login } />
           <Route path="/reset-password" component={ ResetPassword } />
