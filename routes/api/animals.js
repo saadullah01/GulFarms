@@ -618,14 +618,14 @@ router.post("/create", (req, res) => {
     }
 
     //Expected data:
-    //  barn (id), name, preset, tag, comment(may or may not be included)
+    //  barn (id), name, preset, tag, comment(may or may not be included), stopOffspring ( bool, may or may not be included)
     //  attributeValues:
     //  [] where each item is a value corresponding to the preset's list of attributes
     //  if linkParents is true, first element will be a list [] of parent ids to add, may be empty
     //  productValues:
     //  [] where each item is a value corresponding to the preset's list of products
     //  if trackOffspring is true, first element will be a list [] of offspring ids to add, may be empty
-
+    const stopOffspring = req.body.hasOwnProperty('stopOffspring') ? req.body.stopOffspring : false;
     const animalInfo = {
         name: req.body.name,
         preset: req.body.preset,
@@ -650,6 +650,12 @@ router.post("/create", (req, res) => {
         //Add values to preset JSON before making copies
         //Attribute values = [parents? [ids of parents if any], other attributes...]
         //Product values = [offsping? [ids of offspring if any], other products...]
+        
+        if(preset.trackOffspring == true && stopOffspring == true){
+            //First product would be for offspring -> remove to stop tracking offspring for this animal instance
+            preset.products = preset.products.slice(1);
+        }
+        
         preset.attributes = preset.attributes.map((attribute, i) => {
             attribute.value =  req.body.attributeValues.length > i ? req.body.attributeValues[i] : "not set";
             attribute.isPreset = false;
@@ -672,7 +678,7 @@ router.post("/create", (req, res) => {
                 animalInfo.parents = attributes[0];
                 attributes = attributes.slice(1);
             }
-            if(preset.trackOffspring){
+            if(preset.trackOffspring && stopOffspring == false){
                 animalInfo.offspring = products[0];
                 products = products.slice(1);
             }
