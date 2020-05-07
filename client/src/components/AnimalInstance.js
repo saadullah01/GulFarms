@@ -66,6 +66,8 @@ class AnimalInstance extends Component {
         /* Dummy Animal Instance */
         this.setState({
             name: "loading...",
+            attTitle1: "loading...",
+            attTitle2: "loading...",
             products: [
                 { name: "loading" },
                 { name: "loading" },
@@ -183,14 +185,26 @@ class AnimalInstance extends Component {
             numAnimals: "loading"
         });
     }
+    toTitleCase = (title) => {
+        return title
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      };
     componentDidUpdate(prevProps,prevState) {
         if (this.props.barns !== prevProps.barns) {
             const barn = this.props.barns[this.ids("barn")]
             const pres = this.props.presets[this.ids("preset")]
+            const titles = pres.attributes.map((att)=>this.toTitleCase(att.name))
+            const a1=(pres.attributes.length >= 3) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].name:"..."
+            const a2=(pres.attributes.length >= 4) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].name:"..."
             this.setState({
                 name: barn.name,
+                attTitle1: this.toTitleCase(a1),
+                attTitle2: this.toTitleCase(a2),
                 products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
-                animalInstances: prevState.animalInstances,
+                animalInstances: barn.animals,
                 avgWeight: 0,
                 numAnimals: barn.animals.length,
                 description: barn.description
@@ -254,8 +268,8 @@ class AnimalInstance extends Component {
                         <tr>
                             <th>Tag ID</th>
                             <th>Gender</th>
-                            <th>Attribute 1</th>
-                            <th>Attribute 2</th>
+                            <th>{this.state.attTitle1}</th>
+                            <th>{this.state.attTitle2}</th>
                             <th>Any Alerts</th>
                         </tr>
                     </thead>
