@@ -28,6 +28,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Table,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -62,7 +63,6 @@ class CreateAnimalIndividual extends Component {
       recordParents: true,
     };
   }
-
   componentDidMount() {
     if (
       this.props.farms.length <= this.ids("farm") ||
@@ -82,6 +82,7 @@ class CreateAnimalIndividual extends Component {
         this.props.presets[this.ids("preset")].attributes
       ), //From DB
       AttributesUpdate: [],
+      Products: [],
       Products: this.mapProducts(
         this.props.presets[this.ids("preset")].products
       ), //fromm DB
@@ -147,7 +148,6 @@ class CreateAnimalIndividual extends Component {
       modal: !prevState.modal,
     }));
   };
-
   onChange = (d, index) => {
     // this.remove(index)
     // this.setState(state => {
@@ -159,7 +159,6 @@ class CreateAnimalIndividual extends Component {
     // }
     // );
   };
-
   onChangeProduct = (d, index) => {
     // this.removeProduct(index)
     // this.setState(state => {
@@ -172,11 +171,9 @@ class CreateAnimalIndividual extends Component {
     // }
     // );
   };
-
   onAdd = (e) => {
     this.setState({ Products: e });
   };
-
   onAdd_Att = (e) => {
     this.setState({ attributes: e });
   };
@@ -343,9 +340,16 @@ class CreateAnimalIndividual extends Component {
     }
   };
   Attributes() {
-    return this.state.attributes.map((d, index) => {
-      return this.helper(d, index);
-    });
+    const attributes = this.state.attributes.map((d, index) => 
+      this.helper(d, index)
+    );
+    return (
+      <Table responsive>
+        <tbody>
+          { attributes }
+        </tbody>
+      </Table>
+    );
   }
   Products() {
     return this.state.Products.map((d, index) => {
@@ -369,10 +373,8 @@ class CreateAnimalIndividual extends Component {
     const { errors } = this.state;
     return (
       <Modal
-        style={{ position: "relative" }}
         size="lg"
         isOpen={this.state.modal}
-        // className="modal-dialog"
         align="centre"
         toggle={this.toggle}
       >

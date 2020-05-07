@@ -46,12 +46,12 @@ class AnimalInstance extends Component {
         }
     }
     ids(name) {
-        // const dic = {
-        //     farm: this.props.match.params.fid,
-        //     preset: this.props.match.params.pid,
-        //     barn:this.props.match.params.bid
-        // }
-        // return parseInt(dic[name])
+        const dic = {
+            farm: this.props.match.params.fid,
+            preset: this.props.match.params.pid,
+            barn:this.props.match.params.bid
+        }
+        return parseInt(dic[name])
     }
     componentDidMount() {
         if(this.props.farms.length <= this.ids("farm") ||
