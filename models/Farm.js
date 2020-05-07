@@ -8,7 +8,8 @@ const FarmSchema = new Schema({
     location: {type: String, required: true},
     description: {type: String},
     animalPresets: [{type: Schema.Types.ObjectId, ref: 'animalPreset'}],
-    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}]
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
+    removed: {type: Boolean, default: false}
 })
 
 const AnimalSchema = new Schema({
@@ -21,13 +22,15 @@ const AnimalSchema = new Schema({
     parents: {type: Schema.Types.ObjectId, ref: 'attribute'},
     offspring: {type: Schema.Types.ObjectId, ref: 'product'},
     comment: {type: String},
+    removed: {type: Boolean, default: false}
 });
 
 const BarnSchema = new Schema({
     name: {type: String, lowercase: true, required: true},
     description: {type: String, lowercase:true},
     animals: [{type: Schema.Types.ObjectId, ref: 'animal'}],
-    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}]
+    alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],
+    removed: {type: Boolean, default: false}
 });
 
 

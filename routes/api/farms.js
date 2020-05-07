@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 //Model
-const FarmModels = require('../../models/Farm')
+const FarmModels = require('../../models/Farm');
+const BaseModels = require('../../models/BaseModels');
 
 //Helper functions
 const giveSummary = (data)=>(
@@ -12,6 +13,13 @@ const giveSummary = (data)=>(
     }
 )
 
+const nameToModelMap = {
+    'farm': FarmModels.Farm, 
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset
+};
 
 // @route POST api/farms/new
 // @desc Create a new farm
@@ -69,8 +77,14 @@ router.post("/view-farm", (req, res) => {
 router.post("/get", (req, res) => {
     FarmModels.Farm.find({})
         .then(farms => { 
-            const farmSummary = farms.map(giveSummary)
-            res.status(200).json(farmSummary) 
+            const notRemoved = [];
+            const farmSummary = farms.map((farm, i) => {
+                if(farm.removed == false)
+                    notRemoved.push(i);
+                return giveSummary(farm);
+            })
+            farms = notRemoved.map(i => farmSummary[i]);
+            res.status(200).json(farms) 
         })
         .catch(err => res.status(400).json({ error: err, message: "error retrieving farms", success: false }));
 });

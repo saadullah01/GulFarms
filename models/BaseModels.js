@@ -52,6 +52,7 @@ const ProductSchema = new Schema({
     isPreset: {type: Boolean, default: true},
     keepTrack: {type: Boolean, required: true},
     alerts: [{type: Schema.Types.ObjectId, ref: 'alert'}],// single alert for product duration cycle, named alerts for consistency
+    linkedAnimal: {type: Schema.Types.ObjectId, ref: 'animal'},
     history: [{
         name: {type: String, lowercase: true, required: true},
         duration: {type: Number, required: true},
@@ -71,19 +72,34 @@ const AnimalPresetSchema = new Schema({
     linkParents: {type: Boolean, required: true}
 });
 
+const RemovedItemSchema = new Schema({
+    name: {type: String, lowercase: true, required: true},
+    removedLink : {type: Schema.Types.ObjectId, refPath: 'removedModel', required: true},
+    removedModel: {type: String, enum: ['barn', 'farm', 'animal'], required: true},
+    removedOn: {type: Date, default: Date.now()},
+    reason: {type: String, lowercase: true},
+    removalComment: {type: String, lowercase:true}
+})
+
 //=========================Schema methods
-AlertSchema.methods.Snooze = function(snoozeFor) {
+AlertSchema.methods.Snooze = function(snoozeFor, newValue) {
     const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
     this.due = moment(this.due).add(snoozeFor, type);
     this.markModified('due');
-    
+
     if(this.linkedModel == 'product'){
         const Product = mongoose.model('product', ProductSchema);
         return Product.findById(this.linkedTo).then(product => {
             if(product.isPreset){
                 return this;
             }
-            return product.PushHistory().save().then(_ => this)
+            
+            return product.PushHistory().then(product => {
+                if(newValue != undefined){
+                    product.value = newValue;
+                }
+                return product;
+            }).save().then(_ => this)
             .catch(err => Promise.reject({status:400, res: {error: err, message: "Could not save product history."}}));
         })
     }
@@ -165,10 +181,12 @@ const Alert = mongoose.model('alert', AlertSchema);
 const Attribute = mongoose.model('attribute', AttributeSchema);
 const Product = mongoose.model('product', ProductSchema);
 const AnimalPreset = mongoose.model('animalPreset', AnimalPresetSchema);
+const RemovedItem = mongoose.model('removedItem', RemovedItemSchema);
 
 module.exports = {
     Alert: Alert,
     Attribute: Attribute,
     Product: Product,
-    AnimalPreset: AnimalPreset
+    AnimalPreset: AnimalPreset,
+    RemovedItem: RemovedItem
 }

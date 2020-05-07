@@ -25,7 +25,7 @@ const summarize = data => {
 };
 
 //Multipurpose helper functions (hope they work!)
-const CreateMultiple = (dataList, dataType) => {
+const CreateMultiple = (dataList, dataType, animalId) => {
     dataType = dataType.toLowerCase();
     const allData = dataList.map( data => {
         const docInfo = {};
@@ -509,7 +509,13 @@ router.post("/view-preset", (req, res) => {
             return animalPreset.populate('attributes').populate('products')
             .populate('barns').execPopulate().then(animalPreset => {
                 const preset = animalPreset.toJSON();
-                preset.barns = preset.barns.map(barn => summarize(barn));
+                const notRemoved = [];
+                preset.barns = preset.barns.map((barn, i) => {
+                    if(barn.removed == false)
+                        notRemoved.push(i);
+                    summarize(barn);
+                })
+                preset.barns = notRemoved.map(i => animalPreset.barns[i]);
                 return preset;
             })
         }).then(animalPreset => res.status(200).json(animalPreset))
@@ -692,15 +698,40 @@ router.post("/create", (req, res) => {
         //Create animal document
         const animal = new FarmModels.Animal(animalInfo);
         return animal.save().then(animal =>{
+            //Add animal to all products created before
+            const tempAnimal = animal.toJSON();
+            const linkedDocs = [];
+            linkedDocs.concat( tempAnimal.products.map(productId => new Promise((resolve, reject) => {
+                BaseModels.Product.findByIdAndUpdate(productId, {$set: {linkedAnimal: animal._id}}, (err, product) =>{
+                    if(!product){
+                        return reject({status: 404, res:{error: err, message: "No product found to link animal"}});
+                    }
+
+                    return resolve(productId);
+                })
+            })));
+
+            if(animal.hasOwnProperty('offspring')){
+                linkedDocs.push(new Promise((resolve, reject) => {
+                    BaseModels.Product.findByIdAndUpdate(animal.offspring._id, {$set: {linkedAnimal: animal._id}}, (err, offspring) =>{
+                        if(!offspring){
+                            return reject({status: 404, res:{error: err, message: "No offspring found to link animal"}});
+                        }
+                        return resolve(offspring);
+                    })
+                }));
+            }
+
             //Add animal to barn mentioned in preset
-            return new Promise((resolve, reject) => {
+            linkedDocs.push(new Promise((resolve, reject) => {
                 FarmModels.Barn.findByIdAndUpdate(req.body.barn, {$push: {animals: animal._id}}, (err, barn) =>{
                     if(!barn){
-                        return reject({status: 404, res:{error: err, message: "No barn found to add animal"}});
+                        return reject({status: 404, res:{error: err, message: "No barn found to link animal"}});
                     }
                     return resolve(animal);
                 })
-            });
+            }));
+            return Promise.all(linkedDocs).then(linkedDocs => animal);
         }).catch(err => Promise.reject({status: err.hasOwnProperty('status') ? err.status : 400, res: err.hasOwnProperty('res') ? err.res : {error: err, message:"Error saving animal."}}));
     
     }).then(animal => res.status(200).json({created: animal, message: "Animal created successfully."}))

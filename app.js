@@ -9,9 +9,9 @@ const users = require('./routes/api/users');
 const farms = require('./routes/api/farms');
 const barns = require('./routes/api/barns');
 const alerts = require('./routes/api/alerts');
+const remove = require('./routes/api/remove');
 const animals = require('./routes/api/animals');
 const finances = require('./routes/api/finances');
-
 
 // Initialize express
 const app = express();
@@ -44,6 +44,7 @@ app.use('/api/users', users);
 app.use('/api/farms', farms);
 app.use('/api/barns', barns);
 app.use('/api/alerts', alerts);
+app.use('/api/remove', remove);
 app.use('/api/animals', animals);
 app.use('/api/finances',finances)
 //in production

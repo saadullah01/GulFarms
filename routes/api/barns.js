@@ -12,6 +12,13 @@ const summarize = data => (
     }
 );
 
+const nameToModelMap = {
+    'farm': FarmModels.Farm, 
+    'barn': FarmModels.Barn,
+    'product': BaseModels.Product,
+    'attribute': BaseModels.Attribute,
+    "animalPreset": BaseModels.AnimalPreset
+};
 
 // @route POST api/barns/create
 // @desc Create a new barn
@@ -91,6 +98,18 @@ router.post("/view", (req, res) => {
             Promise.reject({status: 404, res: { message: "Error finding barn.", success: false, error: err }})
         }
         return barn.populate('animals').populate('alerts').execPopulate()
+        .then(barn => {
+            const notRemoved = [];
+            const animals = barn.animals.map((animal, i) => {
+                if(animal.removed == false)
+                    notRemoved.push(i);
+                return animal.populate('attributes').populate('products').execPopulate()
+            });
+            return Promise.all(animals).then(animals => {
+                const barn = barn.toJSON();
+                barn.animals = notRemoved.map(i => animals[i]);
+                return barn;
+            })})
         .catch(err => ({status: 400, res:{ message: "Error populating barn.", success: false, error: err }}))
     }).then(barn => res.status(200).json(barn))
     .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 404).json(err.hasOwnProperty('res') ? err.res : err)); 

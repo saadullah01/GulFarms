@@ -88,6 +88,14 @@ router.post("/view-alert", (req, res) => {
             }
 
             alert.populate('linkedTo').execPopulate().then(alert => {
+                if(linkedModel == 'product'){
+                    return alert.populate('linkedTo.linkedAnimal').execPopulate()
+                    .then(alert => {
+                        const temp = alert.toJSON();
+                        temp.linkedTo = temp.linkedTo.linkedAnimal;
+                        return res.status(200).json(temp);
+                    })
+                }
                 const newAlert = alert.toJSON();
                 newAlert.linkedTo = summarize(newAlert.linkedTo);
                 return res.status(200).json(newAlert);
@@ -112,7 +120,8 @@ router.post("/snooze", (req, res) => {
             if (!alert) {
                 return res.status(404).json({ error: alert, message: "Could not find alert.", status: false });
             }
-            alert.Snooze(req.body.snoozeFor).save().then(alert => {
+            const newValue = req.body.hasOwnProperty('value') ? req.body.value : undefined;
+            alert.Snooze(req.body.snoozeFor, newValue).save().then(alert => {
                 return res.status(200).json({ alert, message: "Snoozed", success: true });
             }).catch(err => res.status(400).json({ error: err, message: "Error - could not snooze.", success: false }));
         }).catch(err => res.status(400).json({ error: err, message: "Error finding alert", success: false }));
@@ -139,17 +148,25 @@ router.post("/get-detail", async (req, res) => {
             return res.status(404).json({error: err, message: "No alerts found", success: false});
         }
         //Sumarize all alerts
-        const allAlerts = alerts.map( alert => {
+        const notRemoved = [];
+        const allAlerts = alerts.map( (alert, i) => {
             //Insert linked object's details
             return alert.populate('linkedTo').execPopulate()
             .then(alert => {
                 //Summarize linked object's details.
-                const newAlert = alert.toJSON();
-                newAlert.linkedTo = newAlert.linkedTo;
-                return newAlert;
+                // const newAlert = alert.toJSON();
+                // return newAlert;
+
+                // if(alert.linkedTo.removed == false)
+                //     notRemoved.push(i);
+                if(alert.linkedModel == 'animal'){
+                    return alert.populate('linkedTo.attributes').populate('linkedTo.products').execPopulate();
+                }
+                return alert
             }).catch(err => res.status(400).json({error: err, message: "Error summarizing alert's link details.", success: false}));
         })
         return Promise.all(allAlerts).then(alerts => {
+            // alerts = notRemoved.map(i => alerts[i]);
             return res.status(200).json(alerts);
         }).catch(err => res.status(400).json({error: err, message: "Error getting alerts", success: false}));
     
