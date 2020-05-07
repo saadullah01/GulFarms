@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 
-import RemoveAnimalTemplate from './GulFarms-master/client/src/components/RemoveAnimalTemplate';
+import RemoveAnimalTemplate from "./RemoveAnimalTemplate";
 
 class RemoveAnimal extends Component{
     

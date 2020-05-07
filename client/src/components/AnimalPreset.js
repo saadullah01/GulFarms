@@ -75,7 +75,6 @@ class AnimalPreset extends Component {
     }
     render() {
         const url = "/home/farms/"+String(this.ids("farmId"))+"/"+String(this.ids("presetId"));
-        console.log("URLSfarm: " ,this.ids("farmId"), " presetid: ",this.ids("presetId"), "urlfarm: ")
         
         const barns = this.state.barns.map((barn, index) =>
             <Tab name={barn.name}  key={barn.id} link={url.concat("/"+index.toString())} type="small" />
@@ -87,7 +86,7 @@ class AnimalPreset extends Component {
             <div className="farm-back">
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
-                        <Link to="#">
+                        <Link to={url+"/remove-preset"}>
                             <FontAwesomeIcon className="top-icon" icon={faTrashAlt} size="2x" />
                         </Link>
                         <Link to="#">
