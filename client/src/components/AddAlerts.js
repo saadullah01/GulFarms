@@ -32,7 +32,6 @@ class AddAlert extends Component {
       selectedOption: "Year",
     };
   }
-
   submitt = () => {
     this.props.update(this.state.data);
   };
@@ -61,7 +60,6 @@ class AddAlert extends Component {
       AlertDate: ""
     });
   };
-
   onChange = (e) => {
     this.setState({ [e.target.id]: e.target.value });
   };
@@ -95,7 +93,6 @@ class AddAlert extends Component {
       </Table>
     );
   }
-
   render() {
     const types = ["Year", "Month", "Day", "week"]
     const duration_type = types.map((t) =>
@@ -108,7 +105,7 @@ class AddAlert extends Component {
       <div>
         {this.display()}
         <Row>
-          <div className="pr-1 col-sm-5">
+          <div className="col-sm-8">
             <Input
               className="input-field-ad"
               type="text"
@@ -118,7 +115,7 @@ class AddAlert extends Component {
               id="AlertDescription"
             />
           </div>
-          <div className="pl-1 pr-1 col-sm-3">
+          <div className="col-sm-4">
             <Input
               className="input-field-ad"
               type="text"
@@ -128,7 +125,17 @@ class AddAlert extends Component {
               id="AlertDuration"
             />
           </div>
-          <div className="pl-1 pr-1 col-sm-4">
+          <div className="mt-2 col-sm-8">
+            <Input
+                className="input-field-ad"
+                type="date"
+                placeholder="Enter Start Date (mm/dd/yyyy)"
+                value={this.state.AlertDate}
+                onChange = {this.onChange}
+                id="AlertDate"
+              />
+          </div>
+          <div className="mt-2 col-sm-4">
             <UncontrolledDropdown style={{backgroundColor: "#4caf50", textAlign: "center", borderRadius: "20px"}}>
               <DropdownToggle style={{color: "white"}} color="correct" caret>
                 {this.state.selectedOption}
@@ -137,16 +144,6 @@ class AddAlert extends Component {
                 {duration_type}
               </DropdownMenu>
             </UncontrolledDropdown>
-          </div>
-          <div className="pl-1 pr-1 col-sm-4">
-            <Input
-                className="input-field-ad"
-                type="date"
-                placeholder=""
-                value={this.state.AlertDate}
-                onChange = {this.onChange}
-                id="AlertDate"
-              />
           </div>
           <div className="mt-3 col-sm-12">
             <Button onClick={this.add} style={{
