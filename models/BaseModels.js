@@ -81,49 +81,9 @@ const RemovedItemSchema = new Schema({
     removalComment: {type: String, lowercase:true}
 })
 
-//=========================Schema methods
-AlertSchema.methods.Snooze = function(snoozeFor, newValue) {
-    const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
-    this.due = moment(this.due).add(snoozeFor, type);
-    this.markModified('due');
-
-    if(this.linkedModel == 'product'){
-        const Product = mongoose.model('product', ProductSchema);
-        return Product.findById(this.linkedTo).then(product => {
-            if(product.isPreset){
-                return this;
-            }
-            
-            return product.PushHistory().then(product => {
-                if(newValue != undefined){
-                    product.value = newValue;
-                }
-                return product;
-            }).save().then(_ => this)
-            .catch(err => Promise.reject({status:400, res: {error: err, message: "Could not save product history."}}));
-        })
-    }
-    return this;
-};
-
-AttributeSchema.methods.PushHistory = function() {
-    if(this.isPreset){
-        return;
-    }
-    this.history.push({
-        name: this.name,
-        attributeType: this.attributeType,
-        value: this.value,
-        unit: this.unit,
-        updatedAt: Date.now()
-    });
-    this.markModified('history');
-    return this;
-};
-
 ProductSchema.methods.PushHistory = function() {
     if(this.isPreset){
-        return;
+        return this;
     }
     this.history.push({
         name: this.name,
@@ -136,6 +96,49 @@ ProductSchema.methods.PushHistory = function() {
     this.markModified('history');
     return this;
 };
+AttributeSchema.methods.PushHistory = function() {
+    if(this.isPreset){
+        return this;
+    }
+    this.history.push({
+        name: this.name,
+        attributeType: this.attributeType,
+        value: this.value,
+        unit: this.unit,
+        updatedAt: Date.now()
+    });
+    this.markModified('history');
+    return this;
+};
+
+//=========================Schema methods
+AlertSchema.methods.Snooze = function(snoozeFor, newValue) {
+    const type = this.durationType[0] == 'm' ? 'M' : this.durationType[0];
+    this.due = moment(this.due).add(snoozeFor, type);
+    this.markModified('due');
+
+    if(this.linkedModel == 'product'){
+        const Product = mongoose.model('product', ProductSchema);
+        return Product.findById(this.linkedTo).then(product => {
+            if(product.isPreset){
+                return this;
+            }
+            console.log("here",product)
+            const p=product.PushHistory()
+            const f= (p => {
+                if(newValue != undefined){
+                    p.value = newValue;
+                }
+                return p.save();
+            })
+            return f(p)
+        })
+    }
+    return this;
+};
+
+
+
 
 ProductSchema.methods.SetCycle = function() {
     if(this.isPreset){

@@ -74,6 +74,21 @@ export const getBarnDetail=(data)=>(dispatch,getState)=>{
             })
         })
 }
-export const saveInstance =(data)=>(dispatch,getState)=>{
+export const saveInstance =(data,bid)=>(dispatch,getState)=>{
     console.log(data)
+    axios
+        .post("/api/animals/create",data)
+        .then(res=>{
+            dispatch({
+                type: SET_INSTANCE,
+                payload:res.data.created,
+                bid:bid
+            })
+        })
+        .catch(err=>{
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
 }
