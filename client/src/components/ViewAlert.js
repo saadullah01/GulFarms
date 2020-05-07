@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import {
-  Label,
-  Row,
-  Col,
+  Table,
   Button,
-  FormGroup,
   Input,
 } from "reactstrap";
 
@@ -14,7 +11,9 @@ class ViewAlert extends Component {
     super(props);
     this.state = {
       data: this.props.Alerts,
-      AlertDate: ""
+      AlertDate: "",
+      Done: [],
+      Update:[]
     };
   }
   remove = (d) => {
@@ -27,71 +26,103 @@ class ViewAlert extends Component {
       }
     );
   };
-  add = (d,index) => {
-    this.remove(index)
-    this.setState(
-      (state) => {
-        const data = state.data.concat({
-          description: d.description,
-          duration: this.state.AlertDate,
-          selectedOption: d.selectedOption,
-          date: d.date
-        });
-      },
-      () => this.submitt()
-    );
-  };
   submitt = () => {
     this.props.update(this.state.data);
   };
+  snooze=(d, index, val)=>{
+    const update = {
+      ...d,
+      Value: val
+  }
+  this.setState((state, props) => {
+      return {
+          update: [
+              ...(state.update.slice(0, index)),
+              update,
+              ...(state.update.slice(index + 1))
+          ]
+      }
+  })
+  }
+  done = (d,index)=>{
+    this.remove(index)
+    this.setState(state => {
 
+      const done = state.done.concat(d);
+      return {
+          done,
+      };
+  }
+  );
+  }
+  display = () => {
+    const addedAlerts = this.state.Update.map((d, index) =>
+      <tr style={{textAlign: "center"}}>
+        <td>{d.description}</td>
+        <td>{d.duration}</td>
+        <td>{d.selectedOption}</td>
+        <td>{d.date}</td>
+      </tr>
+    );
+    const addedDone = this.state.Done.map((d, index) =>
+      <tr style={{textAlign: "center"}}>
+        <td>{d.description}</td>
+        <td>{d.duration}</td>
+        <td>{d.selectedOption}</td>
+        <td>{d.date}</td>
+      </tr>
+    );
+
+    return (
+      <Table responsive>
+        <tbody>
+          {addedAlerts}
+          {addedDone}
+        </tbody>
+      </Table>
+    );
+  }
   display() {
     return this.state.data.map((d, index) => {
+      var val = ""
       return (
-        <Row key={index} style={{ flexWrap: "nowrap" }}>
-          <Col>
-            <Label className="text-label-b">{d.description}</Label>
-          </Col>
-          <Col>
-            <Label className="text-label-b">{d.duration}</Label>
-          </Col>
-          <FormGroup>
-            <Row style={{ flexWrap: "nowrap" }}>
-              <Col>
-                <Label className="text-label-b">{d.selectedOption}</Label>
-              </Col>
-              <Col></Col>
-              <Col></Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
-            <Row style={{ flexWrap: "nowrap" }}>
-              <Col>
-                <Label className="text-label-b">{d.date}</Label>
-              </Col>
-              <Col></Col>
-              <Col></Col>
-            </Row>
-          </FormGroup>
-          <FormGroup>
-            <Row style={{ flexWrap: "nowrap" }}>
-                <Col>
-                <Input
-                                className="input-field-ad"
-                                type="date"
-                                placeholder="Start Date"
-                                onChange={this.onChange}
-                                value={this.state.AlertDate}
-                                id="AlertDate"
-                            /> 
-                </Col>
-                <Col>
-                <Button className="login-btn" OnClick = {this.add}>Snooze</Button>
-                </Col>
-                <Col></Col>
-              </Row>
-          </FormGroup>
-        </Row>
+      <div>
+        {this.display()}
+        <div>
+          <td>{d.description}</td>
+          <td>{d.duration}</td>
+          <td>{d.selectedOption}</td>
+          <td>{d.date}</td>
+        </div>
+          
+          <div className="pl-1 pr-1 col-sm-4">
+            <Input
+              className="input-field-ad"
+              type="date"
+              placeholder="Enter Start Date"
+              value={val}
+              id="AlertDate"
+            />
+          </div>
+          <div className="mt-3 col-sm-12">
+            <Button onClick={this.snooze(d,index, val)} style={{
+              width: "20%",
+              height: "40px",
+              backgroundColor: "#4caf50",
+              borderRadius: "20px",
+              float: "right",
+            }}>Snooze</Button>
+          </div>
+          <div className="mt-3 col-sm-12">
+          <Button onClick={this.done(d,index)} style={{
+            width: "20%",
+            height: "40px",
+            backgroundColor: "#4caf50",
+            borderRadius: "20px",
+            float: "right",
+          }}>Done</Button>
+        </div>
+        </div>
       );
     });
   }
@@ -99,31 +130,16 @@ class ViewAlert extends Component {
   render() {
     const { errors } = this.state;
     return (
-        <div>
-                <Row>
-                    <Col><Label className= "text-label">Alerts</Label></Col>
-                </Row>
-                <Row>
-                <Col>
-                    <Label className="text-label-b">Name</Label>
-                </Col>
-                <Col>
-                    <Label className="text-label-b">Duration</Label>
-                </Col>
-                <FormGroup>
-                    <Row>
-                    <Col>
-                        <Label className="text-label-b">Repeat</Label>
-                    </Col>
-                    <Col></Col>
-                    <Col></Col>
-                    </Row>
-                </FormGroup>
-                {this.display()}
-                </Row>
-        </div>          
+      <div>
+        <tr style={{ textAlign: "center" }}>
+        <td>Name</td>
+        <td>Repeat</td>
+        </tr>
+        {this.display()}
+      </div>
     );
   }
 }
 
 export default ViewAlert;
+
