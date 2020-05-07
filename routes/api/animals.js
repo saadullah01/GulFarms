@@ -655,7 +655,7 @@ router.post("/create", (req, res) => {
             //First product would be for offspring -> remove to stop tracking offspring for this animal instance
             preset.products = preset.products.slice(1);
         }
-        
+
         preset.attributes = preset.attributes.map((attribute, i) => {
             attribute.value =  req.body.attributeValues.length > i ? req.body.attributeValues[i] : "not set";
             attribute.isPreset = false;
@@ -761,6 +761,59 @@ router.post("/get", (req, res) => {
 
     //Find animals
     FarmModels.Animal.find()
+    .then(animals => {
+        if(!animals){
+            return Promise.resolve({});
+        }
+        return Promise.all(animals.map(animal => {
+            return animal.populate('attributes').populate('products')
+            .populate('parents').populate('offspring').execPopulate()
+            .then(animal => {
+                return animal.populate('parents.value').populate('offspring.value').execPopulate()
+                .catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal parents and offspring."}}))
+            })
+            .then(animal => {
+                //Summarize details
+                animalObject = animal.toJSON();
+                animalObject.attributes = animalObject.attributes.map(attribute => summarize(attribute));
+                animalObject.products = animalObject.products.map(product => summarize(product));
+                if(animalObject.hasOwnProperty('parents')){
+                    animalObject.parents = animalObject.parents.value.map(parent => summarize(parent));
+                }
+                if(animalObject.hasOwnProperty('offspring')){
+                    animalObject.offspring = animalObject.offspring.value.map(child => summarize(child));
+                }
+                return animalObject;
+
+            }).catch(err => Promise.reject({status: 400, res: {error: err, message: "Error populating animal " + animal._id}}))
+        })).then(populatedAnimals => populatedAnimals);
+    
+    }).then(animal => res.status(200).json(animal)).catch(err => Promise.reject({status: 404, res: {error: err, message: "Error finding animal."}}))
+    .catch(err => res.status(err.hasOwnProperty('status') ? err.status : 400).json(err.hasOwnProperty('res') ? err.res : err));
+});
+
+// @route POST api/animals/search
+// @desc search for animal instances by tag
+// @access Public
+router.post("/search", (req, res) => {
+    console.log("Request @ api/animals/search : {\n");
+    for(key in req.body){
+        console.log(key, ": ", req.body[key]);
+    }
+    console.log("}");
+    
+    // Form validation
+    const { errors, isValid } = { erros: "", isValid: true }; //=============ADD proper validation
+    // Check validation
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    //Expected data
+    // tag
+
+    //Find animals
+    FarmModels.Animal.find({tag: req.body.tag})
     .then(animals => {
         if(!animals){
             return Promise.resolve({});
