@@ -235,7 +235,7 @@ class AnimalInstance extends Component {
             <div>
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
-                        <Link to="#">
+                        <Link to={url+"remove-barn"}>
                             <FontAwesomeIcon className="top-icon" icon={faTrashAlt} size="2x" />
                         </Link>
                         <Link to="#">

@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 
-import RemoveAnimalTemplate from "./RemoveAnimalTemplate";
+import RemoveAnimalTemplate from "./RemoveFarmTemplates";
 
 class RemoveAnimal extends Component{
     
