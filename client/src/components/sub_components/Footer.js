@@ -1,42 +1,38 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 
 function Footer() {
   return (
-    <div
-      className="footer"
-      style={{
-        color: "#4caf50",
-        height: "2.5rem",
-        width: "100%",
-        bottom: "0",
-        position: "relative",
-      }}
-    >
-      <div className="Container">
+      <footer
+        style={{
+          width: "90%",
+          margin: "0 auto", 
+          padding: "10px",
+          position: "fixed",
+          bottom: "0",
+          left: "45px"
+        }}
+      >
         <div className="row">
-          <div className="col1">
-            <a href="https://www.facebook.com/" className="fb">
-              <FontAwesomeIcon icon={faFacebook} size="2x" color="white" />
+          <div className="col-sm-3">
+            <a href="https://www.facebook.com/">
+              <p style={{fontSize:"20px", color: "black"}}><FontAwesomeIcon icon={faFacebook} color="#4caf50" /> Facebook</p>
             </a>
           </div>
-
-          <div className="col2">
-            <FontAwesomeIcon icon={faPhone} size="2x" color="white" />
-            Phone Number
+          <div className="col-sm-3">
+            <p style={{fontSize:"19px", color: "black"}}><FontAwesomeIcon icon={faPhone} color="#4caf50" /> +92-123-456789</p>
           </div>
-          <div className="col3">
-            <FontAwesomeIcon icon={faEnvelope} size="2x" color="white" />
-            Email Address
+          <div className="col-sm-3">
+            <p style={{fontSize:"19px", color: "black"}}><FontAwesomeIcon icon={faEnvelope} color="#4caf50" /> gulfarms@gmail.com</p>
           </div>
           <hr />
           <div>
-            <p className="col-sm">&copy; {new Date().getFullYear()}</p>
+            <p style={{fontSize:"19px", color: "black"}} className="col-sm">&copy; {new Date().getFullYear()}</p>
           </div>
         </div>
-      </div>
-    </div>
+      </footer>
   );
 }
 
