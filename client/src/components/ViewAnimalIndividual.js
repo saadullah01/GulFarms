@@ -7,7 +7,7 @@ import {
     faClipboardCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
+import axios from "axios"
 import {
     Button,
     Modal,
@@ -71,18 +71,18 @@ class ViewAnimalIndividual extends Component {
         }
         this.setState({
             modal: true,
-            AnimalName: this.props.presets[this.ids("preset")].name,
-            tag: "",
+            AnimalName: this.props.barns[this.ids("barn")].animals[this.ids("animal")].tag,
+            tag: this.props.barns[this.ids("barn")].animals[this.ids("animal")].tag,
             p1: "",
             p2: "",
             errors: this.props.errors,
             attributes: this.mapAttributes(
-                this.props.presets[this.ids("preset")].attributes
+                this.props.barns[this.ids("barn")].animals[this.ids("animal")].attributes
             ), //From DB
             AttributesUpdate: [],
             Products: [],
             Products: this.mapProducts(
-                this.props.presets[this.ids("preset")].products
+                this.props.barns[this.ids("barn")].animals[this.ids("animal")].products
             ), //fromm DB
             ProductsUpdate: [],
             quant: "",
@@ -140,6 +140,7 @@ class ViewAnimalIndividual extends Component {
             farm: this.props.match.params.fid,
             preset: this.props.match.params.pid,
             barn: this.props.match.params.bid,
+            animal:this.props.match.params.iid
         };
         return parseInt(dic[name]);
     }
@@ -273,57 +274,17 @@ class ViewAnimalIndividual extends Component {
             }
         })
     }
+    onDone=(a)=>{
+        axios.post("/api/alerts/snooze",a)
+    }
     helper = (d, index) => {
-        if (d.Type === "numeric") {
+        if (d.Type) {
             return (
                 <tbody>
                     <tr>
                         <td>{d.Name}</td>
                         <td>{d.Unit}</td>
-                        <td><Input
-                            type="text"
-                            placeholder="Value"
-                            onChange={(e) => this.onChangeAttributes(d, index, e)}
-                            value={d.Value}
-                            id="quant"
-                        /></td>
-                    </tr>
-                </tbody>
-            );
-        } else if (d.Type === "string") {
-            return (
-                <tbody>
-                    <tr>
-                        <td>{d.Name}</td>
-                        <td>{d.Unit}</td>
-                        <td><Input
-                            type="text"
-                            placeholder="Value"
-                            onChange={(e) => this.onChangeAttributes(d, index, e)}
-                            value={d.Value}
-                            id="quant"
-                        /></td>
-                    </tr>
-                </tbody>
-            );
-        } else if (d.Type === "options") {
-            return (
-                <tbody>
-                    <tr>
-                        <td>{d.Name}</td>
-                        <td></td>
-                        <td><UncontrolledDropdown
-                            style={{
-                                backgroundColor: "#4caf50",
-                                textAlign: "center",
-                                borderRadius: "20px",
-                            }}
-                        >
-                            <DropdownToggle style={{ color: "white" }} color="correct" caret>
-                                {d.Value}
-                            </DropdownToggle>
-                            <DropdownMenu>{this.opt(d, index)}</DropdownMenu>
-                        </UncontrolledDropdown></td>
+                        <td>{d.value}</td>
                     </tr>
                 </tbody>
             );
@@ -372,7 +333,7 @@ class ViewAnimalIndividual extends Component {
                         color: "#4caf50",
                     }}
                 >
-                    Create New {this.state.AnimalName}
+                    View tag # {this.state.AnimalName}
                 </p>
                 <FontAwesomeIcon
                     onClick={this.toggle}
@@ -390,16 +351,7 @@ class ViewAnimalIndividual extends Component {
                     <div className="col-sm-12 col-md-6">
                         <div style={{ width: "90%", margin: "0 auto" }}>
                             <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
-                                <Label className="input-label-a">Tag:</Label>
-                                <Input
-                                    className="input-field-a"
-                                    type="text"
-                                    id="tag"
-                                    placeholder="Enter tag"
-                                    onChange={this.onChange}
-                                    value={this.state.tag}
-                                    error={errors.tag}
-                                />
+                                <Label className="input-label-a">Tag: {this.state.tag}</Label>
                             </FormGroup>
                             <div className="row">
                                 <div className="col-sm-12">
@@ -427,7 +379,7 @@ class ViewAnimalIndividual extends Component {
                         </div>
                     </div>
                     <div className="col-sm-12 col-md-6">
-                        <ViewProduct update={this.onAdd} done= {this.onDone} Alerts = {this.state.attributes}
+                        <ViewProduct product={this.state.Products} update={this.onAdd} done= {this.onDone} Alerts = {this.state.attributes}
                     />
                     </div>
                     <div className="col-sm-12 mt-5 mb-2">
