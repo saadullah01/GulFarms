@@ -124,6 +124,12 @@ removed redunant imports in createnewanimal
 create new instance working ie load ho raha uski look sahi kerni
 commented out animalinstance page
 fixed create new animal look and working
+3.4 arham
+made save instance action
+fixed issues with animal instance
+fixed issues with animal instance creation and linked to backend
+changed base model
+
 
 
 

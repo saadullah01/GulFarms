@@ -34,6 +34,7 @@ class CreateAnimalIndividual extends Component {
         super(props);
         this.state = {
             modal: true,
+            tag: "",
             AnimalName: "",
             p1: "",
             p2: "",
@@ -69,6 +70,7 @@ class CreateAnimalIndividual extends Component {
         this.setState({
             modal: true,
             AnimalName: this.props.presets[this.ids("preset")].name,
+            tag: "",
             p1: "",
             p2: "",
             errors: this.props.errors,
@@ -127,6 +129,7 @@ class CreateAnimalIndividual extends Component {
             return {
                 ...p,
                 description: p.name,
+                Value: ""
             };
         });
     }
@@ -144,9 +147,6 @@ class CreateAnimalIndividual extends Component {
         }));
     };
     onChange = e => {
-        // this.setState({ [e.target.id]: e.target.value });
-    };
-    onChange1 = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
 
@@ -158,16 +158,26 @@ class CreateAnimalIndividual extends Component {
     };
     onSubmit = (e) => {
         e.preventDefault();
+        const attvals = []
+        const prodvals = []
+        if (this.state.recordParents) {
+            attvals.push([])
+        }
+        if (this.props.presets[this.ids("preset")].trackOffspring) {
+            prodvals.push([])
+        }
+        this.state.attributes.map(atr => attvals.push(atr.Value))
+        this.state.Products.map(pro => prodvals.push(pro.Value))
         const newInstance = {
-            AnimalName: this.state.AnimalName,
-            p1: this.state.p1,
-            p2: this.state.p2,
-            errors: this.state.errors,
-            attributes: this.state.attributes,
-            Products: this.state.Products,
+            preset: this.props.presets[this.ids("preset")]._id,
+            barn: this.props.barns[this.ids("barn")]._id,
+            tag: this.state.tag,
+            name: this.state.tag,
+            stopOffspring: ((this.state.attributes.find(att => att.name === "gender").Value) === "male"),
+            attributeValues:attvals,
+            productValues:prodvals
         };
-        console.log(newInstance);
-        this.props.saveInstance(newInstance)
+        this.props.saveInstance(newInstance,this.ids("barn"))
     };
     remove = (d) => {
         this.setState((state) => {
@@ -213,7 +223,7 @@ class CreateAnimalIndividual extends Component {
                                             className="input-field-add"
                                             type="text"
                                             placeholder="Enter Parent 1"
-                                            onChange={this.onChange1}
+                                            onChange={this.onChange}
                                             value={this.state.p1}
                                             error={this.state.errors.p1}
                                             id="p1"
@@ -224,7 +234,7 @@ class CreateAnimalIndividual extends Component {
                                             className="input-field-add"
                                             type="text"
                                             placeholder="Enter Parent 2"
-                                            onChange={this.onChange1}
+                                            onChange={this.onChange}
                                             value={this.state.p2}
                                             error={this.state.errors.p2}
                                             id="p2"
@@ -241,7 +251,7 @@ class CreateAnimalIndividual extends Component {
 
     opt = (d, index) => {
         return d.Option.map((t) => (
-            <DropdownItem Value={t} onClick={(e) => this.onChangeAttributes(d, index, e)}>
+            <DropdownItem value={t} onClick={(e) => this.onChangeAttributes(d, index, e)}>
                 {t}
             </DropdownItem>
         ));
@@ -327,12 +337,16 @@ class CreateAnimalIndividual extends Component {
             </Table>
         );
     }
-    onChangeProduct = (d, index) => {
+    onChangeProduct = (d, index, e) => {
+        const update = {
+            ...d,
+            Value: e.target.value
+        }
         this.setState((state, props) => {
             return {
                 Products: [
                     ...(state.Products.slice(0, index)),
-                    d,
+                    update,
                     ...(state.Products.slice(index + 1))
                 ]
             }
@@ -346,8 +360,9 @@ class CreateAnimalIndividual extends Component {
                     <Input
                         type="date"
                         placeholder="Enter Starting Date (mm/dd/yyyy)"
-                        onChange={() => this.onChangeProduct(d, index)}
+                        onChange={(e) => this.onChangeProduct(d, index, e)}
                         value={d.Value}
+                        t={d.Value}
                         id="date"
                     />
                 </td>
@@ -393,6 +408,18 @@ class CreateAnimalIndividual extends Component {
                 <Form className="mt-3 row" noValidate onSubmit={this.onSubmit}>
                     <div className="col-sm-12 col-md-6">
                         <div style={{ width: "90%", margin: "0 auto" }}>
+                            <FormGroup style={{ width: "100%", paddingBottom: "30px" }}>
+                                <Label className="input-label-a">Tag:</Label>
+                                <Input
+                                    className="input-field-a"
+                                    type="text"
+                                    id="tag"
+                                    placeholder="Enter tag"
+                                    onChange={this.onChange}
+                                    value={this.state.tag}
+                                    error={errors.tag}
+                                />
+                            </FormGroup>
                             <div className="row">
                                 <div className="col-sm-12">
                                     <p style={{ fontSize: "30px", color: "#4caf50" }}>

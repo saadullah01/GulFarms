@@ -197,8 +197,8 @@ class AnimalInstance extends Component {
             const barn = this.props.barns[this.ids("barn")]
             const pres = this.props.presets[this.ids("preset")]
             const titles = pres.attributes.map((att)=>this.toTitleCase(att.name))
-            const a1=(pres.attributes.length >= 3) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].name:"..."
-            const a2=(pres.attributes.length >= 4) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].name:"..."
+            const a1=(pres.attributes.length >= 2) ? pres.attributes.filter((e) =>  e.name !== "gender")[0].name:"..."
+            const a2=(pres.attributes.length >= 3) ? pres.attributes.filter((e) =>  e.name !== "gender")[1].name:"..."
             this.setState({
                 name: barn.name,
                 attTitle1: this.toTitleCase(a1),
@@ -213,16 +213,18 @@ class AnimalInstance extends Component {
     }
     render() {
         const url = "/home/farms/" + String(this.ids("farm")) + "/" + String(this.ids("preset")) + "/" + String(this.ids("barn")) + "/";
-        const animalInstances = this.state.animalInstances.map((a, index) =>
+        const animalInstances = this.state.animalInstances.map((a, index) =>{
+            {console.log("line 216",a)}
+            return (
             <Instance
                 link={url.concat(index)}
                 index={index}
-                id={a.attributes.find(el => el.name === "id").value}
+                id={a.tag}
                 gender={a.attributes.find(el => el.name === "gender").value}
-                att1={(a.attributes.length >= 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].value: "..."}
-                att2={(a.attributes.length > 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].value: "..."}
-                alert={a.alerts.length ? "Yes" : "No"}
-            />
+                att1={(a.attributes.length >= 1) ? a.attributes.filter((e) => e.name !== "gender")[0].value: "..."}
+                att2={(a.attributes.length > 2) ? a.attributes.filter((e) => e.name !== "gender")[1].value: "..."}
+                alert={a.products.reduce((a,c)=>a+c.alerts.length,0)}
+            />)}
         );
         let products = "";
         this.state.products.forEach(element => products = products.concat(element.name + " ,"));
