@@ -64,126 +64,126 @@ class AnimalInstance extends Component {
             this.props.getBarnDetail(this.ids("barn"))
         }
         /* Dummy Animal Instance */
-        this.setState({
-            name: "loading...",
-            attTitle1: "loading...",
-            attTitle2: "loading...",
-            products: [
-                { name: "loading" },
-                { name: "loading" },
-                { name: "loading" }
-            ],
-            avgWeight: "loading",
-            description: "loading",
-            animalInstances: [
-                {
-                    alive: true,
-                    attributes: [
-                        {name: "id", value: 1},
-                        {name: "gender", value: "M"},
-                        {name: "weight", value: 70},
-                        {name: "lol1", value: "idk"},
-                        {name: "lol2", value: "idk"},
-                        {name: "lol3", value: "idk"}
-                    ],
-                    products: [],
-                    alerts: [],
-                    _id: "5eb2e8308b7bc517817af50b",
-                    name: "first animal",
-                    preset: "5eb2ddd28c0c5a0f3f61b26a",
-                    tag: 1,
-                    comment: "this is a test to see if parent att and offspring products are added",
-                    parents: "5eb2e82f8b7bc517817af507",
-                    offspring: "5eb2e82f8b7bc517817af509",
-                    __v: 0
-                },
-                {
-                    alive: true,
-                    attributes: [
-                        {name: "id", value: 1},
-                        {name: "gender", value: "M"},
-                        {name: "weight", value: 70},
-                        {name: "lol1", value: "idk"},
-                        {name: "lol2", value: "idk"},
-                        {name: "lol3", value: "idk"}
-                    ],
-                    alerts: [],
-                    products: [],
-                    _id: "5eb2e8308b7bc517817af50b",
-                    name: "first animal",
-                    preset: "5eb2ddd28c0c5a0f3f61b26a",
-                    tag: 1,
-                    comment: "this is a test to see if parent att and offspring products are added",
-                    parents: "5eb2e82f8b7bc517817af507",
-                    offspring: "5eb2e82f8b7bc517817af509",
-                    __v: 0
-                },
-                {
-                    alive: true,
-                    attributes: [
-                        {name: "id", value: 1},
-                        {name: "gender", value: "M"},
-                        {name: "weight", value: 70},
-                        {name: "lol1", value: "idk"},
-                        {name: "lol2", value: "idk"},
-                        {name: "lol3", value: "idk"}
-                    ],
-                    alerts: [],
-                    products: [],
-                    _id: "5eb2e8308b7bc517817af50b",
-                    name: "first animal",
-                    preset: "5eb2ddd28c0c5a0f3f61b26a",
-                    tag: 1,
-                    comment: "this is a test to see if parent att and offspring products are added",
-                    parents: "5eb2e82f8b7bc517817af507",
-                    offspring: "5eb2e82f8b7bc517817af509",
-                    __v: 0
-                },
-                {
-                    alive: true,
-                    attributes: [
-                        {name: "id", value: 1},
-                        {name: "gender", value: "M"},
-                        {name: "weight", value: 70},
-                        {name: "lol1", value: "idk"},
-                        {name: "lol2", value: "idk"},
-                        {name: "lol3", value: "idk"}
-                    ],
-                    alerts: [],
-                    products: [],
-                    _id: "5eb2e8308b7bc517817af50b",
-                    name: "first animal",
-                    preset: "5eb2ddd28c0c5a0f3f61b26a",
-                    tag: 1,
-                    comment: "this is a test to see if parent att and offspring products are added",
-                    parents: "5eb2e82f8b7bc517817af507",
-                    offspring: "5eb2e82f8b7bc517817af509",
-                    __v: 0
-                },
-                {
-                    alive: true,
-                    attributes: [
-                        {name: "id", value: 1},
-                        {name: "gender", value: "M"},
-                        {name: "weight", value: 70},
-                        {name: "lol1", value: "idk"},
-                        {name: "lol2", value: "idk"},
-                        {name: "lol3", value: "idk"}
-                    ],
-                    alerts: [],
-                    products: [],
-                    _id: "5eb2e8308b7bc517817af50b",
-                    name: "first animal",
-                    preset: "5eb2ddd28c0c5a0f3f61b26a",
-                    tag: 1,
-                    comment: "this is a test to see if parent att and offspring products are added",
-                    parents: "5eb2e82f8b7bc517817af507",
-                    offspring: "5eb2e82f8b7bc517817af509",
-                    __v: 0
-                }
-            ],
-            numAnimals: "loading"
-        });
+        // this.setState({
+        //     name: "loading...",
+        //     attTitle1: "loading...",
+        //     attTitle2: "loading...",
+        //     products: [
+        //         { name: "loading" },
+        //         { name: "loading" },
+        //         { name: "loading" }
+        //     ],
+        //     avgWeight: "loading",
+        //     description: "loading",
+        //     animalInstances: [
+        //         {
+        //             alive: true,
+        //             attributes: [
+        //                 {name: "id", value: 1},
+        //                 {name: "gender", value: "M"},
+        //                 {name: "weight", value: 70},
+        //                 {name: "lol1", value: "idk"},
+        //                 {name: "lol2", value: "idk"},
+        //                 {name: "lol3", value: "idk"}
+        //             ],
+        //             products: [],
+        //             alerts: [],
+        //             _id: "5eb2e8308b7bc517817af50b",
+        //             name: "first animal",
+        //             preset: "5eb2ddd28c0c5a0f3f61b26a",
+        //             tag: 1,
+        //             comment: "this is a test to see if parent att and offspring products are added",
+        //             parents: "5eb2e82f8b7bc517817af507",
+        //             offspring: "5eb2e82f8b7bc517817af509",
+        //             __v: 0
+        //         },
+        //         {
+        //             alive: true,
+        //             attributes: [
+        //                 {name: "id", value: 1},
+        //                 {name: "gender", value: "M"},
+        //                 {name: "weight", value: 70},
+        //                 {name: "lol1", value: "idk"},
+        //                 {name: "lol2", value: "idk"},
+        //                 {name: "lol3", value: "idk"}
+        //             ],
+        //             alerts: [],
+        //             products: [],
+        //             _id: "5eb2e8308b7bc517817af50b",
+        //             name: "first animal",
+        //             preset: "5eb2ddd28c0c5a0f3f61b26a",
+        //             tag: 1,
+        //             comment: "this is a test to see if parent att and offspring products are added",
+        //             parents: "5eb2e82f8b7bc517817af507",
+        //             offspring: "5eb2e82f8b7bc517817af509",
+        //             __v: 0
+        //         },
+        //         {
+        //             alive: true,
+        //             attributes: [
+        //                 {name: "id", value: 1},
+        //                 {name: "gender", value: "M"},
+        //                 {name: "weight", value: 70},
+        //                 {name: "lol1", value: "idk"},
+        //                 {name: "lol2", value: "idk"},
+        //                 {name: "lol3", value: "idk"}
+        //             ],
+        //             alerts: [],
+        //             products: [],
+        //             _id: "5eb2e8308b7bc517817af50b",
+        //             name: "first animal",
+        //             preset: "5eb2ddd28c0c5a0f3f61b26a",
+        //             tag: 1,
+        //             comment: "this is a test to see if parent att and offspring products are added",
+        //             parents: "5eb2e82f8b7bc517817af507",
+        //             offspring: "5eb2e82f8b7bc517817af509",
+        //             __v: 0
+        //         },
+        //         {
+        //             alive: true,
+        //             attributes: [
+        //                 {name: "id", value: 1},
+        //                 {name: "gender", value: "M"},
+        //                 {name: "weight", value: 70},
+        //                 {name: "lol1", value: "idk"},
+        //                 {name: "lol2", value: "idk"},
+        //                 {name: "lol3", value: "idk"}
+        //             ],
+        //             alerts: [],
+        //             products: [],
+        //             _id: "5eb2e8308b7bc517817af50b",
+        //             name: "first animal",
+        //             preset: "5eb2ddd28c0c5a0f3f61b26a",
+        //             tag: 1,
+        //             comment: "this is a test to see if parent att and offspring products are added",
+        //             parents: "5eb2e82f8b7bc517817af507",
+        //             offspring: "5eb2e82f8b7bc517817af509",
+        //             __v: 0
+        //         },
+        //         {
+        //             alive: true,
+        //             attributes: [
+        //                 {name: "id", value: 1},
+        //                 {name: "gender", value: "M"},
+        //                 {name: "weight", value: 70},
+        //                 {name: "lol1", value: "idk"},
+        //                 {name: "lol2", value: "idk"},
+        //                 {name: "lol3", value: "idk"}
+        //             ],
+        //             alerts: [],
+        //             products: [],
+        //             _id: "5eb2e8308b7bc517817af50b",
+        //             name: "first animal",
+        //             preset: "5eb2ddd28c0c5a0f3f61b26a",
+        //             tag: 1,
+        //             comment: "this is a test to see if parent att and offspring products are added",
+        //             parents: "5eb2e82f8b7bc517817af507",
+        //             offspring: "5eb2e82f8b7bc517817af509",
+        //             __v: 0
+        //         }
+        //     ],
+        //     numAnimals: "loading"
+        // });
     }
     toTitleCase = (title) => {
         return title
@@ -196,13 +196,14 @@ class AnimalInstance extends Component {
         if (this.props.barns !== prevProps.barns) {
             const barn = this.props.barns[this.ids("barn")]
             const pres = this.props.presets[this.ids("preset")]
-            const titles = pres.attributes.map((att)=>this.toTitleCase(att.name))
-            const a1=(pres.attributes.length >= 3) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].name:"..."
-            const a2=(pres.attributes.length >= 4) ? pres.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].name:"..."
+            const titles = pres.attributes.map((att)=>this.toTitleCase(att.name)).filter((e) =>  e !== "Parents" && e !== "Gender")
+            console.log(titles)
+            const a1=(titles.length) ? titles[0]:"..."
+            const a2=(titles.length >= 2) ? titles[1]:"..."
             this.setState({
                 name: barn.name,
-                attTitle1: this.toTitleCase(a1),
-                attTitle2: this.toTitleCase(a2),
+                attTitle1: a1,
+                attTitle2: a2,
                 products:pres.products.length?pres.products.map((prod,index)=>{return {name:prod.name}}):[{name:"no produce"}],
                 animalInstances: barn.animals,
                 avgWeight: 0,
@@ -213,16 +214,18 @@ class AnimalInstance extends Component {
     }
     render() {
         const url = "/home/farms/" + String(this.ids("farm")) + "/" + String(this.ids("preset")) + "/" + String(this.ids("barn")) + "/";
-        const animalInstances = this.state.animalInstances.map((a, index) =>
+        const animalInstances = this.state.animalInstances.map((a, index) =>{
+            {console.log("line 216",a)}
+            return (
             <Instance
                 link={url.concat(index)}
                 index={index}
-                id={a.attributes.find(el => el.name === "id").value}
+                id={a.tag}
                 gender={a.attributes.find(el => el.name === "gender").value}
-                att1={(a.attributes.length >= 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[0].value: "..."}
-                att2={(a.attributes.length > 3) ? a.attributes.filter((e) => e.name !== "id" && e.name !== "gender")[1].value: "..."}
-                alert={a.alerts.length ? "Yes" : "No"}
-            />
+                att1={(a.attributes.length >= 1) ? a.attributes.filter((e) => e.name !== "gender")[0].value: "..."}
+                att2={(a.attributes.length > 2) ? a.attributes.filter((e) => e.name !== "gender")[1].value: "..."}
+                alert={a.products.reduce((a,c)=>a+c.alerts.length,0)}
+            />)}
         );
         let products = "";
         this.state.products.forEach(element => products = products.concat(element.name + " ,"));
@@ -232,7 +235,7 @@ class AnimalInstance extends Component {
             <div>
                 <div className="farm-main-container">
                     <div className="inner-main-container pt-2 pb-2">
-                        <Link to="#">
+                        <Link to={url+"remove-barn"}>
                             <FontAwesomeIcon className="top-icon" icon={faTrashAlt} size="2x" />
                         </Link>
                         <Link to="#">

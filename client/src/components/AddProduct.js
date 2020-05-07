@@ -80,7 +80,7 @@ class AddProduct extends Component {
     const addedAlerts = this.state.Product.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
-        <td>{d.duration}</td>
+        <td>{d.date}</td>
         <td>{d.selectedOption}</td>
         <td><FontAwesomeIcon onClick={() => this.remove(index)} style={{ color: "#4caf50" }} icon={faTimes} size="1x" /></td>
       </tr>

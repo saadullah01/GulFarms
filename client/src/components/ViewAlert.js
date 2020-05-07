@@ -10,54 +10,53 @@ class ViewAlert extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.Alerts,
+      alert: [{ description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }, { description: "awae", duration: "3", selectedOption: "Year", date: "12/02/1999" }],
       AlertDate: "",
       Done: [],
-      Update:[]
+      Update: [],
     };
   }
+  submittdone = () => {
+    this.props.done(this.state.Done);
+  };
   remove = (d) => {
     this.setState(
       (state) => {
-        const data = state.data.filter((item, j) => d !== j);
+        const alert = state.alert.filter((item, j) => d !== j);
         return {
-          data,
+          alert,
         };
-      }
+      }, () => this.submittdone()
     );
   };
-  submitt = () => {
-    this.props.update(this.state.data);
+  submittupdate = () => {
+    this.props.update(this.state.Update);
   };
-  snooze=(d, index, val)=>{
-    const update = {
-      ...d,
-      Value: val
-  }
-  this.setState((state, props) => {
-      return {
-          update: [
-              ...(state.update.slice(0, index)),
-              update,
-              ...(state.update.slice(index + 1))
-          ]
-      }
-  })
-  }
-  done = (d,index)=>{
+  snoozefunc = (d, index) => {
     this.remove(index)
     this.setState(state => {
 
-      const done = state.done.concat(d);
+      const Update = state.Update.concat(d);
       return {
-          done,
+        Update,
       };
+    }, this.submittupdate()
+    );
   }
-  );
+  donefunc = (d, index) => {
+    this.remove(index)
+    this.setState(state => {
+
+      const Done = state.Done.concat(d);
+      return {
+        Done,
+      }
+    }
+    );
   }
-  display = () => {
+  displayupdate = () => {
     const addedAlerts = this.state.Update.map((d, index) =>
-      <tr style={{textAlign: "center"}}>
+      <tr style={{ textAlign: "center" }}>
         <td>{d.description}</td>
         <td>{d.duration}</td>
         <td>{d.selectedOption}</td>
@@ -65,7 +64,7 @@ class ViewAlert extends Component {
       </tr>
     );
     const addedDone = this.state.Done.map((d, index) =>
-      <tr style={{textAlign: "center"}}>
+      <tr style={{ textAlign: "center" }}>
         <td>{d.description}</td>
         <td>{d.duration}</td>
         <td>{d.selectedOption}</td>
@@ -82,59 +81,63 @@ class ViewAlert extends Component {
       </Table>
     );
   }
+  valueChange = (d, index, e) => {
+    const update = {
+      ...d,
+      date: e.target.value
+    }
+    this.setState((state, props) => {
+      return {
+        alert: [
+          ...(state.alert.slice(0, index)),
+          update,
+          ...(state.alert.slice(index + 1))
+        ]
+      }
+    })
+  }
   display() {
-    return this.state.data.map((d, index) => {
-      var val = ""
-      return (
-      <div>
-        {this.display()}
-        <div>
-          <td>{d.description}</td>
-          <td>{d.duration}</td>
-          <td>{d.selectedOption}</td>
-          <td>{d.date}</td>
+    console.log(this.state.alert)
+    console.log(this.state.Update, "d")
+    const alerts = this.state.alert.map((d, index) =>
+      <div className="row">
+        <div className="mb-2 mt-2 col-sm-6">{d.description}</div>
+        <div className="mb-2 mt-2 col-sm-6">{d.date}</div>
+        <div className="col-sm-6">
+          <Input
+            className="input-field-ad"
+            type="date"
+            placeholder="Enter Start Date"
+            value={d.Value}
+            onChange={(e) => this.valueChange(d, index, e)}
+            id="AlertDate"
+          />
         </div>
-          
-          <div className="pl-1 pr-1 col-sm-4">
-            <Input
-              className="input-field-ad"
-              type="date"
-              placeholder="Enter Start Date"
-              value={val}
-              id="AlertDate"
-            />
-          </div>
-          <div className="mt-3 col-sm-12">
-            <Button onClick={this.snooze(d,index, val)} style={{
-              width: "20%",
-              height: "40px",
-              backgroundColor: "#4caf50",
-              borderRadius: "20px",
-              float: "right",
-            }}>Snooze</Button>
-          </div>
-          <div className="mt-3 col-sm-12">
-          <Button onClick={this.done(d,index)} style={{
-            width: "20%",
-            height: "40px",
+        <div className="col-sm-3">
+          <Button onClick={() => this.snoozefunc(d, index)} style={{
             backgroundColor: "#4caf50",
             borderRadius: "20px",
-            float: "right",
+          }}>Snooze</Button>
+        </div>
+        <div className="col-sm-3">
+          <Button onClick={() => this.donefunc(d, index)} style={{
+            backgroundColor: "#4caf50",
+            borderRadius: "20px",
           }}>Done</Button>
         </div>
-        </div>
-      );
-    });
+      </div>
+    );
+    return (
+      <div>
+        {this.displayupdate()}
+        {alerts}
+      </div>
+    );
   }
-
   render() {
     const { errors } = this.state;
     return (
       <div>
-        <tr style={{ textAlign: "center" }}>
-        <td>Name</td>
-        <td>Repeat</td>
-        </tr>
         {this.display()}
       </div>
     );

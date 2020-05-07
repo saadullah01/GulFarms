@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import { Link, withRouter  } from 'react-router-dom';
 import {
     Button,
     Modal, 
@@ -13,7 +14,8 @@ import {
     Row,
     Col
 } from 'reactstrap';
-
+import { connect } from "react-redux"
+import {removeItem} from "../actions/removeActions"
 class RemoveFarmTemplates extends Component{
     constructor(props) {
         super(props);
@@ -26,8 +28,49 @@ class RemoveFarmTemplates extends Component{
         }
     }
     // Can Add Constructor
-
-    
+    componentDidMount() {
+        if(this.props.farms.length <= this.ids("farm") ||
+        this.props.presets.length <= this.ids("preset") ||
+        this.props.barns.length <=this.ids("barn") ){
+            this.props.history.push("/home/farms");
+            return
+        }
+    }
+    componentDidUpdate(prevProps, prevState){
+        if(prevProps !== this.props){
+            this.props.history.push("/home/farms");
+            return
+        }
+    }
+    ids=(name)=>{
+        const dic = {
+            farm: this.props.match.params.fid,
+            preset: this.props.match.params.pid,
+            barn:this.props.match.params.bid,
+            instance: this.props.match.params.iid
+        }
+        return parseInt(dic[name])
+    }
+    dbId=()=>{
+        switch(this.state.name){
+            case "Farm":
+                return this.props.farms[this.ids("farm")]._id
+            case "Animal Preset":
+                return this.props.presets[this.ids("preset")]._id
+            case "Barn":
+                return this.props.barns[this.ids("barn")]._id
+        }
+    }
+    removed=()=>{
+        switch(this.state.name){
+            case "Farm":
+                return this.props.farms[this.ids("farm")].removed
+            case "Animal Preset":
+                return this.props.presets[this.ids("preset")].removed
+            case "Barn":
+                return this.props.barns[this.ids("barn")].removed
+        }
+    }
     handleOptionChange = changeEvent => {
         this.setState({
             selectedOption : changeEvent.target.value
@@ -49,11 +92,14 @@ class RemoveFarmTemplates extends Component{
 
     onSubmit = e => {
         e.preventDefault();
-        const newUser = {
-            Option: this.state.selectedOption,
-            Reason: this.state.Reason
+        const data = {
+            removalComment: this.state.selectedOption,
+            reason: this.state.Reason,
+            id:this.dbId(),
+            removed:1
         }
-        console.log(newUser);
+        this.props.removeItem(data,this.state.name)
+        
     }
 
     render() {
@@ -83,7 +129,7 @@ class RemoveFarmTemplates extends Component{
                     <FormGroup>
                         <Row>
                             <Col>
-                                <Row>
+                                <Row xs="1">
                                     <Label className="text-label"> Reason For Removal</Label>
                                 </Row>
                                 <Row>
@@ -152,10 +198,20 @@ class RemoveFarmTemplates extends Component{
                 </Container>
                 </ModalBody>
                 <ModalFooter>
-                    <Button className="login-btn" onClick= {this.toggle}>Save</Button>
+                    <Button className="login-btn" type="submit" onClick={this.onSubmit}>Save</Button>
                 </ModalFooter>
                 </Modal>
         )
     }
 }
-export default RemoveFarmTemplates;
+const mapStateToProps = state => ({
+    loggedIn: state.authReducer.islogged,
+    errors: state.errorReducer.errors,
+    farms: state.farmReducer.farms,
+    presets:state.presetReducer.presets,
+    barns:state.barnReducer.barns
+});
+export default connect(
+    mapStateToProps,
+    { removeItem }
+)(withRouter(RemoveFarmTemplates));

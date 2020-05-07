@@ -80,7 +80,7 @@ class Finance extends Component {
     }
     addEarning = () => {
         const data={income: [{description:"",amountMetric:this.state.eUnit, name: this.state.eDesc, amount: parseFloat(this.state.eAmount), quantity: parseFloat(this.state.eQuantity), quantityMetric:"Rs"  }]}
-        this.save(data,0)
+        this.save(data,1)
     }
     addExpense = () => {
         const data={expense: [{description:"",amountMetric:this.state.exUnit, name: this.state.exDesc, amount: parseFloat(this.state.exAmount), quantity: parseFloat(this.state.exQuantity), quantityMetric:"Rs"  }]}
