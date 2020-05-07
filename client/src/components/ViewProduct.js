@@ -57,17 +57,12 @@ class ViewProduct extends Component {
     const addedproducts = this.state.Update.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
-        <td>{d.duration}</td>
-        <td>{d.selectedOption}</td>
         <td>{d.date}</td>
       </tr>
     );
     const addedDone = this.state.Done.map((d, index) =>
       <tr style={{textAlign: "center"}}>
         <td>{d.description}</td>
-        <td>{d.duration}</td>
-        <td>{d.selectedOption}</td>
-        <td>{d.date}</td>
         <td>{d.quantity}</td>
       </tr>
     );
@@ -133,7 +128,7 @@ class ViewProduct extends Component {
               className="input-field-ad"
               type="text"
               placeholder="Enter Start Date"
-              value= {d.Value}
+              value= {d.quantity}
               onChange = {(e) => this.valueChange(d,index,e)}
               id="quantity"
             />
