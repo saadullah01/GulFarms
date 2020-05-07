@@ -201,9 +201,9 @@ class ViewAnimalIndividual extends Component {
         if (this.state.recordParents === true) {
             return (
                 <div className="row">
-                    <p style={{ fontSize: "30px", color: "#4caf50" }}>Parents</p>
-                    <Label className="input-label-a">Record Parents:</Label>
-                    <div className="mt-3 col-sm-12">
+                    <div className="col-sm-4" style={{ fontSize: "20px", color: "#4caf50"}}>Parents</div>
+                    {/* <Label className="input-label-a">Record Parents:</Label> */}
+                    <div className="col-sm-8">
                         <Button
                             id="toggler"
                             style={{
@@ -421,12 +421,12 @@ class ViewAnimalIndividual extends Component {
                                     icon={faClipboardCheck}
                                     style={{ marginRight: "10px" }}
                                 />
-                Record
-              </p>
+                                Record
+                            </p>
                             {this.Parents()}
                         </div>
                     </div>
-                    <div>
+                    <div className="col-sm-12 col-md-6">
                         <ViewProduct update={this.onAdd} done= {this.onDone} Alerts = {this.state.attributes}
                     />
                     </div>
